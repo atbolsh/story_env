@@ -194,6 +194,15 @@ def ChatGPT_safe_generate_response_OLD(prompt,
 # ###################[SECTION 2: ORIGINAL GPT-3 STRUCTURE] ###################
 # ============================================================================
 
+# OpenAI deprecated the GPT-3 completion models (text-davinci-002/003) that the
+# original paper used. Map the legacy engine names this codebase still passes in
+# (via gpt_parameter["engine"]) onto a currently available chat model.
+_LEGACY_COMPLETION_ENGINE_TO_CHAT_MODEL = {
+  "text-davinci-003": "gpt-3.5-turbo",
+  "text-davinci-002": "gpt-3.5-turbo",
+}
+
+
 def GPT_request(prompt, gpt_parameter): 
   """
   Given a prompt and a dictionary of GPT parameters, make a request to OpenAI
@@ -207,10 +216,12 @@ def GPT_request(prompt, gpt_parameter):
     a str of GPT-3's response. 
   """
   temp_sleep()
-  try: 
-    response = openai.Completion.create(
-                model=gpt_parameter["engine"],
-                prompt=prompt,
+  engine = gpt_parameter["engine"]
+  model = _LEGACY_COMPLETION_ENGINE_TO_CHAT_MODEL.get(engine, engine)
+  try:
+    response = openai.ChatCompletion.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
                 temperature=gpt_parameter["temperature"],
                 max_tokens=gpt_parameter["max_tokens"],
                 top_p=gpt_parameter["top_p"],
@@ -218,9 +229,9 @@ def GPT_request(prompt, gpt_parameter):
                 presence_penalty=gpt_parameter["presence_penalty"],
                 stream=gpt_parameter["stream"],
                 stop=gpt_parameter["stop"],)
-    return response.choices[0].text
-  except: 
-    print ("TOKEN LIMIT EXCEEDED")
+    return response["choices"][0]["message"]["content"]
+  except Exception as e:
+    print (f"GPT_request error ({type(e).__name__}): {e}")
     return "TOKEN LIMIT EXCEEDED"
 
 

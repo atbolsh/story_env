@@ -57,6 +57,11 @@ class ReverieServer:
     sim_folder = f"{fs_storage}/{self.sim_code}"
     copyanything(fork_folder, sim_folder)
 
+    # The backend writes per-step movement files to <sim_folder>/movement/N.json
+    # (see start_server). Base simulations don't ship with this directory, so
+    # create it on fork to avoid a FileNotFoundError on the first step.
+    os.makedirs(f"{sim_folder}/movement", exist_ok=True)
+
     with open(f"{sim_folder}/reverie/meta.json") as json_file:  
       reverie_meta = json.load(json_file)
 
