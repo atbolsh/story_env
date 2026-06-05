@@ -40,3 +40,25 @@ openai>=0.28.0,<1.0
 # Sourced by run_remote_servers.sh; useful once we wire local-model
 # selection (or any other config) through .env in Python.
 python-dotenv>=1.0
+
+# --- Local Gemma 4 harness (reverie/backend_server/harnesses/gemma4.py) ---
+# Only needed when REVERIE_HARNESS is set to gemma4-e2b or gemma4-e4b;
+# legacy-gpt mode does NOT need any of these. Versions mirror the smoke
+# tests in ../test-gemma4/requirements.txt.
+#
+# NOTE: on hosts with NVIDIA driver < 580 (i.e. CUDA <= 12.x), do NOT take
+# the default pip wheel for torch -- it pulls a cu13 build that can't see
+# the GPU. Install explicitly from the CUDA 12 index, e.g.:
+#   pip install -U "torch>=2.7" torchvision torchaudio \
+#       --index-url https://download.pytorch.org/whl/cu124
+torch>=2.7.0
+torchvision>=0.22.0
+# Gemma 4 requires a recent transformers (AutoModelForMultimodalLM, gemma4
+# arch); 4.57.x does NOT have it.
+transformers>=4.60.0
+accelerate>=1.0.0
+safetensors>=0.4.0
+huggingface_hub>=0.30.0
+# Local retrieval embedder used by the Gemma 4 harness (BAAI/bge-small-en-v1.5).
+sentence-transformers>=3.0
+einops>=0.7.0

@@ -32,6 +32,7 @@ from global_methods import *
 from reverie_config import *
 from maze import *
 from persona.persona import *
+import harnesses
 
 ##############################################################################
 #                                  REVERIE                                   #
@@ -63,8 +64,34 @@ class ReverieServer:
     with open(f"{sim_folder}/reverie/meta.json") as json_file:  
       reverie_meta = json.load(json_file)
 
+    # Embedder-compatibility guard. Cosine similarities across two different
+    # embedding spaces are meaningless, so warn loudly if the user is forking
+    # a sim that was built up under a different embedder than the active
+    # harness uses. We don't hard-fail (the user might intentionally rebuild
+    # via reverie/backend_server/rebuild_embeddings.py).
+    forked_embedder = reverie_meta.get("embedder")
+    try:
+      active_embedder = harnesses.get_active().embedder_name
+    except Exception:
+      active_embedder = None
+    if forked_embedder and active_embedder and forked_embedder != active_embedder:
+      print("=" * 72)
+      print(f"WARNING: forked sim {self.fork_sim_code!r} was built with "
+            f"embedder {forked_embedder!r}, but the active harness "
+            f"({harnesses.get_active_name()!r}) uses {active_embedder!r}.")
+      print("Cosine similarity across embedder families is not meaningful;")
+      print("retrieval will misbehave until you rebuild this sim's embeddings:")
+      print(f"    python rebuild_embeddings.py --sim {self.sim_code} "
+            f"--to {harnesses.get_active_name()}")
+      print("=" * 72)
+    elif forked_embedder is None and active_embedder:
+      print(f"[reverie] forked sim has no recorded embedder; assuming "
+            f"compatibility with active embedder {active_embedder!r}.")
+
     with open(f"{sim_folder}/reverie/meta.json", "w") as outfile: 
       reverie_meta["fork_sim_code"] = fork_sim_code
+      if active_embedder:
+        reverie_meta["embedder"] = active_embedder
       outfile.write(json.dumps(reverie_meta, indent=2))
 
     # LOADING REVERIE'S GLOBAL VARIABLES
@@ -180,6 +207,10 @@ class ReverieServer:
     reverie_meta["maze_name"] = self.maze.maze_name
     reverie_meta["persona_names"] = list(self.personas.keys())
     reverie_meta["step"] = self.step
+    try:
+      reverie_meta["embedder"] = harnesses.get_active().embedder_name
+    except Exception:
+      pass
     reverie_meta_f = f"{sim_folder}/reverie/meta.json"
     with open(reverie_meta_f, "w") as outfile: 
       outfile.write(json.dumps(reverie_meta, indent=2))
@@ -607,6 +638,25 @@ if __name__ == '__main__':
   # rs = ReverieServer("July1_the_ville_isabella_maria_klaus-step-3-20", 
   #                    "July1_the_ville_isabella_maria_klaus-step-3-21")
   # rs.open_server()
+
+  # Pick the LLM backend. The harness is selected via the REVERIE_HARNESS env
+  # var, which is read lazily on the first model call -- so setting it here
+  # (before any cognitive code actually runs) is sufficient.
+  available = harnesses.available_names()
+  default_name = harnesses.DEFAULT_HARNESS
+  print("Available model harnesses:")
+  for name, desc in available.items():
+    marker = " (default)" if name == default_name else ""
+    print(f"  {name}{marker}: {desc}")
+  harness_choice = input(
+    f"Select model harness [{default_name}]: "
+  ).strip().lower() or default_name
+  if harness_choice not in available:
+    raise SystemExit(
+      f"unknown harness {harness_choice!r}; pick one of {sorted(available)}"
+    )
+  os.environ["REVERIE_HARNESS"] = harness_choice
+  print(f"[reverie] using harness: {harness_choice}")
 
   origin = input("Enter the name of the forked simulation: ").strip()
   target = input("Enter the name of the new simulation: ").strip()

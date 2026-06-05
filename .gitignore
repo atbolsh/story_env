@@ -2,6 +2,9 @@ frontend_server/settings/local.py
 storage/*
 static_dirs/*
 
+# Per-session agent handoff notes (in-flight state, not user-facing docs)
+HANDOFF.md
+
 !storage/base_the_ville_isabella_maria_klaus/*
 !storage/base_the_ville_n25/*
 
