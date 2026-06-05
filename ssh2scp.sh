@@ -5,8 +5,8 @@
 # scp invocation. Useful for pushing this repo (or a single file) up to a
 # rented GPU box without having to remember scp's argument order.
 #
-# Example:
-#   ./ssh2scp.sh "ssh -p 40230 root@174.78.228.101 -L 8080:localhost:8080" \
+# Example (replace PORT, USER, HOST with the values your provider gave you):
+#   ./ssh2scp.sh "ssh -p PORT USER@HOST -L 8080:localhost:8080" \
 #                .env /root/generative_agents/.env
 
 ssh_cmd="$1"

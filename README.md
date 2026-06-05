@@ -87,9 +87,11 @@ We've noticed that OpenAI's API can hang when it reaches the hourly rate limit. 
 ### Running on a Remote GPU Host (e.g. vast.ai)
 The reverie backend and the Django frontend communicate **only via the shared filesystem** under `environment/frontend_server/{storage,temp_storage}`. That means both servers have to live on the same host — but only the browser-facing port (8000) needs to be reachable from your laptop. SSH port forwarding handles the rest.
 
+In all of the examples below, replace `PORT`, `USER`, and `HOST` with the values from the ssh command your GPU provider gave you (for vast.ai, that's the `Direct ssh connect` button).
+
 1. On the remote box, clone this repo, install `requirements.txt`, and drop your `.env` (API keys) next to `run_remote_servers.sh`. To push the env file from your laptop, you can use the included helper:
 
-       ./ssh2scp.sh "ssh -p 40230 root@host -L 8080:localhost:8080" \
+       ./ssh2scp.sh "ssh -p PORT USER@HOST -L 8080:localhost:8080" \
                     .env /root/generative_agents/.env
        # then run the printed scp command
 
@@ -102,8 +104,8 @@ The reverie backend and the Django frontend communicate **only via the shared fi
 
 3. From your laptop, add the frontend port to your existing ssh command using the helper:
 
-       ./ssh2tunnel.sh "ssh -p 40230 root@host -L 8080:localhost:8080"
-       # -> ssh -p 40230 root@host -L 8080:localhost:8080 -L 8000:localhost:8000
+       ./ssh2tunnel.sh "ssh -p PORT USER@HOST -L 8080:localhost:8080"
+       # -> ssh -p PORT USER@HOST -L 8080:localhost:8080 -L 8000:localhost:8000
 
    Run that command (or `eval "$(./ssh2tunnel.sh '...')"`). While the tunnel is up, the remote Django server is reachable from your local browser at [http://localhost:8000/simulator_home](http://localhost:8000/simulator_home), exactly as in the local setup above. Drive the simulation by typing `run N`, `save`, `fin`, etc. into the `backend` window of the remote tmux session.
 

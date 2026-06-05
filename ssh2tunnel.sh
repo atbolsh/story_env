@@ -15,13 +15,13 @@
 #   - a bare port (8001)            -> forwarded as 8001:localhost:8001
 #   - a full local:host:remote spec -> passed straight through to ssh -L
 #
-# Example:
-#   ./ssh2tunnel.sh "ssh -p 40230 root@174.78.228.101 -L 8080:localhost:8080"
-#   # -> ssh -p 40230 root@174.78.228.101 -L 8080:localhost:8080 \
+# Example (replace PORT, USER, HOST with the values your provider gave you):
+#   ./ssh2tunnel.sh "ssh -p PORT USER@HOST -L 8080:localhost:8080"
+#   # -> ssh -p PORT USER@HOST -L 8080:localhost:8080 \
 #   #        -L 8000:localhost:8000
 #
-#   ./ssh2tunnel.sh "ssh -p 40230 root@174.78.228.101" 8001 9000:localhost:9000
-#   # -> ssh -p 40230 root@174.78.228.101 \
+#   ./ssh2tunnel.sh "ssh -p PORT USER@HOST" 8001 9000:localhost:9000
+#   # -> ssh -p PORT USER@HOST \
 #   #        -L 8000:localhost:8000 -L 8001:localhost:8001 -L 9000:localhost:9000
 #
 # To run the result directly: eval "$(./ssh2tunnel.sh '...')"
