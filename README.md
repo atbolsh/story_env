@@ -84,6 +84,29 @@ To start the demo, go to the following address on your browser: `http://localhos
 ### Tips
 We've noticed that OpenAI's API can hang when it reaches the hourly rate limit. When this happens, you may need to restart your simulation. For now, we recommend saving your simulation often as you progress to ensure that you lose as little of the simulation as possible when you do need to stop and rerun it. Running these simulations, at least as of early 2023, could be somewhat costly, especially when there are many agents in the environment.
 
+### Running on a Remote GPU Host (e.g. vast.ai)
+The reverie backend and the Django frontend communicate **only via the shared filesystem** under `environment/frontend_server/{storage,temp_storage}`. That means both servers have to live on the same host — but only the browser-facing port (8000) needs to be reachable from your laptop. SSH port forwarding handles the rest.
+
+1. On the remote box, clone this repo, install `requirements.txt`, and drop your `.env` (API keys) next to `run_remote_servers.sh`. To push the env file from your laptop, you can use the included helper:
+
+       ./ssh2scp.sh "ssh -p 40230 root@host -L 8080:localhost:8080" \
+                    .env /root/generative_agents/.env
+       # then run the printed scp command
+
+2. Start both servers on the remote inside a tmux session:
+
+       ./run_remote_servers.sh
+       tmux attach -t gen_agents
+       # Ctrl-b n / Ctrl-b p to switch between the frontend and backend windows
+       # Ctrl-b d to detach (servers keep running)
+
+3. From your laptop, add the frontend port to your existing ssh command using the helper:
+
+       ./ssh2tunnel.sh "ssh -p 40230 root@host -L 8080:localhost:8080"
+       # -> ssh -p 40230 root@host -L 8080:localhost:8080 -L 8000:localhost:8000
+
+   Run that command (or `eval "$(./ssh2tunnel.sh '...')"`). While the tunnel is up, the remote Django server is reachable from your local browser at [http://localhost:8000/simulator_home](http://localhost:8000/simulator_home), exactly as in the local setup above. Drive the simulation by typing `run N`, `save`, `fin`, etc. into the `backend` window of the remote tmux session.
+
 ## <img src="https://joonsungpark.s3.amazonaws.com:443/static/assets/characters/profile/Maria_Lopez.png" alt="Generative Maria">   Simulation Storage Location
 All simulations that you save will be located in `environment/frontend_server/storage`, and all compressed demos will be located in `environment/frontend_server/compressed_storage`. 
 
