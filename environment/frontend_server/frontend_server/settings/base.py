@@ -113,9 +113,12 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
+
+# Existing migrations were generated under Django 2.x's `AutoField` default;
+# pinning this avoids spurious "create migration" prompts after the upgrade
+# to Django 5.x (whose default would otherwise be `BigAutoField`).
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
 # Static files (CSS, JavaScript, Images)
