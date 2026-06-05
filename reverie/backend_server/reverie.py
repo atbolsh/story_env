@@ -29,7 +29,7 @@ import shutil
 import traceback
 
 from global_methods import *
-from utils import *
+from reverie_config import *
 from maze import *
 from persona.persona import *
 

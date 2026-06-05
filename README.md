@@ -9,32 +9,21 @@
 This repository accompanies our research paper titled "[Generative Agents: Interactive Simulacra of Human Behavior](https://arxiv.org/abs/2304.03442)." It contains our core simulation module for  generative agents—computational agents that simulate believable human behaviors—and their game environment. Below, we document the steps for setting up the simulation environment on your local machine and for replaying the simulation as a demo animation.
 
 ## <img src="https://joonsungpark.s3.amazonaws.com:443/static/assets/characters/profile/Isabella_Rodriguez.png" alt="Generative Isabella">   Setting Up the Environment 
-To set up your environment, you will need to generate a `utils.py` file that contains your OpenAI API key and download the necessary packages.
+You need to (1) install Python dependencies and (2) provide an OpenAI API key (and any other secrets) via a `.env` file at the repo root.
 
-### Step 1. Generate Utils File
-In the `reverie/backend_server` folder (where `reverie.py` is located), create a new file titled `utils.py` and copy and paste the content below into the file:
+### Step 1. Install requirements.txt
+Install everything listed in `requirements.txt` (I strongly recommend a virtualenv first). The codebase targets Python 3.12 with Django 5.2 LTS and a trimmed dependency set:
+
+    pip install -r requirements.txt
+
+### Step 2. Create a `.env` file at the repo root
+The backend reads its OpenAI API key (and any future model/API secrets) from a `.env` file located next to this README. `.env` is gitignored, so it stays local to your checkout. Minimum contents:
+
 ```
-# Copy and paste your OpenAI API Key
-openai_api_key = "<Your OpenAI API>"
-# Put your name
-key_owner = "<Name>"
-
-maze_assets_loc = "../../environment/frontend_server/static_dirs/assets"
-env_matrix = f"{maze_assets_loc}/the_ville/matrix"
-env_visuals = f"{maze_assets_loc}/the_ville/visuals"
-
-fs_storage = "../../environment/frontend_server/storage"
-fs_temp_storage = "../../environment/frontend_server/temp_storage"
-
-collision_block_id = "32125"
-
-# Verbose 
-debug = True
+OPENAI_API_KEY=sk-...your-key-here...
 ```
-Replace `<Your OpenAI API>` with your OpenAI API key, and `<name>` with your name.
- 
-### Step 2. Install requirements.txt
-Install everything listed in the `requirements.txt` file (I strongly recommend first setting up a virtualenv as usual). A note on Python version: we tested our environment on Python 3.9.12. 
+
+`reverie/backend_server/reverie_config.py` loads this file via `python-dotenv` at import time, exposing `openai_api_key`, the asset paths, and the `debug` flag to the rest of the backend. You no longer need to create a hand-rolled `utils.py`.
 
 ## <img src="https://joonsungpark.s3.amazonaws.com:443/static/assets/characters/profile/Klaus_Mueller.png" alt="Generative Klaus">   Running a Simulation 
 To run a new simulation, you will need to concurrently start two servers: the environment server and the agent simulation server.
