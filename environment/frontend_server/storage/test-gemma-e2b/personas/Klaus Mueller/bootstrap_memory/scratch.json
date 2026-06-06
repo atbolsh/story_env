@@ -1,0 +1,259 @@
+{
+  "vision_r": 8,
+  "att_bandwidth": 8,
+  "retention": 8,
+  "curr_time": "February 13, 2023, 00:16:30",
+  "curr_tile": [
+    123,
+    45
+  ],
+  "daily_plan_req": "Klaus Mueller goes to the library at Oak Hill College early in the morning, spends his days writing, and eats at Hobbs Cafe.",
+  "name": "Klaus Mueller",
+  "first_name": "Klaus",
+  "last_name": "Mueller",
+  "age": 20,
+  "innate": "kind, inquisitive, passionate",
+  "learned": "Klaus Mueller is a student at Oak Hill College studying sociology. He is passionate about social justice and loves to explore different perspectives.",
+  "currently": "Klaus Mueller is writing a research paper on the effects of gentrification in low-income communities.",
+  "lifestyle": "Klaus Mueller goes to bed around 11pm, awakes up around 7am, eats dinner around 5pm.",
+  "living_area": "the Ville:Dorm for Oak Hill College:Klaus Mueller's room",
+  "concept_forget": 100,
+  "daily_reflection_time": 180,
+  "daily_reflection_size": 5,
+  "overlap_reflect_th": 4,
+  "kw_strg_event_reflect_th": 10,
+  "kw_strg_thought_reflect_th": 9,
+  "recency_w": 1,
+  "relevance_w": 1,
+  "importance_w": 1,
+  "recency_decay": 0.99,
+  "importance_trigger_max": 150,
+  "importance_trigger_curr": 42,
+  "importance_ele_n": 54,
+  "thought_count": 5,
+  "daily_req": [
+    "wake up and complete the morning routine at 7:00 am",
+    "wake up and complete the morning routine at 6:00 am",
+    "eat breakfast at 7:00 am",
+    "read a book from 8:00 am to 12:00 pm",
+    "have lunch at 12:00 pm",
+    "take a nap from 1:00 pm to 4:00 pm",
+    "relax and watch TV from 7:00 pm to 8:00 pm",
+    "go to bed at 11:00 pm"
+  ],
+  "f_daily_schedule": [
+    [
+      "sleeping",
+      420
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (1) Klaus is waking up)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (completing his morning routine)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (getting ready for the day)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (preparing for the day)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (finishing his morning routine)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (preparing to leave for the library)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (packing his bag)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (leaving for the library)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (traveling to Oak Hill College)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (arriving at the library)",
+      5
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine (settling in at the library)",
+      10
+    ],
+    [
+      "[Monday February 13 -- 00:00 AM] Activity: Klaus is sleeping",
+      60
+    ],
+    [
+      "[Monday February 13 -- 09:00 AM] Activity: Go to the library at Oak Hill College",
+      60
+    ],
+    [
+      "[(ID:BegDDZ) Monday February 13 -- 10:00 AM] Activity: Write on research paper at the library",
+      60
+    ],
+    [
+      "[Monday February 13 -- 11:00 AM] Activity: Continue writing research paper at the library",
+      60
+    ],
+    [
+      "[(ID:E6ckRs) Monday February 13 -- 12:00 PM] Activity: Have lunch at Hobbs Cafe",
+      60
+    ],
+    [
+      "[(ID:WaCV9a) Monday February 13 -- 01:00 PM] Activity: Take a nap",
+      60
+    ],
+    [
+      "[(ID:6EQOi8) Monday February 13 -- 02:00 PM] Activity: Take a nap",
+      60
+    ],
+    [
+      "[(ID:9mZeml) Monday February 13 -- 03:00 PM] Activity: Take a nap",
+      60
+    ],
+    [
+      "[(ID:grV1Dx) Monday February 13 -- 04:00 PM] Activity: Finish writing research paper",
+      60
+    ],
+    [
+      "[(ID:LudJvc) Monday February 13 -- 05:00 PM] Activity: Eat dinner at Hobbs Cafe",
+      60
+    ],
+    [
+      "[(ID:Vn9EaE) Monday February 13 -- 06:00 PM] Activity: Relax and watch TV",
+      60
+    ],
+    [
+      "[(ID:0wtwS4) Monday February 13 -- 07:00 PM] Activity: Relax and watch TV",
+      60
+    ],
+    [
+      "[Monday February 13 -- 08:00 PM] Activity: Prepare for bed",
+      60
+    ],
+    [
+      "[(ID:IuE0Ms) Monday February 13 -- 09:00 PM] Activity: Prepare for bed",
+      60
+    ],
+    [
+      "[Monday February 13 -- 10:00 PM] Activity: Prepare for bed",
+      60
+    ],
+    [
+      "[Monday February 13 -- 11:00 PM] Activity: Go to bed",
+      60
+    ],
+    [
+      "sleeping",
+      0
+    ]
+  ],
+  "f_daily_schedule_hourly_org": [
+    [
+      "sleeping",
+      420
+    ],
+    [
+      "[(ID:oAQ0s9) Monday February 13 -- 07:00 AM] Activity: Wake up and complete morning routine",
+      60
+    ],
+    [
+      "[Monday February 13 -- 00:00 AM] Activity: Klaus is sleeping",
+      60
+    ],
+    [
+      "[Monday February 13 -- 09:00 AM] Activity: Go to the library at Oak Hill College",
+      60
+    ],
+    [
+      "[(ID:BegDDZ) Monday February 13 -- 10:00 AM] Activity: Write on research paper at the library",
+      60
+    ],
+    [
+      "[Monday February 13 -- 11:00 AM] Activity: Continue writing research paper at the library",
+      60
+    ],
+    [
+      "[(ID:E6ckRs) Monday February 13 -- 12:00 PM] Activity: Have lunch at Hobbs Cafe",
+      60
+    ],
+    [
+      "[(ID:WaCV9a) Monday February 13 -- 01:00 PM] Activity: Take a nap",
+      60
+    ],
+    [
+      "[(ID:6EQOi8) Monday February 13 -- 02:00 PM] Activity: Take a nap",
+      60
+    ],
+    [
+      "[(ID:9mZeml) Monday February 13 -- 03:00 PM] Activity: Take a nap",
+      60
+    ],
+    [
+      "[(ID:grV1Dx) Monday February 13 -- 04:00 PM] Activity: Finish writing research paper",
+      60
+    ],
+    [
+      "[(ID:LudJvc) Monday February 13 -- 05:00 PM] Activity: Eat dinner at Hobbs Cafe",
+      60
+    ],
+    [
+      "[(ID:Vn9EaE) Monday February 13 -- 06:00 PM] Activity: Relax and watch TV",
+      60
+    ],
+    [
+      "[(ID:0wtwS4) Monday February 13 -- 07:00 PM] Activity: Relax and watch TV",
+      60
+    ],
+    [
+      "[Monday February 13 -- 08:00 PM] Activity: Prepare for bed",
+      60
+    ],
+    [
+      "[(ID:IuE0Ms) Monday February 13 -- 09:00 PM] Activity: Prepare for bed",
+      60
+    ],
+    [
+      "[Monday February 13 -- 10:00 PM] Activity: Prepare for bed",
+      60
+    ],
+    [
+      "[Monday February 13 -- 11:00 PM] Activity: Go to bed",
+      60
+    ]
+  ],
+  "act_address": "the Ville:Dorm for Oak Hill College:kitchen:refrigerator",
+  "act_start_time": "February 13, 2023, 00:00:00",
+  "act_duration": 420,
+  "act_description": "sleeping",
+  "act_pronunciatio": "\ud83d\ude34",
+  "act_event": [
+    "Klaus Mueller",
+    "Klaus Mueller",
+    "is"
+  ],
+  "act_obj_description": "refrigerator is being used by Klaus Mueller",
+  "act_obj_pronunciatio": "\ud83e\uddca\ud83e\uddd1",
+  "act_obj_event": [
+    "refrigerator",
+    "used by",
+    "Klaus Mueller"
+  ],
+  "chatting_with": null,
+  "chat": null,
+  "chatting_with_buffer": {},
+  "chatting_end_time": null,
+  "act_path_set": true,
+  "planned_path": []
+}
