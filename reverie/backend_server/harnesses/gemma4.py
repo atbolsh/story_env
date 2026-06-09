@@ -66,6 +66,55 @@ def _apply_stop_sequences(text: str, stop) -> str:
   return text if earliest == -1 else text[:earliest]
 
 
+def _split_completion_prompt(prompt: str) -> tuple:
+  """Detect legacy text-completion-style prompts and split off the trailing
+  partial line for assistant pre-fill.
+
+  Background: prompts in ``persona/prompt_template/v*/`` were authored for the
+  ``text-davinci-003`` *completion* API and often end mid-sentence so the model
+  literally continues the text, e.g.::
+
+      ...(total duration in minutes 60):
+      1) Isabella is
+
+  Routing that through Gemma 4's chat template wraps it in a fresh user turn,
+  and Gemma 4 then produces an interpretive *response* instead of strictly
+  continuing the line -- a response that may drop the few-shot format. We saw
+  this in practice on ``task_decomp_v3``: Gemma 4 emitted ``(06:00-06:05)``
+  time ranges where the few-shot example clearly showed
+  ``(duration in minutes: 5, minutes left: 55)``, which then crashed the
+  downstream cleaner.
+
+  The fix is to keep the bulk of the prompt as the user message but pre-fill
+  the trailing partial line as the assistant's reply, then ask the chat
+  template to *continue* that final message (transformers'
+  ``continue_final_message=True``). Gemma 4 then sees the partial line as its
+  own prior output and is far more likely to keep the legacy format.
+
+  Heuristic: a prompt is "completion-style" iff its last non-empty line, after
+  stripping whitespace, does *not* end in ``.``, ``!``, or ``?``. That catches
+  the partial-list-item endings (``"1) Isabella is"``, ``"Action sequence: ["``,
+  ``"... 1) wake up..., 2)"``) without grabbing fully-formed chat prompts
+  (which all of the safe_chat_response_json paths are, via _safe_json's
+  wrapper).
+
+  Returns ``(user_content, assistant_pre_fill)``. If the prompt doesn't look
+  completion-style, returns ``(prompt, "")``.
+  """
+  rstripped = prompt.rstrip()
+  if not rstripped:
+    return prompt, ""
+  last_nl = rstripped.rfind("\n")
+  if last_nl == -1:
+    return prompt, ""
+  last_line = rstripped[last_nl + 1:].strip()
+  if not last_line:
+    return prompt, ""
+  if last_line[-1] in ".!?":
+    return prompt, ""
+  return rstripped[:last_nl], last_line
+
+
 def _extract_first_json_object(s: str) -> Optional[str]:
   """Find the first balanced ``{...}`` substring in ``s``, ignoring braces
   inside string literals. Returns ``None`` if not found.
@@ -160,14 +209,25 @@ class _Gemma4Harness:
                 top_p: float = _DEFAULT_TOP_P,
                 top_k: int = _DEFAULT_TOP_K,
                 stop=None) -> str:
-    """Core chat-template generation. Returns the assistant text."""
+    """Core chat-template generation. Returns the assistant text.
+
+    If the final message in ``messages`` has role=``assistant``, we treat that
+    as a pre-fill and ask the chat template to continue it rather than open a
+    new model turn (``continue_final_message=True`` /
+    ``add_generation_prompt=False``). The returned text is just the model's
+    *continuation*, not the pre-fill (that mirrors the legacy completion
+    contract, where the caller already has the prompt text and only wants the
+    new tokens).
+    """
     self._ensure_model()
     import torch
 
+    last_is_assistant = bool(messages) and messages[-1].get("role") == "assistant"
     text = self._processor.apply_chat_template(
       messages,
       tokenize=False,
-      add_generation_prompt=True,
+      add_generation_prompt=not last_is_assistant,
+      continue_final_message=last_is_assistant,
       enable_thinking=False,
     )
     inputs = self._processor(text=text, return_tensors="pt").to(self._device)
@@ -350,7 +410,17 @@ class _Gemma4Harness:
 
   # Legacy completion-style request + safe loop
   def llm_request(self, prompt: str, gpt_parameter: dict) -> str:
-    """Mimics the legacy completion-style ``GPT_request`` contract."""
+    """Mimics the legacy completion-style ``GPT_request`` contract.
+
+    Legacy prompts were authored for ``text-davinci-003`` (pure completion),
+    so many of them end mid-sentence -- e.g. ``"1) Isabella is"`` -- expecting
+    the model to literally continue the text. When fed straight into Gemma 4's
+    chat template, the model sees a fresh user turn instead and produces an
+    interpretive reply that often drops the few-shot format. We split such
+    prompts via ``_split_completion_prompt`` so the trailing partial line
+    becomes an assistant pre-fill; ``_generate`` then asks the chat template
+    to continue that message.
+    """
     try:
       # The legacy code treats temperature=0 as deterministic. With Gemma 4
       # we approximate that by disabling sampling.
@@ -358,13 +428,16 @@ class _Gemma4Harness:
       top_p = float(gpt_parameter.get("top_p", _DEFAULT_TOP_P))
       max_new_tokens = int(gpt_parameter.get("max_tokens", _DEFAULT_MAX_NEW_TOKENS))
       stop = gpt_parameter.get("stop", None)
-      # The legacy prompts were authored for text-davinci style continuation,
-      # not chat. A neutral system prompt keeps things grounded.
+
+      user_content, pre_fill = _split_completion_prompt(prompt)
       messages = [
         {"role": "system",
          "content": "Continue the user's text directly. Be concise and follow the prompt's format exactly."},
-        {"role": "user", "content": prompt},
+        {"role": "user", "content": user_content},
       ]
+      if pre_fill:
+        messages.append({"role": "assistant", "content": pre_fill})
+
       return self._generate(
         messages,
         max_new_tokens=max_new_tokens,

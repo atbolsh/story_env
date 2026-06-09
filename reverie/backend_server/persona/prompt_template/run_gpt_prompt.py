@@ -414,17 +414,26 @@ def run_gpt_prompt_task_decomp(persona,
     return cr
 
   def __func_validate(gpt_response, prompt=""): 
-    # TODO -- this sometimes generates error 
+    # The Stanford original `pass`-then-`return gpt_response` here meant that
+    # any non-empty model output was considered valid, even when __func_clean_up
+    # would crash on it (e.g. when the model emits "(06:00-06:05)" time ranges
+    # instead of the expected "(duration in minutes: N, ...)" format). With
+    # GPT-3.5-turbo the bad outputs were rare enough to ignore; with Gemma 4
+    # they're frequent. Restoring the canonical try/return-False pattern lets
+    # safe_generate_response retry and, if all retries fail, fall back to
+    # get_fail_safe() instead of crashing inside __func_clean_up.
     try: 
-      __func_clean_up(gpt_response)
+      __func_clean_up(gpt_response, prompt=prompt)
     except: 
-      pass
-      # return False
-    return gpt_response
+      return False
+    return True
 
   def get_fail_safe(): 
-    fs = ["asleep"]
-    return fs
+    # Downstream consumers iterate `for i_task, i_duration in output:` and then
+    # do `output[-1][1] += (duration - ftime_sum)`, so the fail-safe must be a
+    # non-empty list of [task, duration] pairs covering the full window.
+    # The original ["asleep"] would crash on the tuple-unpack in the loop.
+    return [[task, duration]]
 
   gpt_param = {"engine": "text-davinci-003", "max_tokens": 1000, 
              "temperature": 0, "top_p": 1, "stream": False,
