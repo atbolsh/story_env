@@ -19,13 +19,44 @@ import openai
 
 from reverie_config import openai_api_key
 
+from . import prompt_log
+
 openai.api_key = openai_api_key
 
 embedder_name = "openai/text-embedding-ada-002"
 
+# Label substituted into gpt_param["engine"] by run_gpt_prompt.py. Kept as the
+# historical completion-engine name so llm_request's legacy remap (see
+# _LEGACY_COMPLETION_ENGINE_TO_CHAT_MODEL) keeps resolving it to gpt-3.5-turbo.
+engine_label = "text-davinci-003"
+
 
 def _temp_sleep(seconds: float = 0.1) -> None:
   time.sleep(seconds)
+
+
+def _chat_call(model: str, messages: list, kind: str, **params) -> str:
+  """``openai.ChatCompletion.create`` plus exact prompt/response logging
+  (see ``prompt_log``). Raises on failure -- after logging the error record
+  -- so each caller keeps its historical try/except semantics."""
+  try:
+    completion = openai.ChatCompletion.create(
+      model=model, messages=messages, **params
+    )
+    out = completion["choices"][0]["message"]["content"]
+    prompt_log.log_call(
+      harness="legacy-gpt", model=model, kind=kind,
+      request={"messages": messages}, params=params or None,
+      response={"raw": out, "returned": out},
+    )
+    return out
+  except Exception as e:
+    prompt_log.log_call(
+      harness="legacy-gpt", model=model, kind=kind,
+      request={"messages": messages}, params=params or None,
+      error=f"{type(e).__name__}: {e}",
+    )
+    raise
 
 
 # ---------------------------------------------------------------------------
@@ -36,22 +67,18 @@ def chat_single_request(prompt: str) -> str:
   """One-shot chat call. No try/except, with a small sleep. (Historically
   ``ChatGPT_single_request``.)"""
   _temp_sleep()
-  completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[{"role": "user", "content": prompt}],
+  return _chat_call(
+    "gpt-3.5-turbo", [{"role": "user", "content": prompt}], "chat_single"
   )
-  return completion["choices"][0]["message"]["content"]
 
 
 def chat_request_strong(prompt: str) -> str:
   """One-shot chat call, stronger-tier model. (Historically ``GPT4_request``.)"""
   _temp_sleep()
   try:
-    completion = openai.ChatCompletion.create(
-      model="gpt-4",
-      messages=[{"role": "user", "content": prompt}],
+    return _chat_call(
+      "gpt-4", [{"role": "user", "content": prompt}], "chat_strong"
     )
-    return completion["choices"][0]["message"]["content"]
   except Exception:
     print("ChatGPT ERROR")
     return "ChatGPT ERROR"
@@ -60,11 +87,9 @@ def chat_request_strong(prompt: str) -> str:
 def chat_request(prompt: str) -> str:
   """One-shot chat call, default-tier model. (Historically ``ChatGPT_request``.)"""
   try:
-    completion = openai.ChatCompletion.create(
-      model="gpt-3.5-turbo",
-      messages=[{"role": "user", "content": prompt}],
+    return _chat_call(
+      "gpt-3.5-turbo", [{"role": "user", "content": prompt}], "chat"
     )
-    return completion["choices"][0]["message"]["content"]
   except Exception:
     print("ChatGPT ERROR")
     return "ChatGPT ERROR"
@@ -201,9 +226,10 @@ def llm_request(prompt: str, gpt_parameter: dict) -> str:
   engine = gpt_parameter["engine"]
   model = _LEGACY_COMPLETION_ENGINE_TO_CHAT_MODEL.get(engine, engine)
   try:
-    response = openai.ChatCompletion.create(
-      model=model,
-      messages=[{"role": "user", "content": prompt}],
+    return _chat_call(
+      model,
+      [{"role": "user", "content": prompt}],
+      "completion",
       temperature=gpt_parameter["temperature"],
       max_tokens=gpt_parameter["max_tokens"],
       top_p=gpt_parameter["top_p"],
@@ -212,7 +238,6 @@ def llm_request(prompt: str, gpt_parameter: dict) -> str:
       stream=gpt_parameter["stream"],
       stop=gpt_parameter["stop"],
     )
-    return response["choices"][0]["message"]["content"]
   except Exception as e:
     print(f"GPT_request error ({type(e).__name__}): {e}")
     return "TOKEN LIMIT EXCEEDED"

@@ -10,6 +10,7 @@ entry point here raises ``NotImplementedError`` with a clear message.
 from __future__ import annotations
 
 embedder_name = "openai/UNIMPLEMENTED"
+engine_label = "openai/UNIMPLEMENTED"
 
 _MSG = (
   "latest-gpt harness is scaffolded but not implemented yet; "

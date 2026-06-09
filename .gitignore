@@ -66,6 +66,10 @@ coverage.xml
 
 # Django stuff:
 *.log
+
+# Per-launch logs written by run_remote_servers.sh (console transcripts +
+# prompt-pair .jsonl files)
+logs/
 local_settings.py
 
 # Flask stuff:

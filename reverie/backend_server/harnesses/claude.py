@@ -14,6 +14,7 @@ When this lands, it should mirror the harness interface in ``base.py``:
 from __future__ import annotations
 
 embedder_name = "anthropic/UNIMPLEMENTED"
+engine_label = "anthropic/UNIMPLEMENTED"
 
 _MSG = (
   "claude harness is scaffolded but not implemented yet; "

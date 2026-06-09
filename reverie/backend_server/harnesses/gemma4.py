@@ -25,6 +25,8 @@ import time
 import traceback
 from typing import Any, Callable, Optional
 
+from . import prompt_log
+
 # Recommended sampling for Gemma 4 (per the model card):
 #   temperature=1.0, top_p=0.95, top_k=64.
 # For JSON-output paths we drop temperature/top_p to be much more conservative.
@@ -158,6 +160,9 @@ class _Gemma4Harness:
 
   def __init__(self, model_id: str):
     self.model_id = model_id
+    # Label substituted into gpt_param["engine"] by run_gpt_prompt.py (purely
+    # informational for this harness -- llm_request never reads "engine").
+    self.engine_label = model_id
     self.embedder_name = "BAAI/bge-small-en-v1.5"
     self._model = None
     self._processor = None
@@ -208,7 +213,8 @@ class _Gemma4Harness:
                 temperature: float = _DEFAULT_TEMPERATURE,
                 top_p: float = _DEFAULT_TOP_P,
                 top_k: int = _DEFAULT_TOP_K,
-                stop=None) -> str:
+                stop=None,
+                kind: str = "chat") -> str:
     """Core chat-template generation. Returns the assistant text.
 
     If the final message in ``messages`` has role=``assistant``, we treat that
@@ -218,48 +224,76 @@ class _Gemma4Harness:
     *continuation*, not the pre-fill (that mirrors the legacy completion
     contract, where the caller already has the prompt text and only wants the
     new tokens).
+
+    ``kind`` tags the call type in the prompt-pair log (see ``prompt_log``);
+    every call through here -- including each retry of the safe_* loops --
+    produces one log record when ``REVERIE_PROMPT_LOG`` is set.
     """
-    self._ensure_model()
-    import torch
-
-    last_is_assistant = bool(messages) and messages[-1].get("role") == "assistant"
-    text = self._processor.apply_chat_template(
-      messages,
-      tokenize=False,
-      add_generation_prompt=not last_is_assistant,
-      continue_final_message=last_is_assistant,
-      enable_thinking=False,
-    )
-    inputs = self._processor(text=text, return_tensors="pt").to(self._device)
-    input_len = inputs["input_ids"].shape[-1]
-
-    do_sample = temperature is not None and temperature > 0
-    gen_kwargs = dict(
-      max_new_tokens=max(1, int(max_new_tokens)),
-      do_sample=do_sample,
-    )
-    if do_sample:
-      gen_kwargs["temperature"] = float(temperature)
-      gen_kwargs["top_p"] = float(top_p)
-      gen_kwargs["top_k"] = int(top_k)
-
-    with torch.inference_mode():
-      outputs = self._model.generate(**inputs, **gen_kwargs)
-
-    response = self._processor.decode(
-      outputs[0][input_len:], skip_special_tokens=False
-    )
+    log_params = {
+      "max_new_tokens": max_new_tokens,
+      "temperature": temperature,
+      "top_p": top_p,
+      "top_k": top_k,
+      "stop": stop,
+    }
+    text = None
     try:
-      parsed = self._processor.parse_response(response)
-    except Exception:
-      parsed = response
+      self._ensure_model()
+      import torch
 
-    if isinstance(parsed, dict):
-      text_out = parsed.get("content") or parsed.get("text") or ""
-    else:
-      text_out = str(parsed)
+      last_is_assistant = bool(messages) and messages[-1].get("role") == "assistant"
+      text = self._processor.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=not last_is_assistant,
+        continue_final_message=last_is_assistant,
+        enable_thinking=False,
+      )
+      inputs = self._processor(text=text, return_tensors="pt").to(self._device)
+      input_len = inputs["input_ids"].shape[-1]
 
-    return _apply_stop_sequences(text_out, stop)
+      do_sample = temperature is not None and temperature > 0
+      gen_kwargs = dict(
+        max_new_tokens=max(1, int(max_new_tokens)),
+        do_sample=do_sample,
+      )
+      if do_sample:
+        gen_kwargs["temperature"] = float(temperature)
+        gen_kwargs["top_p"] = float(top_p)
+        gen_kwargs["top_k"] = int(top_k)
+
+      with torch.inference_mode():
+        outputs = self._model.generate(**inputs, **gen_kwargs)
+
+      response = self._processor.decode(
+        outputs[0][input_len:], skip_special_tokens=False
+      )
+      try:
+        parsed = self._processor.parse_response(response)
+      except Exception:
+        parsed = response
+
+      if isinstance(parsed, dict):
+        text_out = parsed.get("content") or parsed.get("text") or ""
+      else:
+        text_out = str(parsed)
+
+      returned = _apply_stop_sequences(text_out, stop)
+      prompt_log.log_call(
+        harness="gemma4", model=self.model_id, kind=kind,
+        request={"messages": messages, "rendered_prompt": text},
+        params=log_params,
+        response={"raw": text_out, "returned": returned},
+      )
+      return returned
+    except Exception as e:
+      prompt_log.log_call(
+        harness="gemma4", model=self.model_id, kind=kind,
+        request={"messages": messages, "rendered_prompt": text},
+        params=log_params,
+        error=f"{type(e).__name__}: {e}",
+      )
+      raise
 
   # ============================================================ public API
   # Bare requests
@@ -270,6 +304,7 @@ class _Gemma4Harness:
         {"role": "user", "content": prompt},
       ],
       max_new_tokens=_DEFAULT_MAX_NEW_TOKENS,
+      kind="chat_single",
     )
 
   def chat_request(self, prompt: str) -> str:
@@ -280,6 +315,7 @@ class _Gemma4Harness:
           {"role": "user", "content": prompt},
         ],
         max_new_tokens=_DEFAULT_MAX_NEW_TOKENS,
+        kind="chat",
       )
     except Exception:
       traceback.print_exc()
@@ -296,6 +332,7 @@ class _Gemma4Harness:
           {"role": "user", "content": prompt},
         ],
         max_new_tokens=512,
+        kind="chat_strong",
       )
     except Exception:
       traceback.print_exc()
@@ -340,6 +377,7 @@ class _Gemma4Harness:
           temperature=_JSON_TEMPERATURE,
           top_p=_JSON_TOP_P,
           top_k=_JSON_TOP_K,
+          kind="chat_json",
         ).strip()
 
         obj_str = _extract_first_json_object(raw)
@@ -445,6 +483,7 @@ class _Gemma4Harness:
         top_p=top_p,
         top_k=_DEFAULT_TOP_K,
         stop=stop,
+        kind="completion",
       )
     except Exception as e:
       print(f"[gemma4] llm_request error ({type(e).__name__}): {e}")

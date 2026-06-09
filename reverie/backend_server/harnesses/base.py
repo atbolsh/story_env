@@ -14,6 +14,13 @@ Required attributes:
     Persisted into a simulation save's ``meta.json`` so we can detect
     cross-embedder fork attempts.
 
+  engine_label : str
+    Value that ``run_gpt_prompt.py`` substitutes into the legacy
+    ``gpt_param["engine"]`` field (via ``gpt_structure.active_engine()``).
+    Shows up in the prompt debug printouts. Only the legacy-gpt harness
+    actually reads ``params["engine"]`` back in ``llm_request``; all other
+    harnesses ignore it.
+
 Required functions:
 
   llm_request(prompt: str, params: dict) -> str
@@ -56,4 +63,12 @@ Required functions:
   get_embedding(text: str, model: str | None = None) -> list[float]
     Embedding for retrieval. ``model`` is a hint that the legacy harness
     forwards to OpenAI; other harnesses may ignore it.
+
+Prompt-pair logging:
+
+  Harness implementations should record every model call (including each
+  retry inside the safe_* loops, and failed calls) through
+  ``prompt_log.log_call``, so that setting ``REVERIE_PROMPT_LOG`` to a file
+  path yields a complete JSONL record of exact model inputs/outputs for a
+  session. ``run_remote_servers.sh`` sets this by default.
 """

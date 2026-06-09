@@ -103,6 +103,14 @@ def get_embedding(text, model=None):
   return get_active().get_embedding(text, model=model)
 
 
+def active_engine():
+  """Engine label of the active harness, for the ``engine`` field of the
+  legacy ``gpt_param`` dicts (and the debug printouts that echo them). Only
+  the legacy-gpt harness actually consumes the value; local harnesses ignore
+  it, so this is primarily so logs reflect the model really being used."""
+  return get_active().engine_label
+
+
 # ---------------------------------------------------------------------------
 # Pure-text helper (no model, kept here so it works before any harness is
 # initialized).
