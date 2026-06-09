@@ -66,11 +66,12 @@ coverage.xml
 
 # Django stuff:
 *.log
+local_settings.py
 
 # Per-launch logs written by run_remote_servers.sh (console transcripts +
-# prompt-pair .jsonl files)
-logs/
-local_settings.py
+# prompt-pair .jsonl files) are intentionally trackable: un-ignore them from
+# the blanket *.log rule above so they can be committed when desired.
+!logs/*.log
 
 # Flask stuff:
 instance/
