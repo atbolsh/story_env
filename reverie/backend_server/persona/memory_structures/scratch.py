@@ -210,7 +210,9 @@ class Scratch:
                                               scratch_load["act_start_time"],
                                               "%B %d, %Y, %H:%M:%S")
       else: 
-        self.curr_time = None
+        # (Upstream bug fixed here: this branch used to null out curr_time
+        # instead of act_start_time.)
+        self.act_start_time = None
       self.act_duration = scratch_load["act_duration"]
       self.act_description = scratch_load["act_description"]
       self.act_pronunciatio = scratch_load["act_pronunciatio"]
@@ -248,7 +250,13 @@ class Scratch:
     scratch["att_bandwidth"] = self.att_bandwidth
     scratch["retention"] = self.retention
 
-    scratch["curr_time"] = self.curr_time.strftime("%B %d, %Y, %H:%M:%S")
+    # curr_time is None until the persona's first move() of the run; the
+    # loader handles None, so a save before any progress must too (e.g.
+    # "fin" right after forking, or after a run that crashed at step 0).
+    if self.curr_time: 
+      scratch["curr_time"] = self.curr_time.strftime("%B %d, %Y, %H:%M:%S")
+    else: 
+      scratch["curr_time"] = None
     scratch["curr_tile"] = self.curr_tile
     scratch["daily_plan_req"] = self.daily_plan_req
 
@@ -283,8 +291,13 @@ class Scratch:
     scratch["f_daily_schedule_hourly_org"] = self.f_daily_schedule_hourly_org
 
     scratch["act_address"] = self.act_address
-    scratch["act_start_time"] = (self.act_start_time
-                                     .strftime("%B %d, %Y, %H:%M:%S"))
+    # act_start_time is None until the persona's first action is assigned
+    # (the base sims ship that way); the loader above already handles None.
+    if self.act_start_time: 
+      scratch["act_start_time"] = (self.act_start_time
+                                       .strftime("%B %d, %Y, %H:%M:%S"))
+    else: 
+      scratch["act_start_time"] = None
     scratch["act_duration"] = self.act_duration
     scratch["act_description"] = self.act_description
     scratch["act_pronunciatio"] = self.act_pronunciatio
