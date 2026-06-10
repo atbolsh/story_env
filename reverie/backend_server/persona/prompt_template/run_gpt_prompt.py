@@ -36,6 +36,36 @@ def get_random_alphanumeric(i=6, j=6):
 # CHAPTER 1: Run GPT Prompt
 ##############################################################################
 
+def parse_wake_up_hour(gpt_response): 
+  """
+  Extract a wake-up hour (24h integer, 0-23) from a model response.
+
+  The legacy parser was int(response.split("am")[0]), which only accepted
+  the exact "<int>am" shape of the davinci-era completions. Chat models --
+  Gemma in particular -- phrase the same answer many ways: " 6am.", " 9:00",
+  "6:30 am", "07:00", "around 7 AM". Accept the first time-like token of any
+  of those shapes. Minutes are ignored (the downstream schedule is hourly);
+  a "pm" suffix is honored just in case, since hours are counted from
+  midnight when filling in "sleeping" blocks.
+
+  Raises ValueError when no plausible hour is present, which the safe_*
+  retry loop treats as a failed validation (same contract as before).
+  """
+  text = gpt_response.strip().lower()
+  match = re.search(r"(\d{1,2})(?::\d{2})?(?:\s*([ap])\.?\s?m\b)?", text)
+  if not match: 
+    raise ValueError(f"no hour found in {gpt_response!r}")
+  hour = int(match.group(1))
+  meridiem = match.group(2)
+  if meridiem == "p" and hour != 12: 
+    hour += 12
+  elif meridiem == "a" and hour == 12: 
+    hour = 0
+  if not 0 <= hour <= 23: 
+    raise ValueError(f"hour {hour} out of range in {gpt_response!r}")
+  return hour
+
+
 def run_gpt_prompt_wake_up_hour(persona, test_input=None, verbose=False): 
   """
   Given the persona, returns an integer that indicates the hour when the 
@@ -54,8 +84,7 @@ def run_gpt_prompt_wake_up_hour(persona, test_input=None, verbose=False):
     return prompt_input
 
   def __func_clean_up(gpt_response, prompt=""):
-    cr = int(gpt_response.strip().lower().split("am")[0])
-    return cr
+    return parse_wake_up_hour(gpt_response)
   
   def __func_validate(gpt_response, prompt=""): 
     try: __func_clean_up(gpt_response, prompt="")

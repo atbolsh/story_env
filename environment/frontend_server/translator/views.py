@@ -102,6 +102,15 @@ def UIST_Demo(request):
 
 
 def home(request):
+  """
+  Live observer view of the currently running simulation.
+
+  This view (and the JS loop it renders) is strictly read-only with respect
+  to the simulation: the backend steps the world forward on its own and
+  publishes its progress via temp_storage/curr_step.json and the per-step
+  movement files. Opening, closing, or refreshing this page never affects
+  the agents -- a refresh simply re-attaches at the latest published step.
+  """
   f_curr_sim_code = "temp_storage/curr_sim_code.json"
   f_curr_step = "temp_storage/curr_step.json"
 
@@ -116,8 +125,6 @@ def home(request):
   with open(f_curr_step) as json_file:  
     step = json.load(json_file)["step"]
 
-  os.remove(f_curr_step)
-
   persona_names = []
   persona_names_set = set()
   for i in find_filenames(f"storage/{sim_code}/personas", ""): 
@@ -126,13 +133,11 @@ def home(request):
       persona_names += [[x, x.replace(" ", "_")]]
       persona_names_set.add(x)
 
+  # Place the personas where they stand at the step we are attaching at.
+  # The backend guarantees environment/<step>.json exists for the step it
+  # publishes in curr_step.json.
   persona_init_pos = []
-  file_count = []
-  for i in find_filenames(f"storage/{sim_code}/environment", ".json"):
-    x = i.split("/")[-1].strip()
-    if x[0] != ".": 
-      file_count += [int(x.split(".")[0])]
-  curr_json = f'storage/{sim_code}/environment/{str(max(file_count))}.json'
+  curr_json = f'storage/{sim_code}/environment/{str(step)}.json'
   with open(curr_json) as json_file:  
     persona_init_pos_dict = json.load(json_file)
     for key, val in persona_init_pos_dict.items(): 
@@ -237,50 +242,26 @@ def path_tester(request):
   return render(request, template, context)
 
 
-def process_environment(request): 
-  """
-  <FRONTEND to BACKEND> 
-  This sends the frontend visual world information to the backend server. 
-  It does this by writing the current environment representation to 
-  "storage/environment.json" file. 
-
-  ARGS:
-    request: Django request
-  RETURNS: 
-    HttpResponse: string confirmation message. 
-  """
-  # f_curr_sim_code = "temp_storage/curr_sim_code.json"
-  # with open(f_curr_sim_code) as json_file:  
-  #   sim_code = json.load(json_file)["sim_code"]
-
-  data = json.loads(request.body)
-  step = data["step"]
-  sim_code = data["sim_code"]
-  environment = data["environment"]
-
-  with open(f"storage/{sim_code}/environment/{step}.json", "w") as outfile:
-    outfile.write(json.dumps(environment, indent=2))
-
-  return HttpResponse("received")
+# NOTE: There used to be a <FRONTEND to BACKEND> "process_environment"
+# endpoint here, through which the browser wrote storage/.../environment/
+# files to acknowledge each step. The backend now acknowledges its own steps
+# (see reverie.py start_server), so the browser has no write path into the
+# simulation: the observer endpoints below are strictly read-only.
 
 
 def update_environment(request): 
   """
-  <BACKEND to FRONTEND> 
-  This sends the backend computation of the persona behavior to the frontend
-  visual server. 
-  It does this by reading the new movement information from 
-  "storage/movement.json" file.
+  <BACKEND to FRONTEND, read-only> 
+  Serves the backend's computed persona behavior for one step to the browser
+  observer, read from "storage/<sim_code>/movement/<step>.json". If that
+  step has not been simulated yet, returns {"<step>": -1} and the observer
+  simply polls again later.
 
   ARGS:
     request: Django request
   RETURNS: 
     HttpResponse
   """
-  # f_curr_sim_code = "temp_storage/curr_sim_code.json"
-  # with open(f_curr_sim_code) as json_file:  
-  #   sim_code = json.load(json_file)["sim_code"]
-
   data = json.loads(request.body)
   step = data["step"]
   sim_code = data["sim_code"]

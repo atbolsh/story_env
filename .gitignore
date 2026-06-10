@@ -71,7 +71,10 @@ local_settings.py
 # Per-launch logs written by run_remote_servers.sh (console transcripts +
 # prompt-pair .jsonl files) are intentionally trackable: un-ignore them from
 # the blanket *.log rule above so they can be committed when desired.
-!logs/*.log
+# "**" so the un-ignore also covers archived runs moved into subdirectories
+# (e.g. logs/retest-e2b/backend_console_*.log) -- a bare "logs/*.log" only
+# matched files sitting directly in logs/.
+!logs/**/*.log
 
 # Flask stuff:
 instance/

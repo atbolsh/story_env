@@ -35,8 +35,16 @@
 #                                               including every retry (written
 #                                               by the harness layer; enabled
 #                                               via REVERIE_PROMPT_LOG)
+#   logs/backend_prompt_pairs_<timestamp>.txt   the same records, pretty-printed
+#                                               for humans (banner-delimited
+#                                               blocks; read this one in vim)
 # Console transcripts are captured with `tmux pipe-pane`, so they survive
 # scrollback loss and ssh disconnects.
+#
+# Note: the backend steps the simulation on its own; the browser view at
+# http://localhost:8000/simulator_home is a read-only observer. "run N" makes
+# progress whether or not a browser tab is open or focused, and refreshing
+# the page just re-attaches at the live step.
 
 set -euo pipefail
 

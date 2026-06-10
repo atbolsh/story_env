@@ -48,13 +48,14 @@ The prompt will then ask, "Enter the name of the new simulation: ". Type any nam
 Keep the simulator server running. At this stage, it will display the following prompt: "Enter option: "
 
 ### Step 3. Running and Saving the Simulation
-On your browser, navigate to [http://localhost:8000/simulator_home](http://localhost:8000/simulator_home). You should see the map of Smallville, along with a list of active agents on the map. You can move around the map using your keyboard arrows. Please keep this tab open. To run the simulation, type the following command in your simulation server in response to the prompt, "Enter option":
+To run the simulation, type the following command in your simulation server in response to the prompt, "Enter option":
 
     run <step-count>
 Note that you will want to replace `<step-count>` above with an integer indicating the number of game steps you want to simulate. For instance, if you want to simulate 100 game steps, you should input `run 100`. One game step represents 10 seconds in the game.
 
+To watch the simulation, navigate to [http://localhost:8000/simulator_home](http://localhost:8000/simulator_home) in your browser. You should see the map of Smallville, along with a list of active agents on the map. You can move around the map using your keyboard arrows. The browser is a *pure observer*: the simulation advances on its own whether or not the page is open, and you can close, refresh, or background the tab at any time -- it simply re-attaches at the live step. (This differs from the original release, where the backend would not advance unless a browser tab was open and focused.)
 
-Your simulation should be running, and you will see the agents moving on the map in your browser. Once the simulation finishes running, the "Enter option" prompt will re-appear. At this point, you can simulate more steps by re-entering the run command with your desired game steps, exit the simulation without saving by typing `exit`, or save and exit by typing `fin`.
+Once the simulation finishes running, the "Enter option" prompt will re-appear. At this point, you can simulate more steps by re-entering the run command with your desired game steps, exit the simulation without saving by typing `exit`, or save and exit by typing `fin`.
 
 The saved simulation can be accessed the next time you run the simulation server by providing the name of your simulation as the forked simulation. This will allow you to restart your simulation from the point where you left off.
 

@@ -99,8 +99,6 @@
 	let pre_anims_direction;
 	let pre_anims_direction_dict = {};
 
-	let curr_maze = "the_ville";
-
 	// <tile_width> is the width of one individual tile (tiles are square)
 	let tile_width = 32;
 	// Important: tile_width % movement_speed has to be 0. 
@@ -112,8 +110,12 @@
 	let timer_max = 0;
 	let timer = timer_max;
 
-	// <phase> -- there are three phases: "process," "update," and "execute."
-	let phase = "update"; // or "update" or "execute"
+	// <phase> -- there are two phases: "update" and "execute". This page is a
+	// pure *observer* of the simulation: the backend steps the world on its
+	// own and we only poll for the movement it has published ("update"), then
+	// animate it ("execute"). We never send anything back, so opening,
+	// closing, or refreshing this page has no effect on the agents.
+	let phase = "update"; // or "execute"
 
 	// Variables for storing movements that are sent from the backend server.
 	let execute_movement;
@@ -367,41 +369,18 @@
 
 	  // console.log("phase: " + phase + ", step: " + step);
 	  // *** MOVE PERSONAS ***
-	  // Moving personas take place in three distinct phases: "process," "update,"
-	  // and "execute." These phases are determined by the value of <phase>. 
-	  // Only one of the three phases is incurred in each update cycle. 
-	  if (phase == "process") {
-	    // "process" takes all current locations of the personas and send them to
-	    // the frontend server in a json form. Here, we first create the json 
-	    // file that records all persona locations: 
-	    let data = {"step": step, 
-	    						"sim_code": sim_code,
-	                "environment": {}}
-	    for (let i=0; i<Object.keys(personas).length; i++) {
-	      let persona_name = Object.keys(personas)[i];
-	      data["environment"][persona_name] = {"maze": curr_maze,
-	                                           "x": Math.ceil((personas[persona_name].body.position.x) / tile_width),
-	                                           "y": Math.ceil((personas[persona_name].body.position.y) / tile_width)}
-	    }
-	    var json = JSON.stringify(data);
-	    // We then send this to the frontend server: 
-	    var retrieve_xobj = new XMLHttpRequest();
-	    retrieve_xobj.overrideMimeType("application/json");
-	    retrieve_xobj.open('POST', "{% url 'process_environment' %}", true);
-	    retrieve_xobj.send(json);   
-	    // Finally, we update the phase variable to start the "udpate" process. 
-	    // Now that we sent all persona locations to the backend server, we need
-	    // to wait until the backend determines what the personas will do next. 
-	    phase = "update";
-	  } 
-
-	  else if (phase == "update") { 
-	    // Update is where we * wait * for the backend server to finish 
-	    // computing about what the personas will do next given their current 
-	    // situation. 
-	    // We do this by continuously asking the backend server if it is ready. 
-	    // The backend server is ready when it returns a json that has a key-val
-	    // pair with "<move>": true.
+	  // Moving personas take place in two phases, determined by <phase>:
+	  // "update" polls the server for the movement file of our current step;
+	  // "execute" animates it. Only one phase is incurred per update cycle.
+	  // (There used to be a third "process" phase here that POSTed persona
+	  // positions back to the server -- the backend needed the browser to
+	  // acknowledge each step before it would simulate the next one. The
+	  // backend now steps on its own, so this page just watches.)
+	  if (phase == "update") { 
+	    // Update is where we * wait * for the backend server to publish the
+	    // movement file for the step we want to show next. If we attached (or
+	    // refreshed) mid-run and are behind the live simulation, the files
+	    // already exist and we catch up as fast as the animation allows.
 	    // Note that we do not want to overburden the backend too much by 
 	    // over-querying; so, we have a timer set so we only query it once every
 	    // timer_max cycles. 
@@ -503,16 +482,15 @@
 
 	      } 
 	      else {
-	        // Once we are done moving the personas, we move on to the "process"
-	        // stage where we will send the current locations of all personas at the
-	        // end of the movemments to the frontend server, and then the backend.
+	        // Once we are done moving the personas, we snap them onto their
+	        // target tiles and go back to polling for the next step's movement.
 	        for (let i=0; i<Object.keys(personas).length; i++) {
 	          let curr_persona_name = Object.keys(personas)[i]
 	          let curr_persona = personas[curr_persona_name];
 	          curr_persona.body.x = movement_target[curr_persona_name][0];
 	          curr_persona.body.y = movement_target[curr_persona_name][1];
 	        }
-	        phase = "process";
+	        phase = "update";
 	        execute_count = execute_count_max + 1;
 	        step = step + 1;
 	      }

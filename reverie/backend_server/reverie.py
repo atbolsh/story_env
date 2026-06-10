@@ -171,17 +171,25 @@ class ReverieServer:
     # curr_sim_code.json contains the current simulation code, and
     # curr_step.json contains the current step of the simulation. These are 
     # used to communicate the code and step information to the frontend. 
-    # Note that step file is removed as soon as the frontend opens up the 
-    # simulation. 
+    # curr_step.json is refreshed by start_server after every step, so a
+    # browser that opens (or refreshes) at any point attaches at the live
+    # step. The frontend only ever reads these files.
     curr_sim_code = dict()
     curr_sim_code["sim_code"] = self.sim_code
     with open(f"{fs_temp_storage}/curr_sim_code.json", "w") as outfile: 
       outfile.write(json.dumps(curr_sim_code, indent=2))
     
-    curr_step = dict()
-    curr_step["step"] = self.step
+    self.signal_curr_step()
+
+
+  def signal_curr_step(self): 
+    """
+    Publish the current step number to temp_storage/curr_step.json so the
+    frontend observer can find out where the live simulation is. Purely
+    informational for the frontend; the backend never reads it back.
+    """
     with open(f"{fs_temp_storage}/curr_step.json", "w") as outfile: 
-      outfile.write(json.dumps(curr_step, indent=2))
+      outfile.write(json.dumps({"step": self.step}, indent=2))
 
 
   def save(self): 
@@ -313,10 +321,20 @@ class ReverieServer:
   def start_server(self, int_counter): 
     """
     The main backend server of Reverie. 
-    This function retrieves the environment file from the frontend to 
-    understand the state of the world, calls on each personas to make 
-    decisions based on the world state, and saves their moves at certain step
-    intervals. 
+    This function steps the simulation forward on its own: it reads the
+    environment file for the current step, calls on each persona to make
+    decisions based on the world state, writes their moves to the movement
+    file, and then writes the next step's environment file itself.
+
+    Historical note: the environment file used to be written by the frontend
+    browser (the Phaser game loop POSTed persona positions back after
+    animating each step), which meant the simulation only advanced while a
+    browser tab was open and focused. But the positions the frontend echoed
+    back were exactly the movement targets the backend had computed one step
+    earlier, so the round trip carried no information. The backend now
+    closes that loop itself, and the browser is a pure observer: it can be
+    opened, closed, or refreshed at any time without the agents ever
+    noticing.
     INPUT
       int_counter: Integer value for the number of steps left for us to take
                    in this iteration. 
@@ -342,11 +360,12 @@ class ReverieServer:
       if int_counter == 0: 
         break
 
-      # <curr_env_file> file is the file that our frontend outputs. When the
-      # frontend has done its job and moved the personas, then it will put a 
-      # new environment file that matches our step count. That's when we run 
-      # the content of this for loop. Otherwise, we just wait. 
+      # <curr_env_file> records where every persona stands at the current
+      # step. The backend wrote it at the end of the previous step (or, for
+      # step 0 / a fork, it ships with the simulation folder), so it is
+      # always already present -- there is no waiting on the frontend.
       curr_env_file = f"{sim_folder}/environment/{self.step}.json"
+      env_retrieved = False
       if check_if_file_exists(curr_env_file):
         # If we have an environment file, it means we have a new perception
         # input to our personas. So we first retrieve it.
@@ -435,13 +454,33 @@ class ReverieServer:
           with open(curr_move_file, "w") as outfile: 
             outfile.write(json.dumps(movements, indent=2))
 
+          # The world advances by acknowledging the moves ourselves: each
+          # persona lands exactly on the movement target we just computed,
+          # so we write the next step's environment file directly. (The
+          # frontend used to do this by animating the moves and POSTing the
+          # resulting positions back; see the docstring.)
+          next_env = dict()
+          for persona_name in self.personas: 
+            mv = movements["persona"][persona_name]["movement"]
+            next_env[persona_name] = {"maze": self.maze.maze_name, 
+                                      "x": mv[0], 
+                                      "y": mv[1]}
+          next_env_file = f"{sim_folder}/environment/{self.step + 1}.json"
+          with open(next_env_file, "w") as outfile: 
+            outfile.write(json.dumps(next_env, indent=2))
+
           # After this cycle, the world takes one step forward, and the 
           # current time moves by <sec_per_step> amount. 
           self.step += 1
           self.curr_time += datetime.timedelta(seconds=self.sec_per_step)
+          # Let any attached observer know where the live simulation is.
+          self.signal_curr_step()
 
           int_counter -= 1
+          continue
           
+      # We only reach here if the environment file for the current step is
+      # missing or unreadable (should not happen in normal operation).
       # Sleep so we don't burn our machines. 
       time.sleep(self.server_sleep)
 

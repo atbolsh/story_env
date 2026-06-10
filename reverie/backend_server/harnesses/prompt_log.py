@@ -1,5 +1,5 @@
 """
-Exact prompt/response pair logging (JSONL).
+Exact prompt/response pair logging (JSONL + human-readable transcript).
 
 When the ``REVERIE_PROMPT_LOG`` environment variable is set to a file path,
 every model call made by a harness appends one JSON object per line to that
@@ -7,6 +7,14 @@ file, capturing the *exact* request (post-wrapping, post-chat-template) and
 the raw response. This includes every retry inside the ``safe_*`` loops --
 which the ``print_run_prompts`` console blocks do not show -- so it is the
 authoritative record for post-session debugging.
+
+Because one-record-per-line JSONL is unreadable in an editor (a single
+record can be several hundred KB of escaped text on one line), each record
+is *also* appended in a pretty, multi-line form to a sibling transcript
+file: same path with the ``.jsonl`` suffix replaced by ``.txt``. The JSONL
+stays the machine-readable source of truth; the ``.txt`` is for humans
+(vim/less-friendly, one banner-delimited block per call, in the same order
+as the JSONL records).
 
 Record schema (fields are null/absent where not applicable):
 
@@ -41,15 +49,82 @@ from typing import Any, Optional
 
 _lock = threading.Lock()
 _warned = False
+_seq = 0
 
 
 def _log_path() -> str:
   return os.environ.get("REVERIE_PROMPT_LOG", "").strip()
 
 
+def _text_log_path(jsonl_path: str) -> str:
+  """Sibling human-readable transcript path for a given JSONL path."""
+  if jsonl_path.endswith(".jsonl"):
+    return jsonl_path[:-len(".jsonl")] + ".txt"
+  return jsonl_path + ".txt"
+
+
 def enabled() -> bool:
   """True iff prompt-pair logging is currently configured."""
   return bool(_log_path())
+
+
+_BANNER = "=" * 78
+_RULE_WIDTH = 78
+
+
+def _rule(label: str) -> str:
+  """A section divider like ``--- user ----------------``."""
+  head = f"--- {label} "
+  return head + "-" * max(0, _RULE_WIDTH - len(head))
+
+
+def _format_record_text(record: dict, seq: int) -> str:
+  """Render one log record as a vim/less-friendly multi-line block."""
+  lines = [
+    _BANNER,
+    f"call #{seq}  {record['ts']}  {record['harness']}  "
+    f"{record['model']}  [{record['kind']}]",
+  ]
+  if record.get("params") is not None:
+    lines.append("params: " + json.dumps(record["params"], ensure_ascii=False,
+                                         default=str))
+  lines.append("")
+
+  request = record.get("request")
+  messages = None
+  if isinstance(request, dict):
+    messages = request.get("messages")
+  if isinstance(messages, list):
+    for i, msg in enumerate(messages):
+      if not isinstance(msg, dict):
+        lines += [_rule("message"), str(msg)]
+        continue
+      role = str(msg.get("role", "?"))
+      # A trailing assistant message is a pre-fill the model continues, not
+      # a reply; label it so transcripts read unambiguously.
+      if role == "assistant" and i == len(messages) - 1:
+        role = "assistant (pre-fill)"
+      lines += [_rule(role), str(msg.get("content", ""))]
+  elif request is not None:
+    lines += [_rule("request"),
+              json.dumps(request, ensure_ascii=False, indent=2, default=str)]
+
+  response = record.get("response")
+  if isinstance(response, dict):
+    returned = response.get("returned")
+    raw = response.get("raw")
+    lines += [_rule("response"), str(returned)]
+    if raw != returned:
+      lines += [_rule("raw response (before stop-trim)"), str(raw)]
+  elif response is not None:
+    lines += [_rule("response"),
+              json.dumps(response, ensure_ascii=False, indent=2, default=str)]
+
+  if record.get("error") is not None:
+    lines += [_rule("ERROR"), str(record["error"])]
+
+  lines.append("")
+  return "\n".join(lines) + "\n"
 
 
 def log_call(*,
@@ -60,8 +135,9 @@ def log_call(*,
              params: Optional[dict] = None,
              response: Any = None,
              error: Optional[str] = None) -> None:
-  """Append one prompt/response record to the JSONL log, if enabled."""
-  global _warned
+  """Append one prompt/response record to the JSONL log (and its pretty
+  ``.txt`` sibling), if enabled."""
+  global _warned, _seq
   path = _log_path()
   if not path:
     return
@@ -79,11 +155,15 @@ def log_call(*,
       record["error"] = error
     line = json.dumps(record, ensure_ascii=False, default=str)
     with _lock:
+      _seq += 1
+      seq = _seq
       parent = os.path.dirname(path)
       if parent:
         os.makedirs(parent, exist_ok=True)
       with open(path, "a", encoding="utf-8") as f:
         f.write(line + "\n")
+      with open(_text_log_path(path), "a", encoding="utf-8") as f:
+        f.write(_format_record_text(record, seq))
   except Exception as e:
     if not _warned:
       _warned = True
