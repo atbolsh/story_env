@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        79,
+        19
+      ],
+      "pronunciatio": "\ud83d\udd12\u2615",
+      "description": "working at the counter at Hobbs Cafe (locking up non-essential areas and securing the cafe) @ the Ville:Hobbs Cafe:cafe:behind the cafe counter",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        119,
+        47
+      ],
+      "pronunciatio": "\ud83d\udde3\ufe0f\ud83e\udde0",
+      "description": "streaming games on Twitch (conversing about Maria Lopez and Klaus Mueller discussed the shared communication challenges of translating complex, dense subjects\u2014gentrification in sociology and quantum entanglement in physics\u2014into easily digestible concepts for different audiences, leading them to agree to exchange notes on framing techniques next week.) @ the Ville:Dorm for Oak Hill College:common room:common room table",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        125,
+        50
+      ],
+      "pronunciatio": "\ud83d\udde3\ufe0f\u269b",
+      "description": "reviewing his notes and preparing for bed (conversing about Maria Lopez and Klaus Mueller discussed the shared communication challenges of translating complex, dense subjects\u2014gentrification in sociology and quantum entanglement in physics\u2014into easily digestible concepts for different audiences, leading them to agree to exchange notes on framing techniques next week.) @ the Ville:Dorm for Oak Hill College:Klaus Mueller's room:desk",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 23:00:20"
+  }
+}

@@ -1,0 +1,4 @@
+midnight_test 2026-06-10_20-56-07: 8640 steps each on: gemma4-e2b gemma4-e4b legacy-gpt
+gemma4-e2b: TIMED OUT at step 8256, 10832s, sim midnight_gemma4-e2b_2026-06-10_20-56-07, logs /workspace/story_env/logs/midnight_gemma4-e2b_2026-06-10_20-56-07
+gemma4-e4b: COMPLETED, 10036s, sim midnight_gemma4-e4b_2026-06-10_20-56-07, logs /workspace/story_env/logs/midnight_gemma4-e4b_2026-06-10_20-56-07
+legacy-gpt: COMPLETED, 3433s, sim midnight_legacy-gpt_2026-06-10_20-56-07, logs /workspace/story_env/logs/midnight_legacy-gpt_2026-06-10_20-56-07

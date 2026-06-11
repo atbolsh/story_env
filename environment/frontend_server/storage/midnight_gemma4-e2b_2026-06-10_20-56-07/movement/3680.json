@@ -1,0 +1,124 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        69,
+        37
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about conversing about Isabella and Maria discussing their preparations for a Valentine's Day party, including food, decorations, and streaming plans. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hey Maria! What are you up to right now? Looks like you're watching a long stream!"
+        ],
+        [
+          "Maria Lopez",
+          "Hey Isabella! Just live streaming and gaming for a bit. What are you up to? That looks like you're busy preparing for the Valentine's Day party! What kind of special menu items are you making?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Oh, I'm whipping up some special treats! I'm thinking of making some delicious chocolate-dipped strawberries and maybe a special Valentine's day latte. What about you? Are you playing anything exciting?"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds amazing! Chocolate-dipped strawberries and a Valentine's day latte sound incredible. I'm currently playing [mention the game she is playing or a general exciting thing] right now. What's the hardest thing about preparing for the party?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "The hardest part is keeping track of all the ingredients and making sure everything is perfectly coordinated for the setup! It's a lot, but I'm really excited to make it special for everyone."
+        ],
+        [
+          "Maria Lopez",
+          "That sounds like a lot of coordination! It must be so rewarding when everything comes together perfectly. Are you working on anything else exciting for the party?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm also busy with the ambiance and getting all the decorations just right! I'm trying to make the cafe feel extra romantic and cozy for everyone. What are you hoping to get out of your stream today?"
+        ],
+        [
+          "Maria Lopez",
+          "I'm hoping to connect with more people in chat and maybe try out a new game setup! It's always fun to see what kind of energy the community brings. What's your favorite part about preparing for a big event like this?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "My favorite part is seeing everyone excited and happy when they come to the cafe! I can't wait for February 14th. What about you, are you planning anything fun for the weekend?"
+        ],
+        [
+          "Maria Lopez",
+          "I'm not sure about the weekend yet, just focusing on finishing up this stream! But this conversation is really cool, Isabella. It sounds like you have a super busy and fun time getting everything ready. Maybe we can chat more later if you have time between prepping and the rush?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds great, Maria! Definitely, let's chat more later when things calm down a bit. Good luck with the rest of your stream! Talk soon!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        68,
+        37
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about conversing about Isabella and Maria discussing their preparations for a Valentine's Day party, including food, decorations, and streaming plans. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hey Maria! What are you up to right now? Looks like you're watching a long stream!"
+        ],
+        [
+          "Maria Lopez",
+          "Hey Isabella! Just live streaming and gaming for a bit. What are you up to? That looks like you're busy preparing for the Valentine's Day party! What kind of special menu items are you making?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Oh, I'm whipping up some special treats! I'm thinking of making some delicious chocolate-dipped strawberries and maybe a special Valentine's day latte. What about you? Are you playing anything exciting?"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds amazing! Chocolate-dipped strawberries and a Valentine's day latte sound incredible. I'm currently playing [mention the game she is playing or a general exciting thing] right now. What's the hardest thing about preparing for the party?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "The hardest part is keeping track of all the ingredients and making sure everything is perfectly coordinated for the setup! It's a lot, but I'm really excited to make it special for everyone."
+        ],
+        [
+          "Maria Lopez",
+          "That sounds like a lot of coordination! It must be so rewarding when everything comes together perfectly. Are you working on anything else exciting for the party?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm also busy with the ambiance and getting all the decorations just right! I'm trying to make the cafe feel extra romantic and cozy for everyone. What are you hoping to get out of your stream today?"
+        ],
+        [
+          "Maria Lopez",
+          "I'm hoping to connect with more people in chat and maybe try out a new game setup! It's always fun to see what kind of energy the community brings. What's your favorite part about preparing for a big event like this?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "My favorite part is seeing everyone excited and happy when they come to the cafe! I can't wait for February 14th. What about you, are you planning anything fun for the weekend?"
+        ],
+        [
+          "Maria Lopez",
+          "I'm not sure about the weekend yet, just focusing on finishing up this stream! But this conversation is really cool, Isabella. It sounds like you have a super busy and fun time getting everything ready. Maybe we can chat more later if you have time between prepping and the rush?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds great, Maria! Definitely, let's chat more later when things calm down a bit. Good luck with the rest of your stream! Talk soon!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        123,
+        20
+      ],
+      "pronunciatio": "\ud83d\udcdd\ud83d\udca1",
+      "description": "writing on his research paper at the library (taking notes on key findings from his research) @ the Ville:Oak Hill College:library:bookshelf",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 10:13:20"
+  }
+}

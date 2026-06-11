@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        60,
+        25
+      ],
+      "pronunciatio": "\ud83d\udcac\ud83e\udd1d",
+      "description": "working at the counter, finalizing party materials and preparing for the evening (conversing about conversing about how intentional social design and the creation of warm communal experiences can build social capital that acts as a buffer against larger economic shifts, bridging the gap between economic data and human resonance between Isabella Rodriguez and Klaus Mueller.) @ the Ville:The Rose and Crown Pub:pub:microphone",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        81,
+        49
+      ],
+      "pronunciatio": "\ud83d\udcda\ud83d\udd2c",
+      "description": "studying physics at Hobbs Cafe (on the way to reviewing the day's physics material) @ the Ville:The Willows Market and Pharmacy:store:grocery store shelf",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        102,
+        30
+      ],
+      "pronunciatio": "\u270d\ufe0f\u2728",
+      "description": "writing on his research paper (on the way to refining the language and flow of his writing) @ the Ville:Oak Hill College:library:bookshelf",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 16:34:10"
+  }
+}

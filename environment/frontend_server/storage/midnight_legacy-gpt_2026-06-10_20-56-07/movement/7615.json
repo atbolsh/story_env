@@ -1,0 +1,140 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        60,
+        37
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Klaus Mueller are chatting about their research paper progress, planning a coffee chat meeting at Oak Hill Cafe, discussing ideas for the Valentine's Day party at Hobbs Cafe, and Klaus offering to bring his research notes on gentrification. @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hey Klaus, it's great to see you here at the library working on your research. How is the paper coming along?"
+        ],
+        [
+          "Klaus Mueller",
+          "Hey Isabella! Thank you for asking. The research paper is progressing well, just doing some final proofreading. How was your day at the cafe?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "My day at the cafe was good, thank you for asking. I'm excited about our coffee chat meeting tomorrow at Oak Hill Cafe. Are you still available at 2 pm?"
+        ],
+        [
+          "Klaus Mueller",
+          "Yes, I am still available at 2 pm tomorrow. Looking forward to our coffee chat meeting."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Great, I'll see you at Oak Hill Cafe tomorrow at 2 pm then. Looking forward to our chat!"
+        ],
+        [
+          "Klaus Mueller",
+          "By the way, I'll bring my research notes on gentrification to our coffee chat meeting tomorrow at Oak Hill Cafe."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds great, I'm really interested to hear more about your research on gentjsonification."
+        ],
+        [
+          "Klaus Mueller",
+          "Thank you, Isabella! I'll make sure to bring my research notes tomorrow. See you then!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Before I forget, I also wanted to discuss some ideas for the Valentine's Day party at Hobbs Cafe. Would you be interested in contributing any suggestions or help?"
+        ],
+        [
+          "Klaus Mueller",
+          "Of course, I'd love to help with the Valentine's Day party ideas. Let's discuss it further when we meet at Oak Hill Cafe tomorrow at 2 pm."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Great, I appreciate your willingness to help with the Valentine's Day party ideas. Let's definitely talk more about that tomorrow. See you at Oak Hill Cafe at 2 pm!"
+        ],
+        [
+          "Klaus Mueller",
+          "Thank you, Isabella! I'm also looking forward to discussing the Valentine's Day party ideas with you. See you tomorrow at Oak Hill Cafe at 2 pm!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Alright, Klaus! Have a good evening and see you tomorrow at 2 pm at Oak Hill Cafe."
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        114,
+        51
+      ],
+      "pronunciatio": "\ud83d\udecb\ufe0f",
+      "description": "streaming games on Twitch (taking a short break) @ the Ville:Dorm for Oak Hill College:common room:common room sofa",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        62,
+        36
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Klaus Mueller are chatting about their research paper progress, planning a coffee chat meeting at Oak Hill Cafe, discussing ideas for the Valentine's Day party at Hobbs Cafe, and Klaus offering to bring his research notes on gentrification. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hey Klaus, it's great to see you here at the library working on your research. How is the paper coming along?"
+        ],
+        [
+          "Klaus Mueller",
+          "Hey Isabella! Thank you for asking. The research paper is progressing well, just doing some final proofreading. How was your day at the cafe?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "My day at the cafe was good, thank you for asking. I'm excited about our coffee chat meeting tomorrow at Oak Hill Cafe. Are you still available at 2 pm?"
+        ],
+        [
+          "Klaus Mueller",
+          "Yes, I am still available at 2 pm tomorrow. Looking forward to our coffee chat meeting."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Great, I'll see you at Oak Hill Cafe tomorrow at 2 pm then. Looking forward to our chat!"
+        ],
+        [
+          "Klaus Mueller",
+          "By the way, I'll bring my research notes on gentrification to our coffee chat meeting tomorrow at Oak Hill Cafe."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds great, I'm really interested to hear more about your research on gentjsonification."
+        ],
+        [
+          "Klaus Mueller",
+          "Thank you, Isabella! I'll make sure to bring my research notes tomorrow. See you then!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Before I forget, I also wanted to discuss some ideas for the Valentine's Day party at Hobbs Cafe. Would you be interested in contributing any suggestions or help?"
+        ],
+        [
+          "Klaus Mueller",
+          "Of course, I'd love to help with the Valentine's Day party ideas. Let's discuss it further when we meet at Oak Hill Cafe tomorrow at 2 pm."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Great, I appreciate your willingness to help with the Valentine's Day party ideas. Let's definitely talk more about that tomorrow. See you at Oak Hill Cafe at 2 pm!"
+        ],
+        [
+          "Klaus Mueller",
+          "Thank you, Isabella! I'm also looking forward to discussing the Valentine's Day party ideas with you. See you tomorrow at Oak Hill Cafe at 2 pm!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Alright, Klaus! Have a good evening and see you tomorrow at 2 pm at Oak Hill Cafe."
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 21:09:10"
+  }
+}

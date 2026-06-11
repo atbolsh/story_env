@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        25
+      ],
+      "pronunciatio": "\u2615\ud83d\udcda",
+      "description": "working at the counter at Hobbs Cafe (conversing about Isabella Rodriguez and Klaus Mueller discussed Klaus's plans to leave early for the library to work on a research paper on gentrification, with Isabella offering him the cafe as a place to relax or get coffee later.) @ the Ville:Hobbs Cafe:cafe:cafe customer seating",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        97,
+        30
+      ],
+      "pronunciatio": "\ud83d\udcda\ud83e\uddd0",
+      "description": "studying physics at Hobbs Cafe (reviewing concepts from the previous week) @ the Ville:Oak Hill College:library:bookshelf",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        78,
+        21
+      ],
+      "pronunciatio": "\u2615\ud83d\udcda",
+      "description": "eating dinner at Hobbs Cafe (conversing about Isabella Rodriguez and Klaus Mueller discussed Klaus's plans to leave early for the library to work on a research paper on gentrification, with Isabella offering him the cafe as a place to relax or get coffee later.) @ the Ville:Hobbs Cafe:cafe:cafe customer seating",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 17:17:20"
+  }
+}

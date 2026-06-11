@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        74,
+        23
+      ],
+      "pronunciatio": "\ud83d\udc8c\ud83d\udc96",
+      "description": "working at the counter at Hobbs Cafe and finalizing Valentine's Day party arrangements (confirming RSVPs for the Valentine's Day party) @ the Ville:Hobbs Cafe:cafe:cafe customer seating",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        126,
+        54
+      ],
+      "pronunciatio": "\ud83c\udfae\ud83e\udde0",
+      "description": "streaming games on Twitch (playing the game and engaging with the gameplay) (streaming games on Twitch (playing the game and engaging with the gameplay)) (streaming games on Twitch (playing the game and engaging with the gameplay) (streaming games on Twitch (playing the game and engaging with the gameplay))) (streaming games on Twitch (playing the game and engaging with the gameplay) (streaming games on Twitch (playing the game and engaging with the gameplay)) (streaming games on Twitch (playing the game and engaging with the gameplay) (streaming games on Twitch (playing the game and engaging with the gameplay)))) (actively playing the game, focusing on strategy) @ the Ville:Dorm for Oak Hill College:Maria Lopez's room:computer",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        122,
+        24
+      ],
+      "pronunciatio": "\ud83d\udcdd\u27a1\ufe0f",
+      "description": "working on his research paper at a quiet spot on campus (outlining the next section of his paper) @ the Ville:Oak Hill College:library:library table",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 21:06:10"
+  }
+}

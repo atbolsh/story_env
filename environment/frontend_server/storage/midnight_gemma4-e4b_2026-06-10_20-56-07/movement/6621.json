@@ -1,0 +1,100 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        22
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez discussing the preparations for a cozy Valentine's Day party, with Maria planning to stop by for a pastry on the late afternoon of the 14th. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! How's the physics studying going? You look super focused!"
+        ],
+        [
+          "Maria Lopez",
+          "It's intense! Trying to wrap my head around quantum mechanics is a full-time job. But it's good to take a break and see you. Are you getting ready for the Valentine's Day party this weekend? I heard it's going to be fun!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's going to be lovely! I'm putting the finishing touches on the menu\u2014thinking lots of cozy things. I'm really excited for everyone to relax and enjoy themselves. Are you able to make it? Even just swinging by for a pastry beforehand would be wonderful!"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds so sweet! I'm definitely interested in stopping by for a pastry! I might even swing by early on the 14th before the main event. How's the planning coming along otherwise? Are you getting everything ready for the cozy vibe?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm trying to make it feel extra warm and welcoming! I've got some lovely seasonal decorations and some special treats planned. Don't worry about being late or early, just come when you can! When are you thinking of swinging by for a pastry?"
+        ],
+        [
+          "Maria Lopez",
+          "Maybe I could swing by around late afternoon on the 14th? I'm trying to schedule around my streaming commitments this week, but I'd love to pop in and see what you've got going on!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Late afternoon works perfectly for me! I'll make sure we have a lovely little spot set aside for you. Just let me know closer to the day if your schedule changes. \ud83d\ude0a"
+        ],
+        [
+          "Maria Lopez",
+          "Sounds great! Thanks so much, Isabella. I'll keep you updated closer to the date! Enjoy the rest of your shift!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        22
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez discussing the preparations for a cozy Valentine's Day party, with Maria planning to stop by for a pastry on the late afternoon of the 14th. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! How's the physics studying going? You look super focused!"
+        ],
+        [
+          "Maria Lopez",
+          "It's intense! Trying to wrap my head around quantum mechanics is a full-time job. But it's good to take a break and see you. Are you getting ready for the Valentine's Day party this weekend? I heard it's going to be fun!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's going to be lovely! I'm putting the finishing touches on the menu\u2014thinking lots of cozy things. I'm really excited for everyone to relax and enjoy themselves. Are you able to make it? Even just swinging by for a pastry beforehand would be wonderful!"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds so sweet! I'm definitely interested in stopping by for a pastry! I might even swing by early on the 14th before the main event. How's the planning coming along otherwise? Are you getting everything ready for the cozy vibe?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm trying to make it feel extra warm and welcoming! I've got some lovely seasonal decorations and some special treats planned. Don't worry about being late or early, just come when you can! When are you thinking of swinging by for a pastry?"
+        ],
+        [
+          "Maria Lopez",
+          "Maybe I could swing by around late afternoon on the 14th? I'm trying to schedule around my streaming commitments this week, but I'd love to pop in and see what you've got going on!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Late afternoon works perfectly for me! I'll make sure we have a lovely little spot set aside for you. Just let me know closer to the day if your schedule changes. \ud83d\ude0a"
+        ],
+        [
+          "Maria Lopez",
+          "Sounds great! Thanks so much, Isabella. I'll keep you updated closer to the date! Enjoy the rest of your shift!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        123,
+        31
+      ],
+      "pronunciatio": "\ud83d\udca7\ud83d\ude2e\u200d",
+      "description": "taking a short break from writing (grabbing a glass of water and taking deep breaths) @ the Ville:Oak Hill College:hallway:<random>",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 18:23:30"
+  }
+}

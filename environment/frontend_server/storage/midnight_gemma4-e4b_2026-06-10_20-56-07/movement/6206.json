@@ -1,0 +1,60 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        23
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Klaus Mueller discussed Klaus's plans to leave early for the library to work on a research paper on gentrification, with Isabella offering him the cafe as a place to relax or get coffee later. @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hello there! Hope you're enjoying your meal. Things are starting to get busy with Valentine's Day coming up; are you planning on staying a little later to check out the festivities?"
+        ],
+        [
+          "Klaus Mueller",
+          "Not really, I'm probably going to head back to the library soon once I finish eating. I've got a massive research paper on gentrification to tackle."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Oh, the library! I know how those big papers can be. Well, I hope you manage to get through it! If you do find yourself needing a quiet spot to recharge later, or just want to grab a coffee before you dive back in, the cafe will be here until 8. Have a productive evening!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        79,
+        30
+      ],
+      "pronunciatio": "\ud83d\udcda\ud83e\uddd0",
+      "description": "studying physics at Hobbs Cafe (reviewing concepts from the previous week) @ the Ville:Oak Hill College:library:bookshelf",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        76,
+        22
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Klaus Mueller discussed Klaus's plans to leave early for the library to work on a research paper on gentrification, with Isabella offering him the cafe as a place to relax or get coffee later. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hello there! Hope you're enjoying your meal. Things are starting to get busy with Valentine's Day coming up; are you planning on staying a little later to check out the festivities?"
+        ],
+        [
+          "Klaus Mueller",
+          "Not really, I'm probably going to head back to the library soon once I finish eating. I've got a massive research paper on gentrification to tackle."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Oh, the library! I know how those big papers can be. Well, I hope you manage to get through it! If you do find yourself needing a quiet spot to recharge later, or just want to grab a coffee before you dive back in, the cafe will be here until 8. Have a productive evening!"
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 17:14:20"
+  }
+}

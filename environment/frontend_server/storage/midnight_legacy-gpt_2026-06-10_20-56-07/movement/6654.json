@@ -1,0 +1,164 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        72,
+        30
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about setting up a Valentine's Day party with activities like a photo booth and live music, with Isabella Rodriguez and Maria Lopez coordinating the arrangements and discussing seating plans @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! I see you're enjoying your dinner. Are you excited for the Valentine's Day party tomorrow?"
+        ],
+        [
+          "Maria Lopez",
+          "Yes, I can't wait to try the heart-shaped strawberry waffles at the party tomorrow!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm glad you're excited! Have you thought about what interactive games or activities you'd like to see at the party?"
+        ],
+        [
+          "Maria Lopez",
+          "I was thinking it would be fun to have a photo booth area with Valentine's Day props for people to take photos!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That's a great idea! I'll make sure to set up a photo booth area with Valentine's Day props for everyone to enjoy at the party. Thank you for the suggestion, Maria!"
+        ],
+        [
+          "Maria Lopez",
+          "Thank you, Isabella! I appreciate it. I'm really looking forward to the party tomorrow."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm so glad you're excited! I'll also make sure to arrange some live music for everyone to enjoy during the party tomorrow."
+        ],
+        [
+          "Maria Lopez",
+          "I can help with setting up the photo booth area with the Valentine's Day props if you need any assistance!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That would be great, Maria! I appreciate your offer to help with setting up the photo booth area. Let's coordinate on that tomorrow before the party starts!"
+        ],
+        [
+          "Maria Lopez",
+          "Is there anything else you need help with for the party tomorrow?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Thank you, Maria! I appreciate your offer to help with setting up the photo booth area. Let's coordinate on that tomorrow before the party starts! Is there anything else you need help with for the party tomorrow?"
+        ],
+        [
+          "Maria Lopez",
+          "Is there anything else you need help with for the party tomorrow?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Yes, Maria! Actually, could you help me with arranging the seating plan for the party tomorrow? I want to make sure everyone has a comfortable place to sit and enjoy the festivities."
+        ],
+        [
+          "Maria Lopez",
+          "Of course, Isabella! I'd be happy to help with arranging the seating plan for the party tomorrow."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Thank you so much, Maria! Your help with arranging the seating plan will be greatly appreciated. Let's meet up tomorrow morning to finalize the details."
+        ],
+        [
+          "Maria Lopez",
+          "Is there anything specific you need help with for the seating plan, Isabella?"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        72,
+        30
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about setting up a Valentine's Day party with activities like a photo booth and live music, with Isabella Rodriguez and Maria Lopez coordinating the arrangements and discussing seating plans @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! I see you're enjoying your dinner. Are you excited for the Valentine's Day party tomorrow?"
+        ],
+        [
+          "Maria Lopez",
+          "Yes, I can't wait to try the heart-shaped strawberry waffles at the party tomorrow!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm glad you're excited! Have you thought about what interactive games or activities you'd like to see at the party?"
+        ],
+        [
+          "Maria Lopez",
+          "I was thinking it would be fun to have a photo booth area with Valentine's Day props for people to take photos!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That's a great idea! I'll make sure to set up a photo booth area with Valentine's Day props for everyone to enjoy at the party. Thank you for the suggestion, Maria!"
+        ],
+        [
+          "Maria Lopez",
+          "Thank you, Isabella! I appreciate it. I'm really looking forward to the party tomorrow."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm so glad you're excited! I'll also make sure to arrange some live music for everyone to enjoy during the party tomorrow."
+        ],
+        [
+          "Maria Lopez",
+          "I can help with setting up the photo booth area with the Valentine's Day props if you need any assistance!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That would be great, Maria! I appreciate your offer to help with setting up the photo booth area. Let's coordinate on that tomorrow before the party starts!"
+        ],
+        [
+          "Maria Lopez",
+          "Is there anything else you need help with for the party tomorrow?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Thank you, Maria! I appreciate your offer to help with setting up the photo booth area. Let's coordinate on that tomorrow before the party starts! Is there anything else you need help with for the party tomorrow?"
+        ],
+        [
+          "Maria Lopez",
+          "Is there anything else you need help with for the party tomorrow?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Yes, Maria! Actually, could you help me with arranging the seating plan for the party tomorrow? I want to make sure everyone has a comfortable place to sit and enjoy the festivities."
+        ],
+        [
+          "Maria Lopez",
+          "Of course, Isabella! I'd be happy to help with arranging the seating plan for the party tomorrow."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Thank you so much, Maria! Your help with arranging the seating plan will be greatly appreciated. Let's meet up tomorrow morning to finalize the details."
+        ],
+        [
+          "Maria Lopez",
+          "Is there anything specific you need help with for the seating plan, Isabella?"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        119,
+        24
+      ],
+      "pronunciatio": "\ud83d\udcdd",
+      "description": "continuing his research paper on gentrification at the library (writing the results and discussion section of his research paper) (writing the results section of his research paper) @ the Ville:Oak Hill College:library:library table",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 18:29:00"
+  }
+}

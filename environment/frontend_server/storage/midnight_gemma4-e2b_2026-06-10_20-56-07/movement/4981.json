@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        77,
+        14
+      ],
+      "pronunciatio": "\ud83c\udf89\ud83d\udc96",
+      "description": "working at the counter, continuing to prepare for the Valentine's Day party (finalizing remaining preparations for the Valentine's Day party) @ the Ville:Isabella Rodriguez's apartment:main room:closet",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        77,
+        28
+      ],
+      "pronunciatio": "\ud83d\udcda\ud83d\udd2c",
+      "description": "studying physics at Hobbs Cafe (reviewing the day's material) (reviewing the day's physics material) (reviewing the day's physics material) @ the Ville:Oak Hill College:library:bookshelf",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        88,
+        46
+      ],
+      "pronunciatio": "\ud83d\udcda\ud83d\udcca",
+      "description": "writing on his research paper (gathering relevant articles and data sources) @ the Ville:The Willows Market and Pharmacy:store:grocery store counter",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 13:50:10"
+  }
+}

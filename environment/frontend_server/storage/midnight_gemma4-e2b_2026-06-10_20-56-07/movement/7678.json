@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        77,
+        14
+      ],
+      "pronunciatio": "\ud83d\udce6\ud83c\udf89",
+      "description": "finishing up party preparations and preparing for bed (packing up party materials) @ the Ville:Isabella Rodriguez's apartment:main room:closet",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        57,
+        34
+      ],
+      "pronunciatio": "\ud83d\udc4b\ud83d\ude0a",
+      "description": "relaxing/socializing or light studying before bed (conversing about conversing about how to integrate physics analogies like phase transitions and entropy into gentrification models, leading to a hypothesis that social resistance (wave amplitude) accelerates the phase transition and planning a scenario mapping session.) @ the Ville:The Rose and Crown Pub:pub:microphone",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        131,
+        46
+      ],
+      "pronunciatio": "\ud83d\udc4b",
+      "description": "relaxing/preparing for the next day (conversing about conversing about how to integrate physics analogies like phase transitions and entropy into gentrification models, leading to a hypothesis that social resistance (wave amplitude) accelerates the phase transition and planning a scenario mapping session.) @ the Ville:Dorm for Oak Hill College:Klaus Mueller's room:desk",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 21:19:40"
+  }
+}

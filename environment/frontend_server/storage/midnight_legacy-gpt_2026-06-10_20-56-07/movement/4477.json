@@ -1,0 +1,164 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        78,
+        30
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about gentrification in low-income communities and setting up a coffee chat meeting between Isabella Rodriguez and Klaus Mueller at Oak Hill Cafe tomorrow at 2pm. @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Klaus! How's your day going so far?"
+        ],
+        [
+          "Klaus Mueller",
+          "Hi Isabella! My day is going well, thank you. Just taking a break from working on my research paper at the library."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds interesting! What is your research paper about?"
+        ],
+        [
+          "Klaus Mueller",
+          "My research paper is actually about the effects of gentrification in low-income communities. It's been quite a fascinating topic to delve into."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That's really interesting! I'd love to hear more about your findings."
+        ],
+        [
+          "Klaus Mueller",
+          "I would be happy to share more about my research findings with you. Perhaps we can chat more about it over a cup of coffee sometime."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds great, Klaus! How about we schedule a time for that coffee chat soon?"
+        ],
+        [
+          "Klaus Mueller",
+          "How about we meet tomorrow at Oak Hill Cafe around 2pm for that coffee chat?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds perfect! I'll see you at Oak Hill Cafe tomorrow at 2pm. Looking forward to our chat!"
+        ],
+        [
+          "Klaus Mueller",
+          "Great! I'll see you tomorrow at 2pm at Oak Hill Cafe."
+        ],
+        [
+          "Isabella Rodriguez",
+          "It was lovely chatting with you, Klaus. I look forward to our coffee chat tomorrow at Oak Hill Cafe at 2pm."
+        ],
+        [
+          "Klaus Mueller",
+          "It was lovely chatting with you too, Isabella. I look forward to our coffee chat tomorrow at Oak Hill Cafe at 2pm."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Looking forward to our chat tomorrow at Oak Hill Cafe, Klaus! Have a great rest of your day."
+        ],
+        [
+          "Klaus Mueller",
+          "Thank you, Isabella! I hope you have a wonderful day as well."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I can't wait to hear more about your research tomorrow! Have a great rest of your day, Klaus."
+        ],
+        [
+          "Klaus Mueller",
+          "Thank you, Isabella! I really enjoyed our conversation today. Looking forward to our coffee chat tomorrow."
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        119,
+        24
+      ],
+      "pronunciatio": "\ud83d\udcbb",
+      "description": "continuing to study physics at Oak Hill College (working on practice problems) @ the Ville:Oak Hill College:library:library table",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        70,
+        37
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about gentrification in low-income communities and setting up a coffee chat meeting between Isabella Rodriguez and Klaus Mueller at Oak Hill Cafe tomorrow at 2pm. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Klaus! How's your day going so far?"
+        ],
+        [
+          "Klaus Mueller",
+          "Hi Isabella! My day is going well, thank you. Just taking a break from working on my research paper at the library."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds interesting! What is your research paper about?"
+        ],
+        [
+          "Klaus Mueller",
+          "My research paper is actually about the effects of gentrification in low-income communities. It's been quite a fascinating topic to delve into."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That's really interesting! I'd love to hear more about your findings."
+        ],
+        [
+          "Klaus Mueller",
+          "I would be happy to share more about my research findings with you. Perhaps we can chat more about it over a cup of coffee sometime."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds great, Klaus! How about we schedule a time for that coffee chat soon?"
+        ],
+        [
+          "Klaus Mueller",
+          "How about we meet tomorrow at Oak Hill Cafe around 2pm for that coffee chat?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That sounds perfect! I'll see you at Oak Hill Cafe tomorrow at 2pm. Looking forward to our chat!"
+        ],
+        [
+          "Klaus Mueller",
+          "Great! I'll see you tomorrow at 2pm at Oak Hill Cafe."
+        ],
+        [
+          "Isabella Rodriguez",
+          "It was lovely chatting with you, Klaus. I look forward to our coffee chat tomorrow at Oak Hill Cafe at 2pm."
+        ],
+        [
+          "Klaus Mueller",
+          "It was lovely chatting with you too, Isabella. I look forward to our coffee chat tomorrow at Oak Hill Cafe at 2pm."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Looking forward to our chat tomorrow at Oak Hill Cafe, Klaus! Have a great rest of your day."
+        ],
+        [
+          "Klaus Mueller",
+          "Thank you, Isabella! I hope you have a wonderful day as well."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I can't wait to hear more about your research tomorrow! Have a great rest of your day, Klaus."
+        ],
+        [
+          "Klaus Mueller",
+          "Thank you, Isabella! I really enjoyed our conversation today. Looking forward to our coffee chat tomorrow."
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 12:26:10"
+  }
+}

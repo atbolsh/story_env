@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        78,
+        18
+      ],
+      "pronunciatio": "\ud83c\udf89\ud83c\udf88",
+      "description": "working at the counter, continuing to finalize party preparations (setting up the party area) @ the Ville:Hobbs Cafe:cafe:cooking area",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        73,
+        19
+      ],
+      "pronunciatio": "\ud83c\udf7d\ufe0f\ud83e\udd58",
+      "description": "sleeping (or preparing for dinner) @ the Ville:Hobbs Cafe:cafe:refrigerator",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        109,
+        31
+      ],
+      "pronunciatio": "\ud83d\udcdd\u2753",
+      "description": "finishing up research/light review (noting down further questions) @ the Ville:The Willows Market and Pharmacy:store:behind the grocery counter",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 18:51:00"
+  }
+}

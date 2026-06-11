@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        80,
+        32
+      ],
+      "pronunciatio": "\ud83d\udeb6\u200d\u2640",
+      "description": "working at the counter, continuing to finalize party preparations (on the way to reviewing the party timeline) @ the Ville:The Willows Market and Pharmacy:store:pharmacy store counter",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        56,
+        29
+      ],
+      "pronunciatio": "\ud83d\udde3\ufe0f\ud83c\udf7d",
+      "description": "relaxing/socializing after dinner (conversing about conversing about planning the food and streaming schedule for a Valentine's party between Isabella Rodriguez and Maria Lopez) @ the Ville:The Rose and Crown Pub:pub:refrigerator",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        131,
+        50
+      ],
+      "pronunciatio": "\ud83d\udcda\u270f\ufe0f",
+      "description": "relaxing/preparing for the next day (setting up his study area) @ the Ville:Dorm for Oak Hill College:Klaus Mueller's room:desk",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 20:03:00"
+  }
+}

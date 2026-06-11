@@ -1,0 +1,164 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        25
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez are discussing the Valentine's Day decorations and menu, with Maria excited to try the heart-shaped strawberry waffles at the Valentine's Day party tomorrow, which will also feature live music. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! How are you finding the Valentine's Day decorations?"
+        ],
+        [
+          "Maria Lopez",
+          "Hi Isabella! The Valentine's Day decorations look amazing! I love the special menu board."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Thank you, Maria! I'm glad you like them. Are you planning on coming to the Valentine's Day party tomorrow?"
+        ],
+        [
+          "Maria Lopez",
+          "Yes, I wouldn't miss it! I'm looking forward to the Valentine's Day party tomorrow."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That's great to hear! I'll make sure to save you a seat. Have you seen the special Valentine's Day menu yet?"
+        ],
+        [
+          "Maria Lopez",
+          "No, I haven't seen the special Valentine's Day menu yet. Could you show me?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Sure, Maria! Let me show you the special Valentine's Day menu. Follow me to the counter."
+        ],
+        [
+          "Maria Lopez",
+          "Thank you, Isabella! This menu looks fantastic, I can't wait to try everything."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Would you like any recommendations for what to try first on the menu?"
+        ],
+        [
+          "Maria Lopez",
+          "Yes, Isabella! I would love some recommendations. What do you think is the most popular dish?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "The most popular dish on our special Valentine's Day menu is the heart-shaped strawberry waffles. They are a customer favorite!"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds delicious! I'll definitely try the heart-shaped strawberry waffles. Thank you for the recommendation, Isabella!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm glad you're excited to try the heart-shaped strawberry waffles! I'll make sure to have a plate ready for you at the Valentine's Day party tomorrow."
+        ],
+        [
+          "Maria Lopez",
+          "Is there going to be live music at the Valentine's Day party?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Yes, Maria! There will be live music at the Valentine's Day party tomorrow. It's going to be a great night with delicious food and wonderful music."
+        ],
+        [
+          "Maria Lopez",
+          "That sounds wonderful! I am really looking forward to the Valentine's Day party tomorrow."
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        74,
+        26
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez are discussing the Valentine's Day decorations and menu, with Maria excited to try the heart-shaped strawberry waffles at the Valentine's Day party tomorrow, which will also feature live music. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! How are you finding the Valentine's Day decorations?"
+        ],
+        [
+          "Maria Lopez",
+          "Hi Isabella! The Valentine's Day decorations look amazing! I love the special menu board."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Thank you, Maria! I'm glad you like them. Are you planning on coming to the Valentine's Day party tomorrow?"
+        ],
+        [
+          "Maria Lopez",
+          "Yes, I wouldn't miss it! I'm looking forward to the Valentine's Day party tomorrow."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That's great to hear! I'll make sure to save you a seat. Have you seen the special Valentine's Day menu yet?"
+        ],
+        [
+          "Maria Lopez",
+          "No, I haven't seen the special Valentine's Day menu yet. Could you show me?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Sure, Maria! Let me show you the special Valentine's Day menu. Follow me to the counter."
+        ],
+        [
+          "Maria Lopez",
+          "Thank you, Isabella! This menu looks fantastic, I can't wait to try everything."
+        ],
+        [
+          "Isabella Rodriguez",
+          "Would you like any recommendations for what to try first on the menu?"
+        ],
+        [
+          "Maria Lopez",
+          "Yes, Isabella! I would love some recommendations. What do you think is the most popular dish?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "The most popular dish on our special Valentine's Day menu is the heart-shaped strawberry waffles. They are a customer favorite!"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds delicious! I'll definitely try the heart-shaped strawberry waffles. Thank you for the recommendation, Isabella!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm glad you're excited to try the heart-shaped strawberry waffles! I'll make sure to have a plate ready for you at the Valentine's Day party tomorrow."
+        ],
+        [
+          "Maria Lopez",
+          "Is there going to be live music at the Valentine's Day party?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Yes, Maria! There will be live music at the Valentine's Day party tomorrow. It's going to be a great night with delicious food and wonderful music."
+        ],
+        [
+          "Maria Lopez",
+          "That sounds wonderful! I am really looking forward to the Valentine's Day party tomorrow."
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        119,
+        22
+      ],
+      "pronunciatio": "\ud83d\udcdd",
+      "description": "continuing his research paper on gentrification at the library (outlining the structure of his research paper) @ the Ville:Oak Hill College:library:library table",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 13:16:00"
+  }
+}

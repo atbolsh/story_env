@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        77,
+        14
+      ],
+      "pronunciatio": "\ud83e\uddf9\ud83c\udf7d\ufe0f",
+      "description": "closing Hobbs Cafe and finishing up party preparations (tidying up the dining area) @ the Ville:Isabella Rodriguez's apartment:main room:closet",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        117,
+        47
+      ],
+      "pronunciatio": "\u23f0\ud83d\udd04",
+      "description": "relaxing/socializing or light studying before bed (remaining activities from original schedule adjusted to fit the remaining time) @ the Ville:Dorm for Oak Hill College:common room:common room sofa",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        127,
+        46
+      ],
+      "pronunciatio": "\ud83d\ude0c\ud83e\uddd8",
+      "description": "relaxing/preparing for the next day (setting a relaxing mood) @ the Ville:Dorm for Oak Hill College:Klaus Mueller's room:bed",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 20:24:20"
+  }
+}

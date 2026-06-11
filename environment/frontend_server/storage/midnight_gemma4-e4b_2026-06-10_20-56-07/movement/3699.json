@@ -1,0 +1,116 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        87,
+        30
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez discussed Maria's physics studies, Isabella's preparations for a Valentine's Day party at Hobbs Cafe on February 14th, and Maria's potential attendance and interest in stopping by for a pastry. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Maria, how are you doing? You seem really focused on your studies today!"
+        ],
+        [
+          "Maria Lopez",
+          "I'm doing great, thanks for asking! Just diving deep into some physics concepts for my degree. It keeps me busy! How's your day going so far?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's been a busy but lovely morning here at Hobbs Cafe! We're getting ready for a very special Valentine's Day celebration on the 14th. Speaking of which, do you have any plans for the holiday, or are you diving into more textbooks?"
+        ],
+        [
+          "Maria Lopez",
+          "Valentine's Day! That sounds exciting! I haven't locked down any specific plans yet. I might try to stream something fun on Twitch, or maybe just relax a bit after all this studying. What kind of celebration are you guys planning?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "We are putting together a special party at Hobbs Cafe on February 14th, from 5 to 7 pm! It's going to be a lovely little celebration for all our wonderful customers. You should definitely stop by if you're free\u2014it would be great to have you there!"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds really nice! I'll definitely keep that in mind for the 14th. Having a party there sounds like a fun way to celebrate Valentine's Day! I hope it's a big success!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I hope so too! We're putting a lot of love into the preparations, from the decorations to the special treats. We're aiming to make it a wonderfully cozy and welcoming atmosphere for everyone. Are you planning on grabbing a coffee or a snack while you study today?"
+        ],
+        [
+          "Maria Lopez",
+          "I think I'm all set for now with coffee, but maybe I'll treat myself to a pastry later! Thanks for the reminder about the party, I might swing by!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "You're very welcome! If you decide to come by for a pastry later, just let me know! I'd love to see you. Good luck with your physics, and feel free to stop by anytime, even if you're just needing a quiet spot to study!"
+        ],
+        [
+          "Maria Lopez",
+          "Thanks, Isabella! That's really sweet of you to say. I appreciate the offer, and I might just take you up on that pastry treat! You have a great day, and good luck with all the Valentine's Day preparations!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        79,
+        37
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez discussed Maria's physics studies, Isabella's preparations for a Valentine's Day party at Hobbs Cafe on February 14th, and Maria's potential attendance and interest in stopping by for a pastry. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Maria, how are you doing? You seem really focused on your studies today!"
+        ],
+        [
+          "Maria Lopez",
+          "I'm doing great, thanks for asking! Just diving deep into some physics concepts for my degree. It keeps me busy! How's your day going so far?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's been a busy but lovely morning here at Hobbs Cafe! We're getting ready for a very special Valentine's Day celebration on the 14th. Speaking of which, do you have any plans for the holiday, or are you diving into more textbooks?"
+        ],
+        [
+          "Maria Lopez",
+          "Valentine's Day! That sounds exciting! I haven't locked down any specific plans yet. I might try to stream something fun on Twitch, or maybe just relax a bit after all this studying. What kind of celebration are you guys planning?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "We are putting together a special party at Hobbs Cafe on February 14th, from 5 to 7 pm! It's going to be a lovely little celebration for all our wonderful customers. You should definitely stop by if you're free\u2014it would be great to have you there!"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds really nice! I'll definitely keep that in mind for the 14th. Having a party there sounds like a fun way to celebrate Valentine's Day! I hope it's a big success!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I hope so too! We're putting a lot of love into the preparations, from the decorations to the special treats. We're aiming to make it a wonderfully cozy and welcoming atmosphere for everyone. Are you planning on grabbing a coffee or a snack while you study today?"
+        ],
+        [
+          "Maria Lopez",
+          "I think I'm all set for now with coffee, but maybe I'll treat myself to a pastry later! Thanks for the reminder about the party, I might swing by!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "You're very welcome! If you decide to come by for a pastry later, just let me know! I'd love to see you. Good luck with your physics, and feel free to stop by anytime, even if you're just needing a quiet spot to study!"
+        ],
+        [
+          "Maria Lopez",
+          "Thanks, Isabella! That's really sweet of you to say. I appreciate the offer, and I might just take you up on that pastry treat! You have a great day, and good luck with all the Valentine's Day preparations!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        122,
+        24
+      ],
+      "pronunciatio": "\u270d\ufe0f\ud83e\udde0",
+      "description": "writing his research paper at the Oak Hill College library (drafting the main arguments for the current section) @ the Ville:Oak Hill College:library:library table",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 10:16:30"
+  }
+}

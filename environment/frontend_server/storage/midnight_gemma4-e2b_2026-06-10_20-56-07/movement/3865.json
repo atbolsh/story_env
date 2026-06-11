@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        65,
+        34
+      ],
+      "pronunciatio": "\ud83d\uddd3\ufe0f\ud83d\udc40",
+      "description": "working at the counter, continuing to prepare for the cafe and the Valentine's Day party (reviewing the party timeline) @ the Ville:Hobbs Cafe:cafe:kitchen sink",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        106,
+        32
+      ],
+      "pronunciatio": "\u269b\ufe0f\ud83d\udde3",
+      "description": "streaming on Twitch (Part 2 of 3 hours) (remaining stream content) (discussing a physics concept with viewers) @ the Ville:Oak Hill College:library:bookshelf",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        121,
+        20
+      ],
+      "pronunciatio": "\ud83d\udcda\ud83d\udca1",
+      "description": "writing on his research paper at the library (synthesizing information from different sources) @ the Ville:Oak Hill College:library:bookshelf",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 10:44:10"
+  }
+}

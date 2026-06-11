@@ -1,0 +1,164 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        64,
+        48
+      ],
+      "pronunciatio": "\ud83d\uded2",
+      "description": "still working at the counter at Hobbs Cafe (restocking the cafe supplies) @ the Ville:Harvey Oak Supply Store:supply store:supply store product shelf",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        119,
+        49
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about two friends, Maria Lopez and Klaus Mueller, making plans to have lunch together at Hobbs Cafe after finishing their work and research studies. @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Hey Klaus, how's the progress on your research paper going?"
+        ],
+        [
+          "Klaus Mueller",
+          "Hey Maria, it's coming along well. I just finished editing and revising it. How about you? How's your physics study going?"
+        ],
+        [
+          "Maria Lopez",
+          "That's great to hear, Klaus! I'm almost done reviewing my notes and I'll be heading to Hobbs Cafe for lunch soon. Are you ready to grab a bite?"
+        ],
+        [
+          "Klaus Mueller",
+          "Sounds good, Maria! I'm almost done here too. Let's head to Hobbs Cafe together."
+        ],
+        [
+          "Maria Lopez",
+          "Let's go grab some lunch at Hobbs Cafe now!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll just quickly pack up my things and meet you at the entrance of the library."
+        ],
+        [
+          "Maria Lopez",
+          "Great, I'll meet you at the entrance of the library in a few minutes. See you there!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'm excited to hear about your progress in physics! Let's chat more over lunch."
+        ],
+        [
+          "Maria Lopez",
+          "I can't wait to share my latest discoveries with you! See you at the entrance of the library!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll just quickly pack up my things and meet you at the entrance of the library."
+        ],
+        [
+          "Maria Lopez",
+          "I'll be waiting for you at the entrance of the library, Klaus!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll be waiting for you at the entrance of the library, Maria!"
+        ],
+        [
+          "Maria Lopez",
+          "I'll head to Hobbs Cafe first and save us a table. See you soon!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll just quickly pack up my things and meet you at the entrance of the library."
+        ],
+        [
+          "Maria Lopez",
+          "I'll head to Hobbs Cafe first and save us a table. See you soon!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll be right there, Maria. Looking forward to our lunchtime chat!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        120,
+        49
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about two friends, Maria Lopez and Klaus Mueller, making plans to have lunch together at Hobbs Cafe after finishing their work and research studies. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Hey Klaus, how's the progress on your research paper going?"
+        ],
+        [
+          "Klaus Mueller",
+          "Hey Maria, it's coming along well. I just finished editing and revising it. How about you? How's your physics study going?"
+        ],
+        [
+          "Maria Lopez",
+          "That's great to hear, Klaus! I'm almost done reviewing my notes and I'll be heading to Hobbs Cafe for lunch soon. Are you ready to grab a bite?"
+        ],
+        [
+          "Klaus Mueller",
+          "Sounds good, Maria! I'm almost done here too. Let's head to Hobbs Cafe together."
+        ],
+        [
+          "Maria Lopez",
+          "Let's go grab some lunch at Hobbs Cafe now!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll just quickly pack up my things and meet you at the entrance of the library."
+        ],
+        [
+          "Maria Lopez",
+          "Great, I'll meet you at the entrance of the library in a few minutes. See you there!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'm excited to hear about your progress in physics! Let's chat more over lunch."
+        ],
+        [
+          "Maria Lopez",
+          "I can't wait to share my latest discoveries with you! See you at the entrance of the library!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll just quickly pack up my things and meet you at the entrance of the library."
+        ],
+        [
+          "Maria Lopez",
+          "I'll be waiting for you at the entrance of the library, Klaus!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll be waiting for you at the entrance of the library, Maria!"
+        ],
+        [
+          "Maria Lopez",
+          "I'll head to Hobbs Cafe first and save us a table. See you soon!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll just quickly pack up my things and meet you at the entrance of the library."
+        ],
+        [
+          "Maria Lopez",
+          "I'll head to Hobbs Cafe first and save us a table. See you soon!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'll be right there, Maria. Looking forward to our lunchtime chat!"
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 12:04:50"
+  }
+}

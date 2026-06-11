@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        78,
+        51
+      ],
+      "pronunciatio": "\ud83d\udeb6\u200d\u2640",
+      "description": "working at the counter, continuing to finalize party preparations (on the way to reviewing the party timeline) @ the Ville:The Willows Market and Pharmacy:store:pharmacy store counter",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        78,
+        30
+      ],
+      "pronunciatio": "\u23f0\ud83d\udd04",
+      "description": "relaxing/socializing or light studying before bed (remaining activities from original schedule adjusted to fit the remaining time) @ the Ville:Dorm for Oak Hill College:common room:common room sofa",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        122,
+        50
+      ],
+      "pronunciatio": "\ud83c\udf4e\ud83e\udd6a",
+      "description": "relaxing/preparing for the next day (preparing a light snack) @ the Ville:Hobbs Cafe:cafe:kitchen sink",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 20:15:00"
+  }
+}
