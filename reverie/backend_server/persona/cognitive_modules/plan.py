@@ -380,7 +380,12 @@ def generate_new_decomp_schedule(persona, inserted_act, inserted_act_dur,  start
   truncated_act_dur[-1][0] = x 
 
   if "(" in truncated_act_dur[-1][0]: 
-    inserted_act = truncated_act_dur[-1][0].split("(")[0].strip() + " (" + inserted_act + ")"
+    # <inserted_act> is typically a "conversing about ..." summary; sanitize
+    # the composed entry so echoed prefixes / nested parentheticals from the
+    # source description cannot leak into the schedule (and from there into
+    # the new_decomp_schedule prompt, which once ballooned to 542 KB).
+    inserted_act = sanitize_action_description(
+      truncated_act_dur[-1][0].split("(")[0].strip() + " (" + inserted_act + ")")
 
   # To do inserted_act_dur+1 below is an important decision but I'm not sure
   # if I understand the full extent of its implications. Might want to 

@@ -225,6 +225,103 @@ def copyanything(src, dst):
     else: raise
 
 
+def _split_top_level_parens(s): 
+  """
+  Split a string into its text outside any parentheses and the contents of
+  its top-level "(...)" groups.
+  ARGS:
+    s: the string to split.
+  RETURNS: 
+    (base, groups): <base> is the text outside all parentheses (stripped);
+    <groups> is a list of the top-level parenthetical contents, in order.
+    An unbalanced trailing "(" group is included without its closing paren.
+  """
+  base_chars = []
+  groups = []
+  depth = 0
+  start = None
+  for i, c in enumerate(s): 
+    if c == "(": 
+      if depth == 0: 
+        start = i
+      depth += 1
+    elif c == ")": 
+      if depth > 0: 
+        depth -= 1
+        if depth == 0: 
+          groups += [s[start+1:i]]
+          start = None
+    elif depth == 0: 
+      base_chars += [c]
+  if depth > 0 and start is not None: 
+    groups += [s[start+1:]]
+  return "".join(base_chars).strip(), groups
+
+
+def flatten_parentheticals(s): 
+  """
+  Collapse degenerate self-nested parentheticals in an action description.
+
+  Local models (see the 2026-06-10 midnight run analysis) sometimes echo a
+  task back into its own subtask, and repeated decomposition then compounds
+  it into exponential garbage like: 
+      "task (task) (task (task)) (task (task) (task (task))) (real subtask)"
+  This recursively drops every parenthetical group that is just an echo of
+  the base text and keeps the last informative one, restoring the canonical
+  "task (subtask)" shape. Legitimate nesting whose content differs from the
+  base text -- e.g. "getting ready (checking mic, camera, etc.)" -- is left
+  intact.
+  ARGS:
+    s: the action/task description.
+  RETURNS: 
+    The flattened description.
+  """
+  base, groups = _split_top_level_parens(s)
+  kept = None
+  for g in groups: 
+    g = flatten_parentheticals(g).strip()
+    # Drop a leading echo of the base text inside the group.
+    if base and g.lower().startswith(base.lower()): 
+      g = g[len(base):].strip(" ()-,")
+    if g and (not base or g.lower() != base.lower()): 
+      kept = g
+  if not base: 
+    return kept or ""
+  return f"{base} ({kept})" if kept else base
+
+
+def sanitize_action_description(desp, max_len=350): 
+  """
+  Sanitize a generated action/task description before it is saved into sim
+  state (schedules, memory nodes) and fed back into later prompts.
+
+  Fixes the two systematic degenerations observed in the 2026-06-10 midnight
+  benchmark runs: 
+    1. the "conversing about conversing about ..." prefix echo (gemma4-e2b), 
+    2. exponential parenthetical self-nesting of task descriptions
+       (gemma4-e4b; one prompt grew to 542 KB and OOMed the GPU). 
+  Also normalizes whitespace and caps the length so no single description can
+  blow up prompt sizes, regardless of how it degenerated.
+  ARGS:
+    desp: the description string (non-strings are returned unchanged).
+    max_len: hard cap on the returned length; generous on purpose -- its job
+      is to stop runaway growth, not to trim normal content.
+  RETURNS: 
+    The sanitized description.
+  """
+  if not isinstance(desp, str): 
+    return desp
+  desp = " ".join(desp.split())
+  while "conversing about conversing about" in desp: 
+    desp = desp.replace("conversing about conversing about", 
+                        "conversing about")
+  desp = flatten_parentheticals(desp)
+  if len(desp) > max_len: 
+    cut = desp[:max_len].rsplit(" ", 1)[0]
+    desp = cut + "..."
+  return desp
+
+
 if __name__ == '__main__':
   pass
 

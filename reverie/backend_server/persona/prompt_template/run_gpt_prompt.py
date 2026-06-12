@@ -16,6 +16,32 @@ from global_methods import *
 from persona.prompt_template.gpt_structure import *
 from persona.prompt_template.print_prompt import *
 
+def match_option(gpt_response, options): 
+  """
+  Return the canonical option from <options> that matches <gpt_response>, or
+  None if there is no match.
+
+  Matching is deliberately dumb: strip whitespace and compare lowercased.
+  No fuzzy matching on purpose -- "bedroom" must NOT match "bathroom". This
+  exists because location/object choices are used as spatial-memory dict keys
+  downstream, and an out-of-set answer crashes the sim (the 2026-06-10
+  midnight gemma4-e2b run died on a KeyError from exactly that). Returning
+  the canonical (original-cased) option keeps the keys legal even when the
+  model merely changed capitalization.
+
+  INPUT: 
+    gpt_response: the model's (cleaned) answer.
+    options: iterable of legal option strings.
+  OUTPUT: 
+    The matching element of <options>, or None.
+  """
+  needle = gpt_response.strip().lower()
+  for opt in options: 
+    if opt.strip().lower() == needle: 
+      return opt
+  return None
+
+
 def get_random_alphanumeric(i=6, j=6): 
   """
   Returns a random alpha numeric strength that has the length of somewhere
@@ -516,7 +542,11 @@ def run_gpt_prompt_task_decomp(persona,
   task_decomp = output
   ret = []
   for decomp_task, duration in task_decomp: 
-    ret += [[f"{task} ({decomp_task})", duration]]
+    # sanitize_action_description collapses the degenerate self-nesting that
+    # local models produce when <decomp_task> echoes <task> (with its own
+    # parentheticals), which otherwise compounds exponentially across
+    # successive decompositions. See the 2026-06-10 midnight run analysis.
+    ret += [[sanitize_action_description(f"{task} ({decomp_task})"), duration]]
   output = ret
 
 
@@ -533,6 +563,23 @@ def run_gpt_prompt_action_sector(action_description,
                                 maze, 
                                 test_input=None, 
                                 verbose=False):
+  # <sector_options> is the exact set of legal answers offered in the prompt
+  # ("Area options"). It is hoisted out of create_prompt_input so that
+  # __func_validate can reject out-of-set answers (making the safe_* loop
+  # retry) and __func_clean_up can canonicalize the casing.
+  # MAR 11 TEMP
+  act_world = f"{maze.access_tile(persona.scratch.curr_tile)['world']}"
+  accessible_sector_str = persona.s_mem.get_str_accessible_sectors(act_world)
+  curr = accessible_sector_str.split(", ")
+  sector_options = []
+  for i in curr: 
+    if "'s house" in i: 
+      if persona.scratch.last_name in i: 
+        sector_options += [i]
+    else: 
+      sector_options += [i]
+  # END MAR 11 TEMP
+
   def create_prompt_input(action_description, persona, maze, test_input=None): 
     act_world = f"{maze.access_tile(persona.scratch.curr_tile)['world']}"
     
@@ -554,21 +601,7 @@ def run_gpt_prompt_action_sector(action_description,
     else: 
       prompt_input += [""]
 
-
-    # MAR 11 TEMP
-    accessible_sector_str = persona.s_mem.get_str_accessible_sectors(act_world)
-    curr = accessible_sector_str.split(", ")
-    fin_accessible_sectors = []
-    for i in curr: 
-      if "'s house" in i: 
-        if persona.scratch.last_name in i: 
-          fin_accessible_sectors += [i]
-      else: 
-        fin_accessible_sectors += [i]
-    accessible_sector_str = ", ".join(fin_accessible_sectors)
-    # END MAR 11 TEMP
-
-    prompt_input += [accessible_sector_str]
+    prompt_input += [", ".join(sector_options)]
 
 
 
@@ -592,7 +625,8 @@ def run_gpt_prompt_action_sector(action_description,
 
   def __func_clean_up(gpt_response, prompt=""):
     cleaned_response = gpt_response.split("}")[0]
-    return cleaned_response
+    # Canonicalize to the offered option (fixes e.g. capitalization).
+    return match_option(cleaned_response, sector_options) or cleaned_response
 
   def __func_validate(gpt_response, prompt=""): 
     if len(gpt_response.strip()) < 1: 
@@ -601,11 +635,15 @@ def run_gpt_prompt_action_sector(action_description,
       return False
     if "," in gpt_response: 
       return False
+    # Out-of-set answers fail validation so safe_generate_response retries.
+    if match_option(gpt_response.split("}")[0], sector_options) is None: 
+      return False
     return True
   
   def get_fail_safe(): 
-    fs = ("kitchen")
-    return fs
+    # The persona's own living area is always a legal, sensible default
+    # (matches the post-hoc fallback below).
+    return persona.scratch.living_area.split(":")[1]
 
 
   # # ChatGPT Plugin ===========================================================
@@ -671,30 +709,34 @@ def run_gpt_prompt_action_arena(action_description,
                                 maze, act_world, act_sector,
                                 test_input=None, 
                                 verbose=False):
+  # <arena_options> is the exact set of legal answers offered in the prompt
+  # ("MUST pick one of {...}"). Hoisted out of create_prompt_input so the
+  # validate/clean-up/fail-safe closures can enforce membership. This is the
+  # prompt that killed the 2026-06-10 midnight gemma4-e2b run: the model
+  # answered "bedroom" for {main room, bathroom}, and the unchecked value
+  # KeyError'd in spatial memory.
+  # MAR 11 TEMP
+  accessible_arena_str = persona.s_mem.get_str_accessible_sector_arenas(
+    f"{act_world}:{act_sector}")
+  curr = accessible_arena_str.split(", ")
+  arena_options = []
+  for i in curr: 
+    if "'s room" in i: 
+      if persona.scratch.last_name in i: 
+        arena_options += [i]
+    else: 
+      arena_options += [i]
+  # END MAR 11 TEMP
+
   def create_prompt_input(action_description, persona, maze, act_world, act_sector, test_input=None): 
     prompt_input = []
     # prompt_input += [persona.scratch.get_str_name()]
     # prompt_input += [maze.access_tile(persona.scratch.curr_tile)["arena"]]
     # prompt_input += [maze.access_tile(persona.scratch.curr_tile)["sector"]]
     prompt_input += [persona.scratch.get_str_name()]
-    x = f"{act_world}:{act_sector}"
     prompt_input += [act_sector]
 
-    # MAR 11 TEMP
-    accessible_arena_str = persona.s_mem.get_str_accessible_sector_arenas(x)
-    curr = accessible_arena_str.split(", ")
-    fin_accessible_arenas = []
-    for i in curr: 
-      if "'s room" in i: 
-        if persona.scratch.last_name in i: 
-          fin_accessible_arenas += [i]
-      else: 
-        fin_accessible_arenas += [i]
-    accessible_arena_str = ", ".join(fin_accessible_arenas)
-    # END MAR 11 TEMP
-
-
-    prompt_input += [accessible_arena_str]
+    prompt_input += [", ".join(arena_options)]
 
 
     action_description_1 = action_description
@@ -712,7 +754,7 @@ def run_gpt_prompt_action_arena(action_description,
 
     prompt_input += [act_sector]
 
-    prompt_input += [accessible_arena_str]
+    prompt_input += [", ".join(arena_options)]
     # prompt_input += [maze.access_tile(persona.scratch.curr_tile)["arena"]]
     # x = f"{maze.access_tile(persona.scratch.curr_tile)['world']}:{maze.access_tile(persona.scratch.curr_tile)['sector']}:{maze.access_tile(persona.scratch.curr_tile)['arena']}"
     # prompt_input += [persona.s_mem.get_str_accessible_arena_game_objects(x)]
@@ -722,7 +764,8 @@ def run_gpt_prompt_action_arena(action_description,
 
   def __func_clean_up(gpt_response, prompt=""):
     cleaned_response = gpt_response.split("}")[0]
-    return cleaned_response
+    # Canonicalize to the offered option (fixes e.g. capitalization).
+    return match_option(cleaned_response, arena_options) or cleaned_response
 
   def __func_validate(gpt_response, prompt=""): 
     if len(gpt_response.strip()) < 1: 
@@ -731,11 +774,18 @@ def run_gpt_prompt_action_arena(action_description,
       return False
     if "," in gpt_response: 
       return False
+    # Out-of-set answers fail validation so safe_generate_response retries.
+    if match_option(gpt_response.split("}")[0], arena_options) is None: 
+      return False
     return True
   
   def get_fail_safe(): 
-    fs = ("kitchen")
-    return fs
+    # Must be a legal arena for this sector, or downstream spatial-memory
+    # lookups crash. Fall back to the historical value only if the option
+    # list is somehow empty.
+    if arena_options: 
+      return arena_options[0]
+    return "kitchen"
 
   gpt_param = {"engine": active_engine(), "max_tokens": 15, 
                "temperature": 0, "top_p": 1, "stream": False,
@@ -767,6 +817,13 @@ def run_gpt_prompt_action_game_object(action_description,
                                       temp_address,
                                       test_input=None, 
                                       verbose=False): 
+  # The set of legal answers offered in the prompt ("Objects available"),
+  # hoisted so validate/clean-up can enforce membership (with retries).
+  accessible_objects_str = (persona.s_mem
+                            .get_str_accessible_arena_game_objects(temp_address))
+  object_options = [i.strip() for i in accessible_objects_str.split(",") 
+                    if i.strip()]
+
   def create_prompt_input(action_description, 
                           persona, 
                           temp_address, 
@@ -776,18 +833,21 @@ def run_gpt_prompt_action_game_object(action_description,
       action_description = action_description.split("(")[-1][:-1]
       
     prompt_input += [action_description]
-    prompt_input += [persona
-                     .s_mem.get_str_accessible_arena_game_objects(temp_address)]
+    prompt_input += [accessible_objects_str]
     return prompt_input
   
   def __func_validate(gpt_response, prompt=""): 
     if len(gpt_response.strip()) < 1: 
       return False
+    # Out-of-set answers fail validation so safe_generate_response retries.
+    if match_option(gpt_response, object_options) is None: 
+      return False
     return True
 
   def __func_clean_up(gpt_response, prompt=""):
     cleaned_response = gpt_response.strip()
-    return cleaned_response
+    # Canonicalize to the offered option (fixes e.g. capitalization).
+    return match_option(cleaned_response, object_options) or cleaned_response
 
   def get_fail_safe(): 
     fs = ("bed")
@@ -1193,7 +1253,9 @@ def run_gpt_prompt_new_decomp_schedule(persona,
       delta = datetime.datetime.strptime(end_time, "%H:%M") - datetime.datetime.strptime(start_time, "%H:%M")
       delta_min = int(delta.total_seconds()/60)
       if delta_min < 0: delta_min = 0
-      ret += [[action, delta_min]]
+      # These entries are written back into f_daily_schedule; sanitizing here
+      # also scrubs previously-polluted descriptions the model echoed back.
+      ret += [[sanitize_action_description(action), delta_min]]
 
     return ret
 
@@ -1636,7 +1698,15 @@ def run_gpt_prompt_summarize_conversation(persona, conversation, test_input=None
     return prompt_input
   
   def __func_clean_up(gpt_response, prompt=""):
-    ret = "conversing about " + gpt_response.strip()
+    # Models sometimes echo the "conversing about" framing (it appears in the
+    # example output), which used to produce "conversing about conversing
+    # about ..." once we prepend our own prefix. Strip any echoed prefix
+    # first, and sanitize since this string is saved as the action
+    # description of the chat.
+    summary = gpt_response.strip()
+    while summary.lower().startswith("conversing about"): 
+      summary = summary[len("conversing about"):].strip()
+    ret = sanitize_action_description("conversing about " + summary)
     return ret
 
   def __func_validate(gpt_response, prompt=""): 
@@ -1652,8 +1722,7 @@ def run_gpt_prompt_summarize_conversation(persona, conversation, test_input=None
 
   # ChatGPT Plugin ===========================================================
   def __chat_func_clean_up(gpt_response, prompt=""): ############
-    ret = "conversing about " + gpt_response.strip()
-    return ret
+    return __func_clean_up(gpt_response, prompt)
 
   def __chat_func_validate(gpt_response, prompt=""): ############
     try: 
