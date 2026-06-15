@@ -272,11 +272,28 @@ Two distinct root causes:
 Net effect: the reaction subsystem ran entirely on its fail-safe defaults
 (always-willing-to-talk, never-wait).
 
-### Suggested fix (NOT yet implemented)
+### Fix status
 
-For `decide_to_talk` / `decide_to_react`: raise `max_tokens` well above 20
-(and/or drop the `Reasoning:` pre-fill so the model emits the answer first),
-**and** align the validator's split delimiter with the wording the template
-actually elicits (the quoted `Answer in "yes" or "no":`, and likewise check the
-`Answer: Option` form for `decide_to_react`). Left as a recommendation here per
-request; not changed in code.
+- **Done:** `max_tokens` raised `20 → 500` for both `decide_to_talk`
+  (`run_gpt_prompt.py` ~L1423) and `decide_to_react` (~L1521), giving the model
+  room to finish its chain-of-thought and reach the answer line. This should
+  fix `decide_to_react` cleanly: its validator splits on `"Answer: Option"`,
+  which matches the wording the template/few-shots elicit.
+- **Done (root cause #2):** the `decide_to_talk` validator used to split on
+  `"Answer in yes or no:"` (unquoted) while the template primes
+  `Answer in "yes" or "no":` (quoted), so even correct answers were rejected.
+  It now scans for the **last** standalone `yes`/`no` token in the response
+  (the answer line echoes the literal `"yes" or "no"` template text, so the
+  real answer is always the final one) — tolerant of quoting, casing, and
+  trailing punctuation, and `\b` boundaries keep words like "yesterday" from
+  matching.
+
+### Provenance (not a fork regression)
+
+The `max_tokens=20` on these two calls is **inherited from the upstream
+Stanford repo** (initial commit `6d7d7ad1`, joonspk-research, 2023-07-23), not
+introduced by this fork. The fork's harness commit (`06e108be`, "better
+logging now") only swapped the hardcoded `"engine": "text-davinci-003"` for
+`active_engine()` on these lines; every numeric `max_tokens` was preserved
+verbatim. So it is a latent upstream weakness, exposed here because the local
+models dive into verbose reasoning.

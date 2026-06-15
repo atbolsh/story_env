@@ -1403,16 +1403,21 @@ def run_gpt_prompt_decide_to_talk(persona, target_persona, retrieved,test_input=
     prompt_input += [target_persona.name]
     return prompt_input
   
+  def __func_clean_up(gpt_response, prompt=""):
+    # The template elicits a line like:  Answer in "yes" or "no": yes
+    # Models vary on quoting/casing/punctuation (the historical exact-string
+    # split on `Answer in yes or no:` failed to match the quoted form). We scan
+    # for the LAST standalone yes/no token: the answer line itself echoes the
+    # literal `"yes" or "no"` template text, so the actual answer is always the
+    # final yes/no in the response.
+    matches = re.findall(r"\b(yes|no)\b", gpt_response.lower())
+    return matches[-1] if matches else gpt_response.strip().lower()
+
   def __func_validate(gpt_response, prompt=""): 
     try: 
-      if gpt_response.split("Answer in yes or no:")[-1].strip().lower() in ["yes", "no"]: 
-        return True
-      return False     
+      return __func_clean_up(gpt_response, prompt) in ["yes", "no"]
     except:
       return False 
-
-  def __func_clean_up(gpt_response, prompt=""):
-    return gpt_response.split("Answer in yes or no:")[-1].strip().lower()
 
   def get_fail_safe(): 
     fs = "yes"
@@ -1420,7 +1425,7 @@ def run_gpt_prompt_decide_to_talk(persona, target_persona, retrieved,test_input=
 
 
 
-  gpt_param = {"engine": active_engine(), "max_tokens": 20, 
+  gpt_param = {"engine": active_engine(), "max_tokens": 500, 
                "temperature": 0, "top_p": 1, "stream": False,
                "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
   prompt_template = "persona/prompt_template/v2/decide_to_talk_v2.txt"
@@ -1518,7 +1523,7 @@ def run_gpt_prompt_decide_to_react(persona, target_persona, retrieved,test_input
     return fs
 
 
-  gpt_param = {"engine": active_engine(), "max_tokens": 20, 
+  gpt_param = {"engine": active_engine(), "max_tokens": 500, 
                "temperature": 0, "top_p": 1, "stream": False,
                "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
   prompt_template = "persona/prompt_template/v2/decide_to_react_v1.txt"
