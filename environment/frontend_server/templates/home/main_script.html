@@ -30,6 +30,9 @@
 	// <step> -- one full loop around all three phases determined by <phase> is 
 	// a step. We use this to link the steps in the backend. 
 	let step = parseInt(document.getElementById('step').innerHTML);
+	// The step the replay started at, captured so the Restart button can return
+	// to it (the live <step> div value is mutated as we advance).
+	const start_step = step;
 	let sim_code = document.getElementById('sim_code').innerHTML;
 	// let persona_names = document.getElementById('persona_name_list').innerHTML.split(",");
 
@@ -122,6 +125,47 @@
 	let execute_count_max = tile_width/movement_speed;
 	let execute_count = execute_count_max;
 	let movement_target = {};
+
+	// ###########################################################################
+	// REPLAY CONTROLS (restart + dynamic speed)
+	// ###########################################################################
+	// When <snap_next> is set (by Restart) the next step is placed instantly
+	// instead of being walked to, so personas don't slide across the map.
+	let snap_next = false;
+
+	// <movement_speed> must divide <tile_width> so each tile takes a whole
+	// number of frames. These are the only legal speeds; faster = bigger step.
+	let speed_levels = [1, 2, 4, 8, 16, 32];
+	let speed_index = speed_levels.indexOf(movement_speed);
+	if (speed_index < 0) { speed_index = speed_levels.length - 1; }
+	// Speed changes are deferred and applied at the next tile boundary so we
+	// never change the per-frame step in the middle of a tile (which would
+	// otherwise overshoot the target). null means "no change pending".
+	let pending_movement_speed = null;
+
+	function set_speed_display() {
+		let el = document.getElementById("game-speed-content");
+		if (el) { el.innerHTML = (speed_index + 1) + " / " + speed_levels.length; }
+	}
+
+	// delta = +1 faster, -1 slower.
+	function change_speed(delta) {
+		speed_index = Math.max(0, Math.min(speed_levels.length - 1, speed_index + delta));
+		pending_movement_speed = speed_levels[speed_index];
+		set_speed_display();
+	}
+
+	// Restart the replay from the step it was opened at. We reset the polling
+	// state and ask the next executed step to snap into place.
+	function restart_replay(scene_ctx) {
+		step = start_step;
+		phase = "update";
+		timer = 0;
+		execute_count = execute_count_max;
+		snap_next = true;
+		pre_anims_direction_dict = {};
+		if (scene_ctx) { scene_ctx.scene.resume(); }
+	}
 	
 
 	// ###########################################################################
@@ -179,9 +223,21 @@
 	  // see: https://labs.phaser.io/view.html?src=src/animation/single%20sprite%20sheet.js
 	  // Joon: Technically, I think this guy had the best tutorial for atlas: 
 	  //       https://www.youtube.com/watch?v=fdXcD9X4NrQ&ab_channel=MorganPage
+	  // <atlas> is the generic Phaser-tutorial sprite. It is only used for the
+	  // invisible camera-follow <player> below; the actual personas get their
+	  // own per-persona sprite sheets loaded just after.
 	  this.load.atlas("atlas", 
 	                  "https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.png", 
 	                  "https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.json");
+
+	  // Per-persona character sprites (keyed by the underscored name). These
+	  // share a single atlas.json frame layout (down/left/right/up + *-walk).
+	  {% for p_name, p_name_os in persona_names %}
+		  {% with 'assets/characters/'|add:p_name_os|add:'.png' as image_static %}
+			  this.load.atlas("{{p_name_os}}", "{% static image_static %}", 
+			  										  		     "{% static 'assets/characters/atlas.json' %}");
+			{% endwith %}
+	  {% endfor %}
 	}
 
 	function create() {  
@@ -282,17 +338,22 @@
 	  // We start by creating the game sprite objects. 
 	  for (let i=0; i<Object.keys(spawn_tile_loc).length; i++) { 
 	    let persona_name = Object.keys(spawn_tile_loc)[i];
+	    // <personas> is keyed by the display name (with spaces); the loaded
+	    // sprite atlas is keyed by the underscored name.
+	    let atlas_key = persona_name.replace(/ /g, "_");
 	    let start_pos = [spawn_tile_loc[persona_name][0] * tile_width + tile_width / 2, 
 	                     spawn_tile_loc[persona_name][1] * tile_width + tile_width];
 	    let new_sprite = this.physics.add
-	                         .sprite(start_pos[0], start_pos[1], "atlas", "misa-front")
+	                         .sprite(start_pos[0], start_pos[1], atlas_key, "down")
 	                         .setSize(30, 40)
-	                         .setOffset(0, 32); // DEBUG 1 --- I added 32 offset on Dec 29. 
+	                         .setOffset(0, 0);
+	    new_sprite.displayWidth = 40;
+	    new_sprite.scaleY = new_sprite.scaleX;
 	    // Here, we are creating the persona and its pronunciatio sprites.
 	    personas[persona_name] = new_sprite;
 	    pronunciatios[persona_name] = this.add.text(
 	                                   new_sprite.body.x - 6, 
-	                                   new_sprite.body.y - 42 - 32, // DEBUG 1 --- I added 32 offset on Dec 29. 
+	                                   new_sprite.body.y - 42, 
 	                                   "🦁", {
 	                                   font: "28px monospace", 
 	                                   fill: "#000000", 
@@ -302,32 +363,37 @@
 	                                   borderRadius:"10px"}).setDepth(3);
 	  }
 
-	  // Create the player's walking animations from the texture atlas. These are
-	  // stored in the global animation manager so any sprite can access them.
+	  // Create each persona's walking animations from its own atlas. These are
+	  // stored in the global animation manager keyed by "<name>-<dir>-walk".
 	  const anims = this.anims;
-	  anims.create({
-	    key: "misa-left-walk",
-	    frames: anims.generateFrameNames("atlas", { prefix: "misa-left-walk.", start: 0, end: 3, zeroPad: 3 }),
-	    frameRate: 4,
-	    repeat: -1 });
+	  for (let i=0; i<Object.keys(spawn_tile_loc).length; i++) {
+	    let persona_name = Object.keys(spawn_tile_loc)[i];
+	    let atlas_key = persona_name.replace(/ /g, "_");
 
-	  anims.create({
-	    key: "misa-right-walk",
-	    frames: anims.generateFrameNames("atlas", { prefix: "misa-right-walk.", start: 0, end: 3, zeroPad: 3 }),
-	    frameRate: 4,
-	    repeat: -1 });
+	    anims.create({
+	      key: atlas_key + "-left-walk",
+	      frames: anims.generateFrameNames(atlas_key, { prefix: "left-walk.", start: 0, end: 3, zeroPad: 3 }),
+	      frameRate: 4,
+	      repeat: -1 });
 
-	  anims.create({
-	    key: "misa-front-walk",
-	    frames: anims.generateFrameNames("atlas", { prefix: "misa-front-walk.", start: 0, end: 3, zeroPad: 3 }),
-	    frameRate: 4,
-	    repeat: -1 });
+	    anims.create({
+	      key: atlas_key + "-right-walk",
+	      frames: anims.generateFrameNames(atlas_key, { prefix: "right-walk.", start: 0, end: 3, zeroPad: 3 }),
+	      frameRate: 4,
+	      repeat: -1 });
 
-	  anims.create({
-	    key: "misa-back-walk",
-	    frames: anims.generateFrameNames("atlas", { prefix: "misa-back-walk.", start: 0, end: 3, zeroPad: 3 }),
-	    frameRate: 4,
-	    repeat: -1 });
+	    anims.create({
+	      key: atlas_key + "-down-walk",
+	      frames: anims.generateFrameNames(atlas_key, { prefix: "down-walk.", start: 0, end: 3, zeroPad: 3 }),
+	      frameRate: 4,
+	      repeat: -1 });
+
+	    anims.create({
+	      key: atlas_key + "-up-walk",
+	      frames: anims.generateFrameNames(atlas_key, { prefix: "up-walk.", start: 0, end: 3, zeroPad: 3 }),
+	      frameRate: 4,
+	      repeat: -1 });
+	  }
 	}
 
 
@@ -346,6 +412,19 @@
 		pause_button.onclick = function(){
 			game_pause();
 		};
+
+		// *** REPLAY-ONLY CONTROLS (restart / dynamic speed) ***
+		// These buttons only exist in replay mode; guard so the live observer
+		// view (where they are absent) does not error.
+		if (restart_button) {
+			restart_button.onclick = function(){ restart_replay(play_context); };
+		}
+		if (slowdown_button) {
+			slowdown_button.onclick = function(){ change_speed(-1); };
+		}
+		if (speedup_button) {
+			speedup_button.onclick = function(){ change_speed(1); };
+		}
 
 	  // *** MOVE CAMERA *** 
 	  // This is where we finish up the camera setting we started in the create() 
@@ -411,6 +490,10 @@
 	    // The execute_count_max is computed by tile_width/movement_speed, which
 	    // defines a one step sequence in this world. 
 	    document.getElementById("game-time-content").innerHTML = execute_movement["meta"]["curr_time"];
+	    // On a Restart we place the first step's personas directly on their tiles
+	    // (no walk animation) so they don't slide across the map from wherever
+	    // they happened to be.
+	    let do_snap = snap_next;
 	    for (let i=0; i<Object.keys(personas).length; i++) {
 	      let curr_persona_name = Object.keys(personas)[i];
 	      let curr_persona = personas[curr_persona_name];
@@ -421,6 +504,10 @@
 	        let curr_y = execute_movement["persona"][curr_persona_name]["movement"][1];
 	        movement_target[curr_persona_name] = [curr_x * tile_width, 
 	                                              curr_y * tile_width]; 
+	        if (do_snap) {
+	          curr_persona.body.x = movement_target[curr_persona_name][0];
+	          curr_persona.body.y = movement_target[curr_persona_name][1];
+	        }
 	        let pronunciatio_content = execute_movement["persona"][curr_persona_name]["pronunciatio"];
 	        // This is what gives the pronunciatio balloon the name initials. We 
 	        // use regex to extract the initials of the personas. 
@@ -460,24 +547,25 @@
 	        }
 
 	        curr_pronunciatio.x = curr_persona.body.x - 6; 
-          curr_pronunciatio.y = curr_persona.body.y - 42 - 32; // DEBUG 1 --- I added 32 offset on Dec 29. 
+          curr_pronunciatio.y = curr_persona.body.y - 42; 
 
+          let atlas_key = curr_persona_name.replace(/ /g, "_");
           if (anims_direction == "l") {
-			      curr_persona.anims.play("misa-left-walk", true);
+			      curr_persona.anims.play(atlas_key + "-left-walk", true);
 			    } else if (anims_direction == "r") {
-			      curr_persona.anims.play("misa-right-walk", true);
+			      curr_persona.anims.play(atlas_key + "-right-walk", true);
 			    } else if (anims_direction == "u") {
-			      curr_persona.anims.play("misa-back-walk", true);
+			      curr_persona.anims.play(atlas_key + "-up-walk", true);
 			    } else if (anims_direction == "d") {
-			      curr_persona.anims.play("misa-front-walk", true);
+			      curr_persona.anims.play(atlas_key + "-down-walk", true);
 			    } else {
 			      curr_persona.anims.stop();
 
 			      // If we were moving, pick an idle frame to use
-			      if (pre_anims_direction_dict[curr_persona_name] == "l") curr_persona.setTexture("atlas", "misa-left");else
-			      if (pre_anims_direction_dict[curr_persona_name] == "r") curr_persona.setTexture("atlas", "misa-right");else
-			      if (pre_anims_direction_dict[curr_persona_name] == "u") curr_persona.setTexture("atlas", "misa-back");else
-			      if (pre_anims_direction_dict[curr_persona_name] == "d") curr_persona.setTexture("atlas", "misa-front");
+			      if (pre_anims_direction_dict[curr_persona_name] == "l") curr_persona.setTexture(atlas_key, "left");else
+			      if (pre_anims_direction_dict[curr_persona_name] == "r") curr_persona.setTexture(atlas_key, "right");else
+			      if (pre_anims_direction_dict[curr_persona_name] == "u") curr_persona.setTexture(atlas_key, "up");else
+			      if (pre_anims_direction_dict[curr_persona_name] == "d") curr_persona.setTexture(atlas_key, "down");
 			    };
 
 	      } 
@@ -490,11 +578,21 @@
 	          curr_persona.body.x = movement_target[curr_persona_name][0];
 	          curr_persona.body.y = movement_target[curr_persona_name][1];
 	        }
+	        // Apply any pending speed change here, at a clean tile boundary, so
+	        // we never resize the per-frame step in the middle of a tile.
+	        if (pending_movement_speed != null) {
+	          movement_speed = pending_movement_speed;
+	          execute_count_max = tile_width / movement_speed;
+	          pending_movement_speed = null;
+	        }
 	        phase = "update";
 	        execute_count = execute_count_max + 1;
 	        step = step + 1;
 	      }
 	    }
+
+	    // The Restart snap (if any) has now been applied to this step.
+	    if (do_snap) { snap_next = false; }
 
 	    // Filling in the action description. 
 	    if (execute_count == execute_count_max) { 
@@ -528,6 +626,12 @@
 	// Control button binders
 	var play_button=document.getElementById("play_button");
 	var pause_button=document.getElementById("pause_button");
+
+	// Replay-only controls (null in the live observer view).
+	var restart_button = document.getElementById("restart_button");
+	var slowdown_button = document.getElementById("slowdown_button");
+	var speedup_button = document.getElementById("speedup_button");
+	set_speed_display();
 </script>
 
 

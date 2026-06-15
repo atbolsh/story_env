@@ -29,6 +29,25 @@
 			</div>
 		</div>
 
+		{% if mode == 'replay' %}
+		<div class="row" style="margin-top:1em">
+			<div class="col-md-5">
+				<h4 style="margin-top:0.7em">Speed <span id="game-speed-content"></span></h4>
+			</div>
+			<div class="col-md-7" style="text-align: right">
+				<button id="slowdown_button" type="button" class="btn btn-default">
+				    <strong style=" font-size:1.2em"><i class="glyphicon glyphicon-minus"></i> &nbsp;Slower</strong>
+				</button>
+				<button id="speedup_button" type="button" class="btn btn-default">
+				    <strong style=" font-size:1.2em"><i class="glyphicon glyphicon-plus"></i> &nbsp;Faster</strong>
+				</button>
+				<button id="restart_button" type="button" class="btn btn-default">
+				    <strong style=" font-size:1.2em"><i class="glyphicon glyphicon-repeat"></i> &nbsp;Restart</strong>
+				</button>
+			</div>
+		</div>
+		{% endif %}
+
 		<br>
 		<hr style="border-color:#999999">
 		<br>
@@ -37,7 +56,9 @@
 			<div class="media" style="background-color:#EEEEEE; padding:1em; padding-left:3.5em; padding-right:2em; border-radius:10px">
 			  <div class="media-left media-middle">
 			    <a href="#">
-			      <img class="media-object" src="{% static 'img/atlas.png' %}" style="width:5em">
+			      {% with 'assets/characters/profile/'|add:p_name_os|add:'.png' as image_static %}
+			      <img class="media-object" src="{% static image_static %}" style="width:5em">
+			      {% endwith %}
 			    </a>
 			  </div>
 			  <div class="media-body" style='padding-left:3em; padding-top:0.5em; padding-bottom:1em'>
