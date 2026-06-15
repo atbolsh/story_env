@@ -4,7 +4,7 @@
 # Runs ONE FULL IN-GAME DAY (sec_per_step=10 -> 86400/10 = 8640 steps) of
 # base_the_ville_isabella_maria_klaus on each harness, sequentially:
 #
-#     gemma4-e2b  ->  gemma4-e4b  ->  legacy-gpt
+#     gemma4-e2b  ->  gemma4-e4b  ->  legacy-gpt  ->  qwen3-0.6b
 #
 # Usage, on the remote box, from the repo root:
 #
@@ -51,7 +51,7 @@ export MIDNIGHT_STAMP="$STAMP"
 # shorter shakedown runs, e.g.:
 #     MIDNIGHT_STEPS=50 MIDNIGHT_HARNESSES="gemma4-e2b" bash midnight_test.sh
 FORK_SIM="base_the_ville_isabella_maria_klaus"
-HARNESSES=(${MIDNIGHT_HARNESSES:-gemma4-e2b gemma4-e4b legacy-gpt})
+HARNESSES=(${MIDNIGHT_HARNESSES:-gemma4-e2b gemma4-e4b legacy-gpt qwen3-0.6b})
 STEPS="${MIDNIGHT_STEPS:-8640}" # one in-game day at sec_per_step=10
 MAX_RUN_SECONDS=$((3 * 3600))   # per-run wall-clock budget before we cut it
 POLL_SECONDS=60                 # how often to check progress
