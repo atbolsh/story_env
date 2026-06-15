@@ -92,9 +92,111 @@
 	let movement_target = {};
 	let all_movement = {{ all_movement|safe }};
 
-  let start_datetime =new Date(Date.parse("{{start_datetime}}"));
   var datetime_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
- 	document.getElementById("game-time-content").innerHTML = start_datetime.toLocaleTimeString("en-US", datetime_options);
+
+	// ###########################################################################
+	// DEMO NAVIGATION (rewind / fast-forward)
+	// ###########################################################################
+	// <all_movement> only stores *changes* per step (the storage is compressed
+	// into deltas), so to land on an arbitrary step we forward-fill every
+	// persona's last-known state from the earliest available step up to the
+	// target. <base_step>/<base_time_ms> let us recompute the on-screen clock
+	// for whichever step we jump to.
+	let mv_keys = Object.keys(all_movement).map(Number).sort(function(a, b){ return a - b; });
+	let min_step = mv_keys.length ? mv_keys[0] : step;
+	let max_step = mv_keys.length ? mv_keys[mv_keys.length - 1] : step;
+	let base_step = {{step}};
+	let base_time_ms = Date.parse("{{start_datetime}}");
+
+	function set_time_display() {
+		let d = new Date(base_time_ms + (step - base_step) * step_size);
+		document.getElementById("game-time-content").innerHTML = d.toLocaleTimeString("en-US", datetime_options);
+		let step_el = document.getElementById("game-step-content");
+		if (step_el) { step_el.innerHTML = step; }
+	}
+
+	// "Dolores Murphy" -> "DM" (mirrors the inline logic in update()).
+	function persona_initials(persona_name) {
+		let rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
+		let initials = [...persona_name.matchAll(rgx)] || [];
+		return ((initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')).toUpperCase();
+	}
+
+	// Teleport one persona to a fully-resolved state (position, emoji, action,
+	// location, conversation) without animating the walk.
+	function render_persona_at(persona_name_us, m) {
+		let curr_persona = personas[persona_name_us];
+		let curr_pronunciatio = pronunciatios[persona_name_us];
+		let curr_speech_bubble = speech_bubbles[persona_name_us];
+
+		let curr_x = m["movement"][0];
+		let curr_y = m["movement"][1];
+		curr_persona.body.x = curr_x * tile_width;
+		curr_persona.body.y = curr_y * tile_width;
+		// Also move the rendered sprite directly: the physics body->sprite sync
+		// only runs while the scene is playing, so without this a jump made
+		// while paused would not be visible.
+		curr_persona.x = curr_x * tile_width + tile_width / 2;
+		curr_persona.y = curr_y * tile_width + tile_width / 2;
+		movement_target[persona_name_us] = [curr_x * tile_width, curr_y * tile_width];
+
+		let chat_content = "";
+		let chat_content_raw = m["chat"];
+		if (chat_content_raw != null) {
+			for (let j = 0; j < chat_content_raw.length; j++) {
+				chat_content += chat_content_raw[j][0] + ": " + chat_content_raw[j][1] + "<br>";
+			}
+		} else {
+			chat_content = "<em>None at the moment</em>";
+		}
+
+		curr_pronunciatio.setText(persona_initials(persona_name_us) + ": " + m["pronunciatio"]);
+		document.getElementById("quick_emoji-" + persona_name_us).innerHTML = m["pronunciatio"];
+		document.getElementById("current_action__" + persona_name_us).innerHTML = m["description"].split("@")[0];
+		document.getElementById("target_address__" + persona_name_us).innerHTML = m["description"].split("@")[1];
+		document.getElementById("chat__" + persona_name_us).innerHTML = chat_content;
+
+		curr_pronunciatio.x = curr_persona.body.x + 18;
+		curr_pronunciatio.y = curr_persona.body.y - 42 - 25;
+		curr_speech_bubble.x = curr_persona.body.x + 80;
+		curr_speech_bubble.y = curr_persona.body.y - 39;
+
+		curr_persona.anims.stop();
+		curr_persona.setTexture(persona_name_us, "down");
+	}
+
+	// Forward-fill the delta stream to obtain every persona's state at <target>.
+	function resolve_state_at(target) {
+		let state = {};
+		for (let ki = 0; ki < mv_keys.length; ki++) {
+			let k = mv_keys[ki];
+			if (k > target) { break; }
+			let m = all_movement[k];
+			for (let pname in m) { state[pname] = m[pname]; }
+		}
+		return state;
+	}
+
+	// Jump the whole scene to an arbitrary step (Rewind / Fast-forward).
+	function jump_to_step(target) {
+		target = Math.max(min_step, Math.min(target, max_step));
+		let state = resolve_state_at(target);
+		for (let i = 0; i < Object.keys(personas).length; i++) {
+			let persona_name_us = Object.keys(personas)[i];
+			let persona_name = persona_name_us.replace("_", " ");
+			if (state[persona_name]) {
+				render_persona_at(persona_name_us, state[persona_name]);
+			}
+		}
+		step = target;
+		execute_count = execute_count_max;
+		set_time_display();
+	}
+
+	set_time_display();
+	if (document.getElementById("game-step-max")) {
+		document.getElementById("game-step-max").innerHTML = max_step;
+	}
  	
 
 	// ###########################################################################
@@ -483,9 +585,10 @@
 	    }
 			execute_count = execute_count_max + 1;
 	    step = step + 1;
-
-	    start_datetime = new Date(start_datetime.getTime() + step_size);
- 			document.getElementById("game-time-content").innerHTML = start_datetime.toLocaleTimeString("en-US", datetime_options);
+	    // Stop cleanly at the end of the recorded timeline instead of indexing
+	    // past it (all_movement[step] would be undefined).
+	    if (step > max_step) { step = max_step; play_context.scene.pause(); }
+	    set_time_display();
     }
 
 	  execute_count -= 1;
@@ -494,6 +597,23 @@
 	// Control button binders
 	var play_button=document.getElementById("play_button");
 	var pause_button=document.getElementById("pause_button");
+
+	var rewind_button = document.getElementById("rewind_button");
+	var forward_button = document.getElementById("forward_button");
+
+	function jump_amount_value() {
+		let el = document.getElementById("jump_amount");
+		let v = el ? parseInt(el.value, 10) : 30;
+		if (isNaN(v) || v < 1) { v = 1; }
+		return v;
+	}
+
+	if (rewind_button) {
+		rewind_button.onclick = function() { jump_to_step(step - jump_amount_value()); };
+	}
+	if (forward_button) {
+		forward_button.onclick = function() { jump_to_step(step + jump_amount_value()); };
+	}
 </script>
 
 

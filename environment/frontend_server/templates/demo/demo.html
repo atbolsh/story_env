@@ -30,6 +30,23 @@
 			</div>
 		</div>
 
+		<div class="row" style="margin-top:1.5em; {% if mode == 'simulate' %} display: none {% endif %}">
+			<div class="col-md-5">
+				<h4 style="margin-top:0.7em">Step <span id="game-step-content"></span> of <span id="game-step-max"></span></h4>
+			</div>
+			<div class="col-md-7" style="text-align: right">
+				<label style="font-weight:400; margin-right:0.5em; font-size:1.1em">Jump
+					<input id="jump_amount" type="number" value="30" min="1" style="width:4.5em; text-align:center">
+					steps</label>
+				<button id="rewind_button" type="button" class="btn btn-default">
+				    <strong style=" font-size:1.2em"><i class="glyphicon glyphicon-backward"></i> &nbsp;Rewind</strong>
+				</button>
+				<button id="forward_button" type="button" class="btn btn-default">
+				    <strong style=" font-size:1.2em">Fast-forward &nbsp;<i class="glyphicon glyphicon-forward"></i></strong>
+				</button>
+			</div>
+		</div>
+
 		<br>
 		<hr style="border-color:#999999">
 		<br>
