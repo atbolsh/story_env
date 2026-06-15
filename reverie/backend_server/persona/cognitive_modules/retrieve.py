@@ -10,6 +10,8 @@ sys.path.append('../../')
 from global_methods import *
 from persona.prompt_template.gpt_structure import *
 
+from harnesses import memory_retrieval_log
+
 from numpy import dot
 from numpy.linalg import norm
 
@@ -228,11 +230,17 @@ def new_retrieve(persona, focal_points, n_count=30):
     nodes = [i for created, i in nodes]
 
     # Calculating the component dictionaries and normalizing them.
+    # We keep the raw (pre-normalization) values too: the raw relevance is the
+    # actual cosine similarity to the focal point, which is what the
+    # memory-retrieval log records.
     recency_out = extract_recency(persona, nodes)
+    raw_recency = dict(recency_out)
     recency_out = normalize_dict_floats(recency_out, 0, 1)
     importance_out = extract_importance(persona, nodes)
+    raw_importance = dict(importance_out)
     importance_out = normalize_dict_floats(importance_out, 0, 1)  
     relevance_out = extract_relevance(persona, nodes, focal_pt)
+    raw_relevance = dict(relevance_out)
     relevance_out = normalize_dict_floats(relevance_out, 0, 1)
 
     # Computing the final scores that combines the component values. 
@@ -265,7 +273,48 @@ def new_retrieve(persona, focal_points, n_count=30):
 
     for n in master_nodes: 
       n.last_accessed = persona.scratch.curr_time
-      
+
+    # Log this cosine-similarity retrieval. We record, per returned node, BOTH
+    # the raw cosine similarity to the seed (cosine_raw -- the genuine, across-
+    # retrieval-comparable similarity) AND the values the ranking actually uses:
+    # each component is min-max normalized within this retrieval's candidate set
+    # (normalize_dict_floats), then weighted. The three weighted contributions
+    # (w_recency, w_relevance, w_importance) sum to exactly `score`, the number
+    # that ranked the node. No-op unless memory-retrieval logging is configured.
+    try:
+      if memory_retrieval_log.enabled():
+        w_rec, w_rel, w_imp = (persona.scratch.recency_w,
+                               persona.scratch.relevance_w,
+                               persona.scratch.importance_w)
+        results = []
+        for rank, key in enumerate(master_out.keys(), start=1):
+          node = persona.a_mem.id_to_node[key]
+          results.append({
+            "rank": rank,
+            "node_id": key,
+            "type": node.type,
+            "statement": node.embedding_key,
+            "cosine_raw": raw_relevance.get(key),
+            "relevance_norm": relevance_out.get(key),
+            "recency_raw": raw_recency.get(key),
+            "recency_norm": recency_out.get(key),
+            "importance_raw": raw_importance.get(key),
+            "importance_norm": importance_out.get(key),
+            "w_recency": w_rec * recency_out.get(key, 0) * gw[0],
+            "w_relevance": w_rel * relevance_out.get(key, 0) * gw[1],
+            "w_importance": w_imp * importance_out.get(key, 0) * gw[2],
+            "score": master_out.get(key),
+          })
+        memory_retrieval_log.log_retrieval(
+          focal_point=focal_pt,
+          n_requested=n_count,
+          results=results,
+          weights={"recency_w": w_rec, "relevance_w": w_rel,
+                   "importance_w": w_imp, "gw": list(gw)},
+        )
+    except Exception:
+      pass
+
     retrieved[focal_pt] = master_nodes
 
   return retrieved
