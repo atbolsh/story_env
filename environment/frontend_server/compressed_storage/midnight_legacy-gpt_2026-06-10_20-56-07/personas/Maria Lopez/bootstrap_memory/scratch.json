@@ -1,0 +1,784 @@
+{
+  "vision_r": 8,
+  "att_bandwidth": 8,
+  "retention": 8,
+  "curr_time": "February 13, 2023, 23:59:50",
+  "curr_tile": [
+    123,
+    57
+  ],
+  "daily_plan_req": "Maria Lopez spends at least 3 hours a day Twitch streaming or gaming.",
+  "name": "Maria Lopez",
+  "first_name": "Maria",
+  "last_name": "Lopez",
+  "age": 21,
+  "innate": "energetic, enthusiastic, inquisitive",
+  "learned": "Maria Lopez is a student at Oak Hill College studying physics and a part time Twitch game streamer who loves to connect with people and explore new ideas.",
+  "currently": "Maria Lopez is working on her physics degree and streaming games on Twitch to make some extra money. She visits Hobbs Cafe for studying and eating just about everyday.",
+  "lifestyle": "Maria Lopez goes to bed around 2am, awakes up around 9am, eats dinner around 6pm. She likes to hang out at Hobbs Cafe if it's before 6pm.",
+  "living_area": "the Ville:Dorm for Oak Hill College:Maria Lopez's room",
+  "concept_forget": 100,
+  "daily_reflection_time": 180,
+  "daily_reflection_size": 5,
+  "overlap_reflect_th": 4,
+  "kw_strg_event_reflect_th": 10,
+  "kw_strg_thought_reflect_th": 9,
+  "recency_w": 1,
+  "relevance_w": 1,
+  "importance_w": 1,
+  "recency_decay": 0.99,
+  "importance_trigger_max": 150,
+  "importance_trigger_curr": 97,
+  "importance_ele_n": 27,
+  "thought_count": 5,
+  "daily_req": [
+    "wake up and complete the morning routine at 9:00 am",
+    "start studying physics at Oak Hill College at 10:00 am",
+    "have lunch at Hobbs Cafe at 1:00 pm",
+    "continue studying physics at Oak Hill College at 2:00 pm",
+    "stream games on Twitch from 5:00 pm to 8:00 pm",
+    "have dinner at 6:00 pm"
+  ],
+  "f_daily_schedule": [
+    [
+      "sleeping",
+      540
+    ],
+    [
+      "waking up and completing her morning routine (waking up and stretching)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (brushing her teeth)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (washing her face)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (getting dressed)",
+      10
+    ],
+    [
+      "waking up and completing her morning routine (making breakfast)",
+      15
+    ],
+    [
+      "waking up and completing her morning routine (on the way to eating breakfast)",
+      0
+    ],
+    [
+      "waking up and completing her morning routine (conversing about research on gentrification and physics, planning to grab lunch at Hobbs Cafe at 1:00 pm)",
+      3
+    ],
+    [
+      "waking up and completing her morning routine (eating breakfast)",
+      7
+    ],
+    [
+      "waking up and completing her morning routine (packing her bag for school)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (checking her schedule for the day)",
+      5
+    ],
+    [
+      "starting to study physics at Oak Hill College (gathering her study materials)",
+      5
+    ],
+    [
+      "starting to study physics at Oak Hill College (reviewing her notes from the previous lecture)",
+      15
+    ],
+    [
+      "starting to study physics at Oak Hill College (reading the assigned textbook chapters)",
+      30
+    ],
+    [
+      "starting to study physics at Oak Hill College (working on practice problems)",
+      30
+    ],
+    [
+      "starting to study physics at Oak Hill College (taking a break)",
+      10
+    ],
+    [
+      "starting to study physics at Oak Hill College (reviewing the practice problems she completed)",
+      15
+    ],
+    [
+      "starting to study physics at Oak Hill College (making flashcards for key concepts)",
+      15
+    ],
+    [
+      "continuing to study physics at Oak Hill College (reviewing her notes from the previous lecture)",
+      10
+    ],
+    [
+      "continuing to study physics at Oak Hill College (on the way to working on practice problems)",
+      0
+    ],
+    [
+      "continuing to study physics at Oak Hill College (conversing about two friends, Maria Lopez and Klaus Mueller, making plans to have lunch together at Hobbs Cafe after finishing their work and research studies.)",
+      7
+    ],
+    [
+      "continuing to study physics at Oak Hill College (working on practice problems)",
+      13
+    ],
+    [
+      "continuing to study physics at Oak Hill College (reading the textbook for the upcoming lecture)",
+      15
+    ],
+    [
+      "continuing to study physics at Oak Hill College (taking a short break)",
+      5
+    ],
+    [
+      "continuing to study physics at Oak Hill College (reviewing the key concepts for the upcoming lecture)",
+      10
+    ],
+    [
+      "having lunch at Hobbs Cafe (walking to Hobbs Cafe)",
+      5
+    ],
+    [
+      "having lunch at Hobbs Cafe (ordering her food)",
+      10
+    ],
+    [
+      "having lunch at Hobbs Cafe (on the way to eating her lunch)",
+      0
+    ],
+    [
+      "having lunch at Hobbs Cafe (conversing about Isabella Rodriguez and Maria Lopez are discussing the Valentine's Day decorations and menu, with Maria excited to try the heart-shaped strawberry waffles at the Valentine's Day party tomorrow, which will also feature live music.)",
+      8
+    ],
+    [
+      "having lunch at Hobbs Cafe (eating her lunch)",
+      7
+    ],
+    [
+      "having lunch at Hobbs Cafe (chatting with the staff at Hobbs Cafe)",
+      10
+    ],
+    [
+      "having lunch at Hobbs Cafe (paying for her meal)",
+      5
+    ],
+    [
+      "continuing to study physics at Oak Hill College (reviewing her physics notes)",
+      15
+    ],
+    [
+      "continuing to study physics at Oak Hill College (working on a physics problem set)",
+      15
+    ],
+    [
+      "continuing to study physics at Oak Hill College (reading a physics textbook)",
+      30
+    ],
+    [
+      "continuing to study physics at Oak Hill College (attending a physics lecture)",
+      30
+    ],
+    [
+      "continuing to study physics at Oak Hill College (taking a break) (taking a break and grabbing a snack)",
+      10
+    ],
+    [
+      "continuing to study physics at Oak Hill College (taking a break) (checking her emails and responding to any urgent messages)",
+      10
+    ],
+    [
+      "continuing to study physics at Oak Hill College (on the way to reviewing her notes from the previous lecture)",
+      0
+    ],
+    [
+      "continuing to study physics at Oak Hill College (conversing about Maria Lopez and Klaus Mueller are discussing their progress in research on gentrification and a physics problem, planning to meet at Hobbs Cafe to share insights over lunch.)",
+      10
+    ],
+    [
+      "continuing to study physics at Oak Hill College (reviewing her notes from the previous lecture)",
+      15
+    ],
+    [
+      "continuing to study physics at Oak Hill College (on the way to working on a physics problem set)",
+      0
+    ],
+    [
+      "continuing to study physics at Oak Hill College (conversing about the excitement for the Valentine's Day party, discussing decorations, menu, interactive games, live music, and overall party preparations between Isabella Rodriguez and Maria Lopez.)",
+      10
+    ],
+    [
+      "continuing to study physics at Oak Hill College (working on a physics problem set)",
+      10
+    ],
+    [
+      "continuing to study physics at Oak Hill College (wrapping up her study session and organizing her notes)",
+      5
+    ],
+    [
+      "continuing to study physics at Oak Hill College (working on a physics lab assignment)",
+      35
+    ],
+    [
+      "streaming games on Twitch (setting up her streaming equipment)",
+      10
+    ],
+    [
+      "streaming games on Twitch (checking her internet connection)",
+      5
+    ],
+    [
+      "streaming games on Twitch (choosing which game to play)",
+      10
+    ],
+    [
+      "streaming games on Twitch (starting her stream)",
+      5
+    ],
+    [
+      "streaming games on Twitch (interacting with her viewers)",
+      15
+    ],
+    [
+      "streaming games on Twitch (taking a short break)",
+      15
+    ],
+    [
+      "having dinner at Hobbs Cafe (walking to Hobbs Cafe)",
+      5
+    ],
+    [
+      "having dinner at Hobbs Cafe (on the way to ordering her food)",
+      0
+    ],
+    [
+      "having dinner at Hobbs Cafe (conversing about Maria Lopez and Klaus Mueller are discussing their research progress on gentrification and physics, planning to review each other's work over lunch at Hobbs Cafe at 1:00 pm, and also planning to discuss the Valentine's Day party decorations, menu, interactive games, and live music during their meeting.)",
+      8
+    ],
+    [
+      "having dinner at Hobbs Cafe (ordering her food)",
+      10
+    ],
+    [
+      "having dinner at Hobbs Cafe (on the way to eating her dinner)",
+      0
+    ],
+    [
+      "having dinner at Hobbs Cafe (conversing about setting up a Valentine's Day party with activities like a photo booth and live music, with Isabella Rodriguez and Maria Lopez coordinating the arrangements and discussing seating plans)",
+      10
+    ],
+    [
+      "having dinner at Hobbs Cafe (eating her dinner)",
+      10
+    ],
+    [
+      "having dinner at Hobbs Cafe (chatting with the staff)",
+      10
+    ],
+    [
+      "having dinner at Hobbs Cafe (paying for her meal)",
+      5
+    ],
+    [
+      "streaming games on Twitch (setting up her streaming equipment)",
+      15
+    ],
+    [
+      "streaming games on Twitch (choosing which game to play)",
+      10
+    ],
+    [
+      "streaming games on Twitch (starting the stream and greeting her viewers)",
+      5
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (setting up her streaming equipment)",
+      10
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (choosing which game to play)",
+      5
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (starting the game and introducing herself to her viewers)",
+      5
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (playing the game and interacting with her viewers) (setting up her streaming equipment)",
+      10
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (playing the game and interacting with her viewers) (choosing which game to play)",
+      5
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (playing the game and interacting with her viewers) (starting the stream and greeting her viewers)",
+      5
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (playing the game and interacting with her viewers) (playing the game and interacting with her viewers)",
+      30
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (playing the game and interacting with her viewers) (taking a short break)",
+      10
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (taking a short break)",
+      5
+    ],
+    [
+      "streaming games on Twitch (playing the game and interacting with her viewers) (wrapping up the stream and thanking her viewers for watching)",
+      5
+    ],
+    [
+      "streaming games on Twitch (taking a short break)",
+      10
+    ],
+    [
+      "streaming games on Twitch (playing another game based on viewer requests)",
+      30
+    ],
+    [
+      "streaming games on Twitch (on the way to thanking her viewers for watching and ending the stream)",
+      0
+    ],
+    [
+      "streaming games on Twitch (conversing about Maria Lopez and Klaus Mueller are planning to meet up at Hobbs Cafe tomorrow after lunch to exchange ideas on their research topics of gentrification and physics, respectively.)",
+      3
+    ],
+    [
+      "streaming games on Twitch (shutting down her streaming equipment)",
+      12
+    ],
+    [
+      "continuing to stream games on Twitch (setting up her streaming equipment)",
+      10
+    ],
+    [
+      "continuing to stream games on Twitch (checking her internet connection)",
+      5
+    ],
+    [
+      "continuing to stream games on Twitch (choosing which game to play)",
+      10
+    ],
+    [
+      "continuing to stream games on Twitch (starting the stream on Twitch)",
+      5
+    ],
+    [
+      "continuing to stream games on Twitch (interacting with viewers in the chat)",
+      30
+    ],
+    [
+      "continuing to stream games on Twitch (taking a short break)",
+      10
+    ],
+    [
+      "continuing to stream games on Twitch (playing the game)",
+      30
+    ],
+    [
+      "continuing to stream games on Twitch (thanking viewers for watching and ending the stream)",
+      10
+    ],
+    [
+      "continuing to stream games on Twitch (shutting down her streaming equipment)",
+      5
+    ],
+    [
+      "continuing to stream games on Twitch (preparing for bed)",
+      5
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      7
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ]
+  ],
+  "f_daily_schedule_hourly_org": [
+    [
+      "sleeping",
+      540
+    ],
+    [
+      "waking up and completing her morning routine",
+      60
+    ],
+    [
+      "starting to study physics at Oak Hill College",
+      120
+    ],
+    [
+      "continuing to study physics at Oak Hill College",
+      60
+    ],
+    [
+      "having lunch at Hobbs Cafe",
+      60
+    ],
+    [
+      "continuing to study physics at Oak Hill College",
+      180
+    ],
+    [
+      "streaming games on Twitch",
+      60
+    ],
+    [
+      "having dinner at Hobbs Cafe",
+      60
+    ],
+    [
+      "streaming games on Twitch",
+      180
+    ],
+    [
+      "continuing to stream games on Twitch",
+      120
+    ]
+  ],
+  "act_address": "the Ville:Dorm for Oak Hill College:Maria Lopez's room:bed",
+  "act_start_time": "February 13, 2023, 23:54:00",
+  "act_duration": 7,
+  "act_description": "sleeping",
+  "act_pronunciatio": "\ud83d\ude34",
+  "act_event": [
+    "Maria Lopez",
+    "sleep",
+    ""
+  ],
+  "act_obj_description": "being used",
+  "act_obj_pronunciatio": "\ud83d\udd04",
+  "act_obj_event": [
+    "bed",
+    "use",
+    "being"
+  ],
+  "chatting_with": null,
+  "chat": null,
+  "chatting_with_buffer": {
+    "Klaus Mueller": -136,
+    "Isabella Rodriguez": -1168
+  },
+  "chatting_end_time": null,
+  "act_path_set": true,
+  "planned_path": []
+}
