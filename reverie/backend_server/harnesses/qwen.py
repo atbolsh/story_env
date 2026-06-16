@@ -8,23 +8,33 @@ retrieval works fully offline and sims stay fork-compatible across the local
 harnesses.
 
 Public surface matches ``harnesses/base.py``. ``harnesses/__init__.py`` calls
-``build("Qwen/Qwen3-0.6B")``. Model and embedder are *lazy-loaded* on first
-use, so importing this module (or calling ``build``) downloads/loads nothing.
+``build("Qwen/Qwen3-0.6B")`` (or ``build("Qwen/Qwen3-0.6B", use_thinking=True)``
+for the ``*-thinking`` harness variant). Model and embedder are *lazy-loaded* on
+first use, so importing this module (or calling ``build``) downloads/loads
+nothing.
 
 Qwen3 specifics / best practices (per the Qwen3 model card):
 
-  * Qwen3 is a hybrid "thinking" model. We run it in **non-thinking mode**
-    (``enable_thinking=False`` in the chat template) for the agent loop: the
-    cognitive prompts want terse, format-following completions, and ``<think>``
-    blocks both bloat the output and break the downstream cleaners (the same
-    lesson that motivated ``enable_thinking=False`` for Gemma). Any stray
-    ``<think>...</think>`` is stripped defensively.
+  * Qwen3 is a hybrid "thinking" model. By default we run it in **non-thinking
+    mode** (``enable_thinking=False`` in the chat template) for the agent loop:
+    the cognitive prompts want terse, format-following completions, and
+    ``<think>`` blocks both bloat the output and break the downstream cleaners
+    (the same lesson that motivated ``enable_thinking=False`` for Gemma). Any
+    stray ``<think>...</think>`` is stripped defensively.
+  * When ``use_thinking`` is set the chat template enables the reasoning block
+    (``enable_thinking=True``), each call's token budget is scaled by
+    ``_THINKING_MAX_NEW_TOKENS_MULT``, and the ``<think>...</think>`` content is
+    logged but stripped from every returned value -- so memories, conversations,
+    and JSON behave as if no reasoning block existed.
   * Recommended non-thinking sampling: ``temperature=0.7, top_p=0.8,
-    top_k=20, min_p=0``. JSON-output paths drop the temperature for stability.
+    top_k=20, min_p=0``. Recommended thinking sampling: ``temperature=0.6,
+    top_p=0.95, top_k=20, min_p=0``. JSON-output paths drop the temperature for
+    stability.
   * The model card warns against greedy decoding for *thinking* mode; in
     non-thinking mode greedy is acceptable, and we honor the legacy
     ``temperature=0`` contract (deterministic prompts like decide_to_talk) by
-    disabling sampling, mirroring the Gemma harness.
+    disabling sampling. In thinking mode we never go greedy: a deterministic
+    request is bumped to the recommended thinking temperature instead.
 
 The legacy completion-prompt handling, stop-sequence trimming, and JSON
 extraction are shared with the Gemma harness (same upstream prompt templates).
@@ -60,26 +70,48 @@ _JSON_TOP_K = 20
 
 _DEFAULT_MAX_NEW_TOKENS = 256
 
+# Recommended sampling for Qwen3 in thinking mode (per the model card):
+#   temperature=0.6, top_p=0.95, top_k=20, min_p=0. Greedy decoding is
+#   explicitly discouraged in thinking mode (it can cause endless repetition).
+_THINKING_TEMPERATURE = 0.6
+_THINKING_TOP_P = 0.95
+_THINKING_TOP_K = 20
+# Thinking spends part of the budget on the <think> block before the answer, so
+# scale every call's token budget up (mirrors the Gemma thinking harness).
+_THINKING_MAX_NEW_TOKENS_MULT = 2
 
-def _strip_think(text: str) -> str:
-  """Remove any ``<think>...</think>`` span (and a dangling unclosed
-  ``<think>`` tail). With ``enable_thinking=False`` Qwen3 should not emit one,
-  but we strip defensively so a stray block never reaches the cleaners."""
+
+def _split_qwen_thinking(text: str) -> tuple:
+  """Return ``(answer, thinking_or_None)`` splitting off a ``<think>...</think>``
+  block. Qwen3 emits one only with thinking enabled; we always split defensively
+  so a stray (or truncated) block never reaches the cleaners or memories.
+  ``answer`` is the text with the block removed; ``thinking`` is the reasoning
+  (or ``None`` if absent)."""
   if "<think>" not in text:
-    return text
+    return text, None
+  open_idx = text.find("<think>")
   close = text.rfind("</think>")
   if close != -1:
-    return text[close + len("</think>"):].lstrip()
+    thinking = text[open_idx + len("<think>"):close].strip()
+    answer = (text[:open_idx] + text[close + len("</think>"):]).lstrip()
+    return answer, (thinking or None)
   # Unclosed think block (e.g. truncated): drop everything from the tag on.
-  return text[:text.find("<think>")].rstrip()
+  thinking = text[open_idx + len("<think>"):].strip()
+  answer = text[:open_idx].rstrip()
+  return answer, (thinking or None)
 
 
 class _QwenHarness:
   """Singleton-per-model-id harness. Heavy state is lazy-loaded so the registry
   can build the object cheaply."""
 
-  def __init__(self, model_id: str):
+  def __init__(self, model_id: str, use_thinking: bool = False):
     self.model_id = model_id
+    # When True, the chat template enables Qwen3's <think> reasoning block. The
+    # reasoning is logged (see prompt_log) but stripped from every value handed
+    # back to the cognitive modules, so memories / conversations / JSON behave
+    # exactly as if it were never generated.
+    self.use_thinking = bool(use_thinking)
     # Label substituted into gpt_param["engine"] by run_gpt_prompt.py (purely
     # informational for this harness -- llm_request never reads "engine").
     self.engine_label = model_id
@@ -142,12 +174,21 @@ class _QwenHarness:
     returning only the model's continuation -- mirroring the legacy completion
     contract. ``kind`` tags the call type in the prompt-pair log.
     """
+    if self.use_thinking:
+      # Scale the token budget so the <think> block doesn't crowd out the
+      # answer, and never go greedy (the card warns it loops in thinking mode).
+      max_new_tokens = max_new_tokens * _THINKING_MAX_NEW_TOKENS_MULT
+      if temperature is None or temperature <= 0:
+        temperature = _THINKING_TEMPERATURE
+        top_p = _THINKING_TOP_P
+        top_k = _THINKING_TOP_K
     log_params = {
       "max_new_tokens": max_new_tokens,
       "temperature": temperature,
       "top_p": top_p,
       "top_k": top_k,
       "stop": stop,
+      "thinking": self.use_thinking,
     }
     text = None
     try:
@@ -160,7 +201,7 @@ class _QwenHarness:
         tokenize=False,
         add_generation_prompt=not last_is_assistant,
         continue_final_message=last_is_assistant,
-        enable_thinking=False,
+        enable_thinking=self.use_thinking,
       )
       inputs = self._tokenizer([text], return_tensors="pt").to(self._device)
       input_len = inputs["input_ids"].shape[-1]
@@ -182,14 +223,19 @@ class _QwenHarness:
       text_out = self._tokenizer.decode(
         outputs[0][input_len:], skip_special_tokens=True
       )
-      text_out = _strip_think(text_out)
+      # Strip the reasoning block from everything we return; only the log keeps
+      # it (via the dedicated ``thinking`` field).
+      text_out, thinking_out = _split_qwen_thinking(text_out)
 
       returned = _apply_stop_sequences(text_out, stop)
+      response_record = {"raw": text_out, "returned": returned}
+      if thinking_out:
+        response_record["thinking"] = thinking_out
       prompt_log.log_call(
         harness="qwen", model=self.model_id, kind=kind,
         request={"messages": messages, "rendered_prompt": text},
         params=log_params,
-        response={"raw": text_out, "returned": returned},
+        response=response_record,
       )
       return returned
     except Exception as e:
@@ -411,6 +457,10 @@ class _QwenHarness:
     return vec.tolist()
 
 
-def build(model_id: str) -> _QwenHarness:
-  """Return a fresh harness object for ``model_id``."""
-  return _QwenHarness(model_id)
+def build(model_id: str, use_thinking: bool = False) -> _QwenHarness:
+  """Return a fresh harness object for ``model_id``.
+
+  ``use_thinking`` enables Qwen3's ``<think>`` reasoning block; the reasoning is
+  logged but stripped from every returned value.
+  """
+  return _QwenHarness(model_id, use_thinking=use_thinking)

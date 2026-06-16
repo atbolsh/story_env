@@ -31,7 +31,10 @@ Record schema (fields are null/absent where not applicable):
   params    sampling parameters used for the call
   response  ``{"raw": ..., "returned": ...}`` -- raw model text before any
             stop-sequence trimming, and the text actually returned to the
-            caller (both *before* the caller's validate/clean-up step)
+            caller (both *before* the caller's validate/clean-up step).
+            Thinking-mode harnesses add a ``"thinking"`` field with the model's
+            reasoning; that reasoning is stripped from ``raw``/``returned`` and
+            is never fed back into memories, conversations, or prompts.
   error     ``"ExcType: message"`` if the call raised; the record is still
             written so failed calls are visible in the log
 
@@ -113,6 +116,11 @@ def _format_record_text(record: dict, seq: int) -> str:
   if isinstance(response, dict):
     returned = response.get("returned")
     raw = response.get("raw")
+    thinking = response.get("thinking")
+    # Reasoning (thinking-mode harnesses only). Shown for the record but it is
+    # stripped from ``returned``/``raw`` and never reaches memories or prompts.
+    if thinking:
+      lines += [_rule("thinking (stripped from output)"), str(thinking)]
     lines += [_rule("response"), str(returned)]
     if raw != returned:
       lines += [_rule("raw response (before stop-trim)"), str(raw)]

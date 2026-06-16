@@ -20,12 +20,15 @@ from typing import Any, Callable, Dict
 DEFAULT_HARNESS = "legacy-gpt"
 
 _AVAILABLE: Dict[str, str] = {
-  "legacy-gpt":  "OpenAI GPT-3.5 / GPT-4 via the openai==0.28 SDK (default).",
-  "gemma4-e2b":  "Local Gemma 4 E2B (instruction-tuned) via transformers.",
-  "gemma4-e4b":  "Local Gemma 4 E4B (instruction-tuned) via transformers.",
-  "qwen3-0.6b":  "Local Qwen3-0.6B (non-thinking mode) via transformers.",
-  "claude":      "Anthropic Claude (scaffolded; not implemented).",
-  "latest-gpt":  "Latest OpenAI chat models (scaffolded; not implemented).",
+  "legacy-gpt":           "OpenAI GPT-3.5 / GPT-4 via the openai==0.28 SDK (default).",
+  "gemma4-e2b":           "Local Gemma 4 E2B (instruction-tuned) via transformers.",
+  "gemma4-e2b-thinking":  "Local Gemma 4 E2B with thinking mode (reasoning logged, stripped from outputs).",
+  "gemma4-e4b":           "Local Gemma 4 E4B (instruction-tuned) via transformers.",
+  "gemma4-e4b-thinking":  "Local Gemma 4 E4B with thinking mode (reasoning logged, stripped from outputs).",
+  "qwen3-0.6b":           "Local Qwen3-0.6B (non-thinking mode) via transformers.",
+  "qwen3-0.6b-thinking":  "Local Qwen3-0.6B with thinking mode (reasoning logged, stripped from outputs).",
+  "claude":               "Anthropic Claude (scaffolded; not implemented).",
+  "latest-gpt":           "Latest OpenAI chat models (scaffolded; not implemented).",
 }
 
 
@@ -48,12 +51,21 @@ def _resolve(name: str) -> Any:
   if name == "gemma4-e2b":
     from . import gemma4
     return gemma4.build("google/gemma-4-E2B-it")
+  if name == "gemma4-e2b-thinking":
+    from . import gemma4
+    return gemma4.build("google/gemma-4-E2B-it", use_thinking=True)
   if name == "gemma4-e4b":
     from . import gemma4
     return gemma4.build("google/gemma-4-E4B-it")
+  if name == "gemma4-e4b-thinking":
+    from . import gemma4
+    return gemma4.build("google/gemma-4-E4B-it", use_thinking=True)
   if name == "qwen3-0.6b":
     from . import qwen
     return qwen.build("Qwen/Qwen3-0.6B")
+  if name == "qwen3-0.6b-thinking":
+    from . import qwen
+    return qwen.build("Qwen/Qwen3-0.6B", use_thinking=True)
   if name == "claude":
     from . import claude
     return claude

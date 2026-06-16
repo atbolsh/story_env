@@ -39,7 +39,19 @@ Then, on your favorite browser, go to [http://localhost:8000/](http://localhost:
 Open up another command line (the one you used in Step 1 should still be running the environment server, so leave that as it is). Navigate to `reverie/backend_server` and run `reverie.py`.
 
     python reverie.py
-This will start the simulation server. A command-line prompt will appear, asking the following: "Enter the name of the forked simulation: ". To start a 3-agent simulation with Isabella Rodriguez, Maria Lopez, and Klaus Mueller, type the following:
+This will start the simulation server. It first prints the list of available **model harnesses** and asks "Select model harness [legacy-gpt]: ". Type the name of the backend you want to drive the agents with (press Enter to accept the default). The choices are:
+
+| Harness | Backend |
+| --- | --- |
+| `legacy-gpt` (default) | OpenAI GPT-3.5 / GPT-4 via the `openai==0.28` SDK |
+| `gemma4-e2b` / `gemma4-e4b` | Local Gemma 4 E2B / E4B via transformers |
+| `gemma4-e2b-thinking` / `gemma4-e4b-thinking` | Same Gemma 4 models with **thinking mode** on |
+| `qwen3-0.6b` | Local Qwen3-0.6B (non-thinking) via transformers |
+| `qwen3-0.6b-thinking` | Qwen3-0.6B with **thinking mode** on |
+
+The `*-thinking` variants are just convenience aliases for the same model with its reasoning channel enabled: the model "thinks" before answering, and that reasoning is written to the prompt-pair logs (the `thinking` field) but is **stripped from everything else** — it never enters an agent's memory, a conversation, or any JSON the cognitive modules parse. Thinking runs also raise each call's token budget (2x) to leave room for the reasoning. Pick one the same way you'd pick any other harness; there's no separate flag to set.
+
+After the harness, a prompt will appear asking the following: "Enter the name of the forked simulation: ". To start a 3-agent simulation with Isabella Rodriguez, Maria Lopez, and Klaus Mueller, type the following:
     
     base_the_ville_isabella_maria_klaus
 The prompt will then ask, "Enter the name of the new simulation: ". Type any name to denote your current simulation (e.g., just "test-simulation" will do for now).

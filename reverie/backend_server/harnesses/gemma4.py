@@ -7,10 +7,19 @@ Transformers library. Pairs generation with a small local embedding model
 (``BAAI/bge-small-en-v1.5``) so retrieval works without any network.
 
 Public surface matches ``harnesses/base.py``. The module exposes a
-``build(model_id)`` factory which returns an object with bound methods
-mirroring the harness interface; ``harnesses/__init__.py`` calls
+``build(model_id, use_thinking=False)`` factory which returns an object with
+bound methods mirroring the harness interface; ``harnesses/__init__.py`` calls
 ``build("google/gemma-4-E2B-it")`` or ``build("google/gemma-4-E4B-it")``
-depending on the selected harness name.
+depending on the selected harness name, passing ``use_thinking=True`` for the
+``*-thinking`` harness variants.
+
+Thinking mode: when ``use_thinking`` is set, the chat template turns on Gemma
+4's reasoning channel (``enable_thinking=True``) and every call's token budget
+is scaled by ``_THINKING_MAX_NEW_TOKENS_MULT``. The generated reasoning is
+recorded in the prompt-pair log (as a dedicated ``thinking`` field) but is
+*stripped from every value returned to the cognitive modules* -- so memories,
+conversations, and JSON outputs behave exactly as if no reasoning channel
+existed.
 
 Model and embedder are *lazy-loaded* on first use, so just importing this
 module (or calling ``build``) does not download or load any weights.
@@ -29,6 +38,8 @@ from . import prompt_log
 
 # Recommended sampling for Gemma 4 (per the model card):
 #   temperature=1.0, top_p=0.95, top_k=64.
+# The same sampling is recommended in both thinking and non-thinking mode, so
+# the thinking variants reuse these values (only the token budget changes).
 # For JSON-output paths we drop temperature/top_p to be much more conservative.
 _DEFAULT_TEMPERATURE = 1.0
 _DEFAULT_TOP_P = 0.95
@@ -38,6 +49,45 @@ _JSON_TOP_P = 0.9
 _JSON_TOP_K = 40
 
 _DEFAULT_MAX_NEW_TOKENS = 256
+
+# With thinking enabled the model spends a chunk of its budget on the reasoning
+# channel before the answer, so we scale every call's token budget up. The model
+# card's thinking examples use ~1024 tokens vs the ~256-512 we use otherwise; 2x
+# keeps headroom for the answer without unbounded generation.
+_THINKING_MAX_NEW_TOKENS_MULT = 2
+
+# Gemma 4's thinking mode wraps its reasoning as:
+#   <|channel>thought\n ...reasoning... <channel|> ...final answer...
+# ``processor.parse_response`` normally splits this for us, but we also strip
+# defensively (see ``_split_gemma_thinking``).
+_GEMMA_THOUGHT_OPEN = "<|channel>thought"
+_GEMMA_THOUGHT_CLOSE = "<channel|>"
+
+
+def _split_gemma_thinking(text: str) -> tuple:
+  """Return ``(answer, thinking_or_None)``.
+
+  Gemma 4's thinking mode emits a ``<|channel>thought ... <channel|>`` span that
+  precedes the final answer. ``processor.parse_response`` usually separates the
+  two, but we strip defensively here too so a stray thought channel never leaks
+  into memories, conversations, or JSON outputs. ``answer`` is the text with the
+  thought span removed; ``thinking`` is the reasoning (or ``None`` if absent).
+  """
+  if not text:
+    return text, None
+  open_idx = text.find(_GEMMA_THOUGHT_OPEN)
+  if open_idx == -1:
+    return text, None
+  close_idx = text.find(_GEMMA_THOUGHT_CLOSE, open_idx)
+  if close_idx == -1:
+    # Truncated thought block with no final answer: drop everything from the
+    # tag on, keeping only any text that preceded it (normally empty).
+    thinking = text[open_idx + len(_GEMMA_THOUGHT_OPEN):].strip()
+    answer = text[:open_idx].strip()
+    return answer, (thinking or None)
+  thinking = text[open_idx + len(_GEMMA_THOUGHT_OPEN):close_idx].strip()
+  answer = (text[:open_idx] + text[close_idx + len(_GEMMA_THOUGHT_CLOSE):]).strip()
+  return answer, (thinking or None)
 
 
 def _maybe_hf_login() -> None:
@@ -158,8 +208,13 @@ class _Gemma4Harness:
   build the object cheaply.
   """
 
-  def __init__(self, model_id: str):
+  def __init__(self, model_id: str, use_thinking: bool = False):
     self.model_id = model_id
+    # When True, the chat template enables Gemma 4's reasoning channel. The
+    # reasoning is logged (see prompt_log) but stripped from every value handed
+    # back to the cognitive modules, so memories / conversations / JSON behave
+    # exactly as if it were never generated.
+    self.use_thinking = bool(use_thinking)
     # Label substituted into gpt_param["engine"] by run_gpt_prompt.py (purely
     # informational for this harness -- llm_request never reads "engine").
     self.engine_label = model_id
@@ -229,12 +284,17 @@ class _Gemma4Harness:
     every call through here -- including each retry of the safe_* loops --
     produces one log record when ``REVERIE_PROMPT_LOG`` is set.
     """
+    # With thinking on, scale the token budget so the reasoning channel doesn't
+    # eat into the answer (the answer is what the caller actually consumes).
+    if self.use_thinking:
+      max_new_tokens = max_new_tokens * _THINKING_MAX_NEW_TOKENS_MULT
     log_params = {
       "max_new_tokens": max_new_tokens,
       "temperature": temperature,
       "top_p": top_p,
       "top_k": top_k,
       "stop": stop,
+      "thinking": self.use_thinking,
     }
     text = None
     try:
@@ -247,7 +307,7 @@ class _Gemma4Harness:
         tokenize=False,
         add_generation_prompt=not last_is_assistant,
         continue_final_message=last_is_assistant,
-        enable_thinking=False,
+        enable_thinking=self.use_thinking,
       )
       inputs = self._processor(text=text, return_tensors="pt").to(self._device)
       input_len = inputs["input_ids"].shape[-1]
@@ -273,17 +333,29 @@ class _Gemma4Harness:
       except Exception:
         parsed = response
 
+      thinking_out = None
       if isinstance(parsed, dict):
         text_out = parsed.get("content") or parsed.get("text") or ""
+        thinking_out = parsed.get("thinking")
       else:
         text_out = str(parsed)
 
+      # Defensive split: guarantee no thought channel survives into the text we
+      # return, even if parse_response didn't separate it. The reasoning is only
+      # ever surfaced via the log's ``thinking`` field, never to the caller.
+      text_out, leaked_thinking = _split_gemma_thinking(text_out)
+      if leaked_thinking and not thinking_out:
+        thinking_out = leaked_thinking
+
       returned = _apply_stop_sequences(text_out, stop)
+      response_record = {"raw": text_out, "returned": returned}
+      if thinking_out:
+        response_record["thinking"] = thinking_out
       prompt_log.log_call(
         harness="gemma4", model=self.model_id, kind=kind,
         request={"messages": messages, "rendered_prompt": text},
         params=log_params,
-        response={"raw": text_out, "returned": returned},
+        response=response_record,
       )
       return returned
     except Exception as e:
@@ -515,6 +587,10 @@ class _Gemma4Harness:
     return vec.tolist()
 
 
-def build(model_id: str) -> _Gemma4Harness:
-  """Return a fresh harness object for ``model_id``."""
-  return _Gemma4Harness(model_id)
+def build(model_id: str, use_thinking: bool = False) -> _Gemma4Harness:
+  """Return a fresh harness object for ``model_id``.
+
+  ``use_thinking`` enables Gemma 4's reasoning channel; the reasoning is logged
+  but stripped from every returned value.
+  """
+  return _Gemma4Harness(model_id, use_thinking=use_thinking)
