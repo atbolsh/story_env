@@ -136,7 +136,12 @@ run_one() {  # $1=harness
   local run_name="midnight_${harness}_${STAMP}"
   local run_dir="${LOG_ROOT}/${run_name}"
   local sim_code="$run_name"
-  local session="$run_name"
+  # tmux uses '.' as the window.pane separator and ':' as the session:window
+  # separator in target specs, so a session name containing either is invalid
+  # (this is why the qwen3-0.6b runs failed: "0.6b" has a dot). Sanitize the
+  # session name only -- run_name / sim_code / run_dir keep their real value
+  # (dots are fine in directory names and simulation codes).
+  local session="${run_name//[.:]/-}"
   local fe_log="${run_dir}/frontend_console.log"
   local be_log="${run_dir}/backend_console.log"
   local pair_log="${run_dir}/backend_prompt_pairs.jsonl"
