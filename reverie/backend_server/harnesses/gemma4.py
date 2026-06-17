@@ -51,10 +51,15 @@ _JSON_TOP_K = 40
 _DEFAULT_MAX_NEW_TOKENS = 256
 
 # With thinking enabled the model spends a chunk of its budget on the reasoning
-# channel before the answer, so we scale every call's token budget up. The model
-# card's thinking examples use ~1024 tokens vs the ~256-512 we use otherwise; 2x
-# keeps headroom for the answer without unbounded generation.
-_THINKING_MAX_NEW_TOKENS_MULT = 2
+# channel before the answer, so we scale every call's token budget up. Gemma 4's
+# small variants (E2B/E4B in particular) "reason extensively by default" and will
+# happily burn an entire modest budget on hidden reasoning, leaving *nothing* for
+# the answer -- we observed exactly this: a thinking block truncated mid-sentence
+# and an empty answer that then failed JSON parsing. The recommended fix when you
+# can't pass an explicit max_thinking_tokens knob is a generous budget so the
+# answer survives, so we use 4x (the model card's thinking examples use ~1024
+# tokens vs the ~256-512 we use otherwise).
+_THINKING_MAX_NEW_TOKENS_MULT = 4
 
 # Gemma 4's thinking mode wraps its reasoning as:
 #   <|channel>thought\n ...reasoning... <channel|> ...final answer...
@@ -269,7 +274,8 @@ class _Gemma4Harness:
                 top_p: float = _DEFAULT_TOP_P,
                 top_k: int = _DEFAULT_TOP_K,
                 stop=None,
-                kind: str = "chat") -> str:
+                kind: str = "chat",
+                enable_thinking: Optional[bool] = None) -> str:
     """Core chat-template generation. Returns the assistant text.
 
     If the final message in ``messages`` has role=``assistant``, we treat that
@@ -284,9 +290,13 @@ class _Gemma4Harness:
     every call through here -- including each retry of the safe_* loops --
     produces one log record when ``REVERIE_PROMPT_LOG`` is set.
     """
+    # ``enable_thinking`` lets a caller override the harness-level setting for a
+    # single call (e.g. _safe_json disables thinking on its final retry); when
+    # left as None we honor the harness default.
+    use_thinking = self.use_thinking if enable_thinking is None else bool(enable_thinking)
     # With thinking on, scale the token budget so the reasoning channel doesn't
     # eat into the answer (the answer is what the caller actually consumes).
-    if self.use_thinking:
+    if use_thinking:
       max_new_tokens = max_new_tokens * _THINKING_MAX_NEW_TOKENS_MULT
     log_params = {
       "max_new_tokens": max_new_tokens,
@@ -294,7 +304,7 @@ class _Gemma4Harness:
       "top_p": top_p,
       "top_k": top_k,
       "stop": stop,
-      "thinking": self.use_thinking,
+      "thinking": use_thinking,
     }
     text = None
     try:
@@ -307,7 +317,7 @@ class _Gemma4Harness:
         tokenize=False,
         add_generation_prompt=not last_is_assistant,
         continue_final_message=last_is_assistant,
-        enable_thinking=self.use_thinking,
+        enable_thinking=use_thinking,
       )
       inputs = self._processor(text=text, return_tensors="pt").to(self._device)
       input_len = inputs["input_ids"].shape[-1]
@@ -427,6 +437,18 @@ class _Gemma4Harness:
       "object and nothing else. No prose, no commentary, no markdown fences. "
       'The object must have a single key "output". Example: {"output": "..."}.'
     )
+    if self.use_thinking:
+      # Gemma 4's small variants over-reason and can spend the whole budget on
+      # the hidden thought channel without ever emitting the answer. Per Google's
+      # thinking-mode guidance, when you can't pass an explicit max_thinking_tokens
+      # the recommended lever is an in-prompt brevity instruction; we also tell it
+      # not to second-guess, since the failure we saw was a self-correction loop
+      # ("Wait... Actually... let me reconsider...") that never reached an answer.
+      system_prompt += (
+        " Think briefly: keep your reasoning to a few sentences at most, do not "
+        "restate the prompt or second-guess yourself, then commit and output the "
+        "JSON object."
+      )
     user_prompt = (
       '"""\n' + prompt + '\n"""\n'
       + f"Output the response to the prompt above in json. {special_instruction}\n"
@@ -440,6 +462,15 @@ class _Gemma4Harness:
     max_new_tokens = 512 if strong else 384
     for i in range(repeat):
       try:
+        # Thinking-off-on-the-final-retry (intentional, slightly hacky): with
+        # thinking enabled these models sometimes burn the entire token budget
+        # reasoning and return an empty/garbled answer that won't parse. The same
+        # models answer structured JSON cleanly with thinking *off* (the
+        # non-thinking harnesses completed full days without this failure), so as
+        # a last-ditch effort -- after spending the earlier attempts with thinking
+        # on -- we disable it for the final attempt to maximize the chance of a
+        # usable answer before giving up. ``None`` keeps the harness default.
+        attempt_thinking = False if (self.use_thinking and i == repeat - 1) else None
         raw = self._generate(
           [
             {"role": "system", "content": system_prompt},
@@ -450,6 +481,7 @@ class _Gemma4Harness:
           top_p=_JSON_TOP_P,
           top_k=_JSON_TOP_K,
           kind="chat_json",
+          enable_thinking=attempt_thinking,
         ).strip()
 
         obj_str = _extract_first_json_object(raw)
@@ -460,6 +492,13 @@ class _Gemma4Harness:
 
         parsed_obj = json.loads(obj_str)
         curr_response = parsed_obj["output"]
+        # The legacy validators/cleaners (written for OpenAI, which always
+        # returned text) call str methods like ``.strip()``. A model that emits
+        # e.g. {"output": 1} would hand them an int and raise inside validation,
+        # silently failing every retry. Coerce non-strings back to the string
+        # contract so {"output": 1} behaves like {"output": "1"}.
+        if not isinstance(curr_response, str):
+          curr_response = str(curr_response)
 
         if func_validate(curr_response, prompt=user_prompt):
           return func_clean_up(curr_response, prompt=user_prompt)

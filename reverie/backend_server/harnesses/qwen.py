@@ -77,8 +77,12 @@ _THINKING_TEMPERATURE = 0.6
 _THINKING_TOP_P = 0.95
 _THINKING_TOP_K = 20
 # Thinking spends part of the budget on the <think> block before the answer, so
-# scale every call's token budget up (mirrors the Gemma thinking harness).
-_THINKING_MAX_NEW_TOKENS_MULT = 2
+# scale every call's token budget up (mirrors the Gemma thinking harness). Small
+# Qwen3 models, like the small Gemma variants, can spend the whole budget inside
+# <think> and emit an empty/truncated answer that won't parse; we use 4x to leave
+# generous headroom for the answer (Qwen3's recommended bounded-thinking budgets
+# are on the order of 256-512 tokens *plus* the answer).
+_THINKING_MAX_NEW_TOKENS_MULT = 4
 
 
 def _split_qwen_thinking(text: str) -> tuple:
@@ -166,7 +170,8 @@ class _QwenHarness:
                 top_p: float = _DEFAULT_TOP_P,
                 top_k: int = _DEFAULT_TOP_K,
                 stop=None,
-                kind: str = "chat") -> str:
+                kind: str = "chat",
+                enable_thinking: Optional[bool] = None) -> str:
     """Core chat-template generation. Returns the assistant text.
 
     If the final message has role=``assistant`` we treat it as a pre-fill and
@@ -174,7 +179,11 @@ class _QwenHarness:
     returning only the model's continuation -- mirroring the legacy completion
     contract. ``kind`` tags the call type in the prompt-pair log.
     """
-    if self.use_thinking:
+    # ``enable_thinking`` lets a caller override the harness-level setting for a
+    # single call (e.g. _safe_json disables thinking on its final retry); when
+    # left as None we honor the harness default.
+    use_thinking = self.use_thinking if enable_thinking is None else bool(enable_thinking)
+    if use_thinking:
       # Scale the token budget so the <think> block doesn't crowd out the
       # answer, and never go greedy (the card warns it loops in thinking mode).
       max_new_tokens = max_new_tokens * _THINKING_MAX_NEW_TOKENS_MULT
@@ -188,7 +197,7 @@ class _QwenHarness:
       "top_p": top_p,
       "top_k": top_k,
       "stop": stop,
-      "thinking": self.use_thinking,
+      "thinking": use_thinking,
     }
     text = None
     try:
@@ -201,7 +210,7 @@ class _QwenHarness:
         tokenize=False,
         add_generation_prompt=not last_is_assistant,
         continue_final_message=last_is_assistant,
-        enable_thinking=self.use_thinking,
+        enable_thinking=use_thinking,
       )
       inputs = self._tokenizer([text], return_tensors="pt").to(self._device)
       input_len = inputs["input_ids"].shape[-1]
@@ -307,6 +316,17 @@ class _QwenHarness:
       "object and nothing else. No prose, no commentary, no markdown fences. "
       'The object must have a single key "output". Example: {"output": "..."}.'
     )
+    if self.use_thinking:
+      # Qwen3 (like the small Gemma variants) can over-reason and spend the whole
+      # budget inside <think> without emitting the answer. With no max_thinking_tokens
+      # knob, an in-prompt brevity instruction is the recommended lever; we also tell
+      # it not to second-guess, which is the self-correction loop that starves the
+      # answer.
+      system_prompt += (
+        " Think briefly: keep your reasoning to a few sentences at most, do not "
+        "restate the prompt or second-guess yourself, then commit and output the "
+        "JSON object."
+      )
     user_prompt = (
       '"""\n' + prompt + '\n"""\n'
       + f"Output the response to the prompt above in json. {special_instruction}\n"
@@ -320,6 +340,15 @@ class _QwenHarness:
     max_new_tokens = 512 if strong else 384
     for i in range(repeat):
       try:
+        # Thinking-off-on-the-final-retry (intentional, slightly hacky): with
+        # thinking enabled these models sometimes burn the entire token budget
+        # reasoning and return an empty/garbled answer that won't parse. The same
+        # models answer structured JSON cleanly with thinking *off* (the
+        # non-thinking harnesses completed full days without this failure), so as
+        # a last-ditch effort -- after spending the earlier attempts with thinking
+        # on -- we disable it for the final attempt to maximize the chance of a
+        # usable answer before giving up. ``None`` keeps the harness default.
+        attempt_thinking = False if (self.use_thinking and i == repeat - 1) else None
         raw = self._generate(
           [
             {"role": "system", "content": system_prompt},
@@ -330,6 +359,7 @@ class _QwenHarness:
           top_p=_JSON_TOP_P,
           top_k=_JSON_TOP_K,
           kind="chat_json",
+          enable_thinking=attempt_thinking,
         ).strip()
 
         obj_str = _extract_first_json_object(raw)
@@ -339,6 +369,12 @@ class _QwenHarness:
 
         parsed_obj = json.loads(obj_str)
         curr_response = parsed_obj["output"]
+        # Legacy validators/cleaners (written for OpenAI's text responses) call
+        # str methods like ``.strip()``; a model emitting e.g. {"output": 1} would
+        # hand them an int and raise inside validation, silently failing every
+        # retry. Coerce non-strings back to the string contract.
+        if not isinstance(curr_response, str):
+          curr_response = str(curr_response)
 
         if func_validate(curr_response, prompt=user_prompt):
           return func_clean_up(curr_response, prompt=user_prompt)

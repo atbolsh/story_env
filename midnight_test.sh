@@ -59,6 +59,9 @@ FORK_SIM="base_the_ville_isabella_maria_klaus"
 HARNESSES=(${MIDNIGHT_HARNESSES:-gemma4-e2b gemma4-e4b legacy-gpt qwen3-0.6b gemma4-e2b-thinking gemma4-e4b-thinking qwen3-0.6b-thinking})
 STEPS="${MIDNIGHT_STEPS:-8640}" # one in-game day at sec_per_step=10
 MAX_RUN_SECONDS=$((3 * 3600))   # per-run wall-clock budget before we cut it
+STALL_SECONDS="${MIDNIGHT_STALL_SECONDS:-1200}" # no curr_step progress for this
+                                # long => assume a hung run and stop early (a
+                                # backstop for hangs that never surface a prompt)
 POLL_SECONDS=60                 # how often to check progress
 PROMPT_TIMEOUT=600              # max wait for reverie.py's interactive prompts
 FIN_TIMEOUT=600                 # max wait for save+exit after "fin"
@@ -195,8 +198,22 @@ run_one() {  # $1=harness
   tmux send-keys -t "${session}:backend" "run ${STEPS}" C-m
   log "${harness}: 'run ${STEPS}' issued; polling every ${POLL_SECONDS}s."
 
-  # Poll until the day completes, the budget runs out, or the backend dies.
+  # Poll until the day completes, the run crashes, the backend dies/stalls, or
+  # the wall-clock budget runs out.
+  #
+  # Crash detection matters here: reverie.py's "run" loop is wrapped in a
+  # bare-except that prints a traceback + "Error." and drops back to the
+  # "Enter option:" prompt, leaving the *process alive*. That used to be
+  # mislabeled "TIMED OUT" -- the step counter froze but backend_running()
+  # stayed true, so we'd idle away the entire MAX_RUN_SECONDS budget before
+  # cutting it. We now notice the run returned to the prompt (a new
+  # "Enter option:" appears while step < STEPS) and report it as the crash it
+  # is, immediately. A separate STALL_SECONDS backstop catches genuine hangs
+  # that never surface a new prompt.
   t_start=$(date +%s)
+  local last_step=-1 last_progress_t=$t_start base_prompts now_prompts
+  # Count of "Enter option:" prompts already emitted before we issued "run".
+  base_prompts=$(grep -o "Enter option:" "$be_log" 2>/dev/null | wc -l | tr -d ' ')
   while :; do
     sleep "$POLL_SECONDS"
     step=$(current_step)
@@ -212,6 +229,29 @@ run_one() {  # $1=harness
       log "${harness}: backend process died; see ${be_log}"
       break
     fi
+
+    # A new "Enter option:" prompt while we're short of STEPS means the run
+    # aborted back to the interactive loop -- i.e. reverie's bare-except fired.
+    now_prompts=$(grep -o "Enter option:" "$be_log" 2>/dev/null | wc -l | tr -d ' ')
+    if [ "${now_prompts:-0}" -gt "${base_prompts:-0}" ] 2>/dev/null; then
+      status="CRASHED at step ${step}"
+      log "${harness}: run returned to the prompt early (bare-except); see ${be_log}."
+      break
+    fi
+
+    # Progress / stall tracking. A live-but-not-advancing sim (e.g. a hung
+    # model call that never raises) shouldn't burn the whole budget.
+    if [ "$step" -gt "$last_step" ] 2>/dev/null; then
+      last_step=$step
+      last_progress_t=$(date +%s)
+    elif [ "$(( $(date +%s) - last_progress_t ))" -ge "$STALL_SECONDS" ]; then
+      status="STALLED at step ${step}"
+      log "${harness}: no curr_step progress for ${STALL_SECONDS}s; stopping. See ${be_log}."
+      tmux send-keys -t "${session}:backend" C-c
+      sleep 15
+      break
+    fi
+
     if [ "$t_now" -ge "$MAX_RUN_SECONDS" ]; then
       status="TIMED OUT at step ${step}"
       log "${harness}: budget exhausted; interrupting the run."
