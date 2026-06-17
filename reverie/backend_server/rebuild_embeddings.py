@@ -42,6 +42,11 @@ _THIS_DIR = Path(__file__).resolve().parent
 if str(_THIS_DIR) not in sys.path:
   sys.path.insert(0, str(_THIS_DIR))
 
+# Put the repo's shared/ dir (the one canonical global_methods.py) on sys.path.
+_SHARED_DIR = _THIS_DIR.parent.parent / "shared"
+if _SHARED_DIR.is_dir() and str(_SHARED_DIR) not in sys.path:
+  sys.path.insert(0, str(_SHARED_DIR))
+
 import harnesses  # noqa: E402
 from global_methods import copyanything  # noqa: E402
 from reverie_config import fs_storage  # noqa: E402

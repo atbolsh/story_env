@@ -4,6 +4,19 @@ Author: Joon Sung Park (joonspk@stanford.edu)
 File: compress_sim_storage.py
 Description: Compresses a simulation for replay demos. 
 """
+# --- single-copy global_methods bootstrap -----------------------------------
+# Put the repo's shared/ dir (the one canonical global_methods.py) on sys.path
+# so ``import global_methods`` resolves there no matter which working directory
+# this process was launched from. Walks up from this file to find shared/.
+import os as _os, sys as _sys
+_d = _os.path.dirname(_os.path.abspath(__file__))
+while _d != _os.path.dirname(_d) and not _os.path.isdir(_os.path.join(_d, "shared")):
+  _d = _os.path.dirname(_d)
+_shared = _os.path.join(_d, "shared")
+if _os.path.isdir(_shared) and _shared not in _sys.path:
+  _sys.path.insert(0, _shared)
+del _os, _sys, _d, _shared
+# ----------------------------------------------------------------------------
 import shutil
 import json
 from global_methods import *

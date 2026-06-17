@@ -3,6 +3,16 @@
 import os
 import sys
 
+# Put the repo's shared/ dir (the one canonical global_methods.py) on sys.path
+# so the Django views' ``from global_methods import *`` resolves there. Walks up
+# from this file to find shared/.
+_d = os.path.dirname(os.path.abspath(__file__))
+while _d != os.path.dirname(_d) and not os.path.isdir(os.path.join(_d, "shared")):
+  _d = os.path.dirname(_d)
+_shared = os.path.join(_d, "shared")
+if os.path.isdir(_shared) and _shared not in sys.path:
+  sys.path.insert(0, _shared)
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'frontend_server.settings')
