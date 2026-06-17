@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        78,
+        14
+      ],
+      "pronunciatio": "\ud83c\udf7d\ufe0f\u2728",
+      "description": "closing Hobbs Cafe (checking the cleanliness of the dining tables) @ the Ville:Isabella Rodriguez's apartment:main room:shelf",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        94,
+        18
+      ],
+      "pronunciatio": "\ud83c\udfae\u2728",
+      "description": "streaming games on Twitch (to a moment in the game) @ the Ville:Carlos Gomez's apartment:main room:bed",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        126,
+        46
+      ],
+      "pronunciatio": "\ud83d\udca1\u2b07\ufe0f",
+      "description": "relaxing/preparing for the next day (dimming the lights in his room) @ the Ville:Dorm for Oak Hill College:Klaus Mueller's room:bed",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 20:27:10"
+  }
+}

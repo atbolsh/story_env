@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        78,
+        14
+      ],
+      "pronunciatio": "\ud83e\uddfc\u2728",
+      "description": "finishing work at the counter and starting to prepare for closing (wiping down the service counter surfaces) @ the Ville:Isabella Rodriguez's apartment:main room:shelf",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        79,
+        30
+      ],
+      "pronunciatio": "\ud83d\udcb8\ud83d\udcb3",
+      "description": "remaining dinner at Hobbs Cafe (paying the bill) @ the Ville:The Willows Market and Pharmacy:store:grocery store counter",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        127,
+        46
+      ],
+      "pronunciatio": "\ud83c\udf19\u2728",
+      "description": "finishing up work/relaxing after dinner (remaining conversation/transition to evening routine) @ the Ville:Dorm for Oak Hill College:Klaus Mueller's room:bed",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 19:02:00"
+  }
+}

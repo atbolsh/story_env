@@ -1,0 +1,706 @@
+{
+  "vision_r": 8,
+  "att_bandwidth": 8,
+  "retention": 8,
+  "curr_time": "February 13, 2023, 23:59:50",
+  "curr_tile": [
+    123,
+    57
+  ],
+  "daily_plan_req": "Maria Lopez spends at least 3 hours a day Twitch streaming or gaming.",
+  "name": "Maria Lopez",
+  "first_name": "Maria",
+  "last_name": "Lopez",
+  "age": 21,
+  "innate": "energetic, enthusiastic, inquisitive",
+  "learned": "Maria Lopez is a student at Oak Hill College studying physics and a part time Twitch game streamer who loves to connect with people and explore new ideas.",
+  "currently": "Maria Lopez is working on her physics degree and streaming games on Twitch to make some extra money. She visits Hobbs Cafe for studying and eating just about everyday.",
+  "lifestyle": "Maria Lopez goes to bed around 2am, awakes up around 9am, eats dinner around 6pm. She likes to hang out at Hobbs Cafe if it's before 6pm.",
+  "living_area": "the Ville:Dorm for Oak Hill College:Maria Lopez's room",
+  "concept_forget": 100,
+  "daily_reflection_time": 180,
+  "daily_reflection_size": 5,
+  "overlap_reflect_th": 4,
+  "kw_strg_event_reflect_th": 10,
+  "kw_strg_thought_reflect_th": 9,
+  "recency_w": 1,
+  "relevance_w": 1,
+  "importance_w": 1,
+  "recency_decay": 0.99,
+  "importance_trigger_max": 150,
+  "importance_trigger_curr": 20,
+  "importance_ele_n": 78,
+  "thought_count": 5,
+  "daily_req": [
+    "wake up and complete the morning routine at 9:00 am",
+    "head to Oak Hill College for classes at 10:00 am",
+    "have lunch at 1:00 pm",
+    "study at Hobbs Cafe from 2:00 pm to 4:00 pm",
+    "head back home to prep for Twitch streaming at 5:00 pm",
+    "stream games on Twitch from 6:00 pm to 9:00 pm",
+    "have dinner at 9:30 pm"
+  ],
+  "f_daily_schedule": [
+    [
+      "sleeping",
+      540
+    ],
+    [
+      "waking up and completing her morning routine (stretching in bed)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (washing her face)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (taking a shower)",
+      10
+    ],
+    [
+      "waking up and completing her morning routine (getting dressed)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (making breakfast)",
+      10
+    ],
+    [
+      "waking up and completing her morning routine (eating breakfast)",
+      10
+    ],
+    [
+      "waking up and completing her morning routine (cleaning up the breakfast dishes)",
+      15
+    ],
+    [
+      "heading to Oak Hill College for classes (waking up and getting out of bed)",
+      5
+    ],
+    [
+      "heading to Oak Hill College for classes (brushing her teeth and washing her face)",
+      10
+    ],
+    [
+      "heading to Oak Hill College for classes (getting dressed in her college attire)",
+      10
+    ],
+    [
+      "heading to Oak Hill College for classes (packing her backpack with her college supplies)",
+      5
+    ],
+    [
+      "heading to Oak Hill College for classes (grabbing a quick breakfast to eat on the go)",
+      10
+    ],
+    [
+      "heading to Oak Hill College for classes (checking her schedule and making sure she has everything she needs)",
+      5
+    ],
+    [
+      "heading to Oak Hill College for classes (grabbing her keys and heading out the door)",
+      5
+    ],
+    [
+      "heading to Oak Hill College for classes (walking to the bus stop or her car)",
+      10
+    ],
+    [
+      "heading to her next class at Oak Hill College",
+      60
+    ],
+    [
+      "heading to lunch at Oak Hill College",
+      60
+    ],
+    [
+      "heading to her next class at Oak Hill College (gathering her books and notes for the class)",
+      5
+    ],
+    [
+      "heading to her next class at Oak Hill College (checking the time to make sure she's not late)",
+      5
+    ],
+    [
+      "heading to her next class at Oak Hill College (putting on her jacket and grabbing her bag)",
+      5
+    ],
+    [
+      "heading to her next class at Oak Hill College (walking to the bus stop)",
+      10
+    ],
+    [
+      "heading to her next class at Oak Hill College (waiting for the bus)",
+      10
+    ],
+    [
+      "heading to her next class at Oak Hill College (getting on the bus)",
+      5
+    ],
+    [
+      "heading to her next class at Oak Hill College (reviewing her notes for the upcoming class)",
+      10
+    ],
+    [
+      "heading to her next class at Oak Hill College (getting off the bus and walking to her class)",
+      10
+    ],
+    [
+      "studying at Hobbs Cafe (walking to Hobbs Cafe)",
+      10
+    ],
+    [
+      "studying at Hobbs Cafe (ordering her favorite drink)",
+      5
+    ],
+    [
+      "studying at Hobbs Cafe (finding a quiet spot to study)",
+      10
+    ],
+    [
+      "studying at Hobbs Cafe (reviewing her physics notes)",
+      30
+    ],
+    [
+      "studying at Hobbs Cafe (working on practice problems)",
+      30
+    ],
+    [
+      "studying at Hobbs Cafe (taking a short break)",
+      10
+    ],
+    [
+      "studying at Hobbs Cafe (watching a physics tutorial online)",
+      20
+    ],
+    [
+      "studying at Hobbs Cafe (discussing physics concepts with a classmate)",
+      20
+    ],
+    [
+      "studying at Hobbs Cafe (reviewing her notes again)",
+      20
+    ],
+    [
+      "studying at Hobbs Cafe (packing up her things to head home)",
+      10
+    ],
+    [
+      "studying at Hobbs Cafe (walking back home)",
+      10
+    ],
+    [
+      "studying at Hobbs Cafe (prepping for her Twitch stream)",
+      5
+    ],
+    [
+      "heading back home to prep for Twitch streaming (packing up her study materials at Hobbs Cafe)",
+      5
+    ],
+    [
+      "heading back home to prep for Twitch streaming (walking back home from Hobbs Cafe)",
+      20
+    ],
+    [
+      "heading back home to prep for Twitch streaming (changing into comfortable clothes for streaming)",
+      10
+    ],
+    [
+      "heading back home to prep for Twitch streaming (setting up her streaming equipment)",
+      30
+    ],
+    [
+      "heading back home to prep for Twitch streaming (checking her Twitch schedule and game selection for the day)",
+      10
+    ],
+    [
+      "heading back home to prep for Twitch streaming (preparing a snack and drink for the stream)",
+      10
+    ],
+    [
+      "heading back home to prep for Twitch streaming (testing her audio and video settings)",
+      10
+    ],
+    [
+      "heading back home to prep for Twitch streaming (promoting her stream on social media)",
+      10
+    ],
+    [
+      "heading back home to prep for Twitch streaming (starting her Twitch stream)",
+      15
+    ],
+    [
+      "streaming games on Twitch (setting up her streaming equipment)",
+      15
+    ],
+    [
+      "streaming games on Twitch (choosing which game to play)",
+      10
+    ],
+    [
+      "streaming games on Twitch (starting the stream on Twitch)",
+      5
+    ],
+    [
+      "streaming games on Twitch (interacting with viewers in the chat)",
+      20
+    ],
+    [
+      "streaming games on Twitch (setting up her streaming equipment)",
+      10
+    ],
+    [
+      "streaming games on Twitch (choosing which game to play)",
+      5
+    ],
+    [
+      "streaming games on Twitch (starting the stream on Twitch)",
+      5
+    ],
+    [
+      "streaming games on Twitch (engaging with viewers in the chat)",
+      15
+    ],
+    [
+      "streaming games on Twitch (playing the game)",
+      20
+    ],
+    [
+      "streaming games on Twitch (thanking viewers for watching and ending the stream)",
+      5
+    ],
+    [
+      "streaming games on Twitch (thanking viewers for watching at the end of the stream)",
+      5
+    ],
+    [
+      "streaming games on Twitch (ending the stream)",
+      5
+    ],
+    [
+      "having dinner at home (preparing ingredients for dinner)",
+      15
+    ],
+    [
+      "having dinner at home (cooking dinner)",
+      45
+    ],
+    [
+      "having dinner at home (setting the table)",
+      5
+    ],
+    [
+      "having dinner at home (eating dinner)",
+      30
+    ],
+    [
+      "having dinner at home (cleaning up after dinner)",
+      20
+    ],
+    [
+      "having dinner at home (getting ready for bed)",
+      5
+    ],
+    [
+      "winding down for the day and getting ready for bed (turning off all electronic devices)",
+      5
+    ],
+    [
+      "winding down for the day and getting ready for bed (brushing her teeth)",
+      5
+    ],
+    [
+      "winding down for the day and getting ready for bed (washing her face)",
+      5
+    ],
+    [
+      "winding down for the day and getting ready for bed (changing into her pajamas)",
+      5
+    ],
+    [
+      "winding down for the day and getting ready for bed (setting her alarm for the next day)",
+      5
+    ],
+    [
+      "winding down for the day and getting ready for bed (dimming the lights in her room)",
+      5
+    ],
+    [
+      "winding down for the day and getting ready for bed (reading a book for 15 minutes)",
+      15
+    ],
+    [
+      "winding down for the day and getting ready for bed (journaling about her day)",
+      10
+    ],
+    [
+      "winding down for the day and getting ready for bed (turning off the lights and getting into bed)",
+      5
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ]
+  ],
+  "f_daily_schedule_hourly_org": [
+    [
+      "sleeping",
+      540
+    ],
+    [
+      "waking up and completing her morning routine",
+      60
+    ],
+    [
+      "heading to Oak Hill College for classes",
+      60
+    ],
+    [
+      "heading to her next class at Oak Hill College",
+      60
+    ],
+    [
+      "heading to lunch at Oak Hill College",
+      60
+    ],
+    [
+      "heading to her next class at Oak Hill College",
+      60
+    ],
+    [
+      "studying at Hobbs Cafe",
+      180
+    ],
+    [
+      "heading back home to prep for Twitch streaming",
+      120
+    ],
+    [
+      "streaming games on Twitch",
+      120
+    ],
+    [
+      "having dinner at home",
+      120
+    ],
+    [
+      "winding down for the day and getting ready for bed",
+      60
+    ]
+  ],
+  "act_address": "the Ville:Dorm for Oak Hill College:Maria Lopez's room:bed",
+  "act_start_time": "February 13, 2023, 23:55:00",
+  "act_duration": 5,
+  "act_description": "winding down for the day and getting ready for bed (turning off the lights and getting into bed)",
+  "act_pronunciatio": "\ud83d\udca1\ud83d\udecf\ufe0f",
+  "act_event": [
+    "Maria Lopez",
+    "turn off",
+    "lights"
+  ],
+  "act_obj_description": "being used",
+  "act_obj_pronunciatio": "\ud83d\udd04",
+  "act_obj_event": [
+    "bed",
+    "use",
+    "being"
+  ],
+  "chatting_with": null,
+  "chat": null,
+  "chatting_with_buffer": {},
+  "chatting_end_time": null,
+  "act_path_set": true,
+  "planned_path": []
+}

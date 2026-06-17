@@ -1,0 +1,100 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Maria Lopez and Isabella Rodriguez discussed Isabella's preparations for a Valentine's Day party at Hobbs Cafe, with Maria mentioning her physics studies and streaming schedule as potential conflicts. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Hey Isabella! I hope you're having a good day. Mind if I ask what you're working on today?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Oh, hey Maria! I'm having a lovely day, thank you for asking! Today, I'm busy getting ready for a little something special at Hobbs Cafe. We're having a Valentine's Day party for our customers on February 14th!"
+        ],
+        [
+          "Maria Lopez",
+          "A Valentine's Day party? That sounds fun! What kind of special things are you guys planning for it?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "We're putting together some lovely treats and creating a cozy, warm atmosphere for everyone to relax and enjoy themselves! I'm just finalizing some of the details right now. Are you planning on staying to check it out on the 14th?"
+        ],
+        [
+          "Maria Lopez",
+          "Oh, I don't know yet! I'll have to see how my physics studies and streaming schedule look that week. It sounds like it's going to be a great event though!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Well, no pressure at all! Just wanted to spread the word! If you do decide to come, we'd absolutely love to have you. It's going to be a really cozy afternoon/evening. Do you need anything while you're studying today?"
+        ],
+        [
+          "Maria Lopez",
+          "Nope, I'm all set for now, thanks! I just need to power through these thermodynamics problems before my study block gets too intense. But I'll definitely keep the Valentine's party in mind!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Sounds good! Well, keep up the great work with your studies, Maria. If you need a refill or anything at all while you're focusing, just let me know! Happy studying!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Maria Lopez and Isabella Rodriguez discussed Isabella's preparations for a Valentine's Day party at Hobbs Cafe, with Maria mentioning her physics studies and streaming schedule as potential conflicts. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Hey Isabella! I hope you're having a good day. Mind if I ask what you're working on today?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Oh, hey Maria! I'm having a lovely day, thank you for asking! Today, I'm busy getting ready for a little something special at Hobbs Cafe. We're having a Valentine's Day party for our customers on February 14th!"
+        ],
+        [
+          "Maria Lopez",
+          "A Valentine's Day party? That sounds fun! What kind of special things are you guys planning for it?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "We're putting together some lovely treats and creating a cozy, warm atmosphere for everyone to relax and enjoy themselves! I'm just finalizing some of the details right now. Are you planning on staying to check it out on the 14th?"
+        ],
+        [
+          "Maria Lopez",
+          "Oh, I don't know yet! I'll have to see how my physics studies and streaming schedule look that week. It sounds like it's going to be a great event though!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Well, no pressure at all! Just wanted to spread the word! If you do decide to come, we'd absolutely love to have you. It's going to be a really cozy afternoon/evening. Do you need anything while you're studying today?"
+        ],
+        [
+          "Maria Lopez",
+          "Nope, I'm all set for now, thanks! I just need to power through these thermodynamics problems before my study block gets too intense. But I'll definitely keep the Valentine's party in mind!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Sounds good! Well, keep up the great work with your studies, Maria. If you need a refill or anything at all while you're focusing, just let me know! Happy studying!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        122,
+        22
+      ],
+      "pronunciatio": "\ud83e\uddd0\u270d\ufe0f",
+      "description": "writing his research paper at the Oak Hill College Library (proofreading the last paragraph written) @ the Ville:Oak Hill College:library:library table",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 10:49:10"
+  }
+}
