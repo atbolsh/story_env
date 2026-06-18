@@ -77,6 +77,13 @@ You can replay a simulation that you have already run simply by having your envi
 For instance, by visiting the following link, you will initiate a pre-simulated example, starting at time-step 1:  
 [http://localhost:8000/replay/July1_the_ville_isabella_maria_klaus-step-3-20/1/](http://localhost:8000/replay/July1_the_ville_isabella_maria_klaus-step-3-20/1/)
 
+**Simulation names containing a dot (`.`).** Some harness names contain a dot
+(e.g. `qwen3-0.6b`), so sims saved by `midnight_test.sh` get names like
+`midnight_qwen3-0.6b_2026-06-17_18-07-25`. The `replay` and `demo` routes accept
+dots in the simulation name, so you can paste the name verbatim — just be sure to
+keep the **trailing slash**, which the routes require:  
+`http://localhost:8000/replay/midnight_qwen3-0.6b_2026-06-17_18-07-25/1/`
+
 ### Step 5. Demoing a Simulation
 You may have noticed that all character sprites in the replay look identical. We would like to clarify that the replay function is primarily intended for debugging purposes and does not prioritize optimizing the size of the simulation folder or the visuals. To properly demonstrate a simulation with appropriate character sprites, you will need to compress the simulation first. To do this, open the `compress_sim_storage.py` file located in the `reverie` directory using a text editor. Then, execute the `compress` function with the name of the target simulation as its input. By doing so, the simulation file will be compressed, making it ready for demonstration.
 
