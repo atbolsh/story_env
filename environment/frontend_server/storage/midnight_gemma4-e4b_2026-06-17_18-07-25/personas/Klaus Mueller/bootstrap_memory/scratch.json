@@ -1,0 +1,256 @@
+{
+  "vision_r": 8,
+  "att_bandwidth": 8,
+  "retention": 8,
+  "curr_time": "February 13, 2023, 23:59:50",
+  "curr_tile": [
+    127,
+    46
+  ],
+  "daily_plan_req": "Klaus Mueller goes to the library at Oak Hill College early in the morning, spends his days writing, and eats at Hobbs Cafe.",
+  "name": "Klaus Mueller",
+  "first_name": "Klaus",
+  "last_name": "Mueller",
+  "age": 20,
+  "innate": "kind, inquisitive, passionate",
+  "learned": "Klaus Mueller is a student at Oak Hill College studying sociology. He is passionate about social justice and loves to explore different perspectives.",
+  "currently": "Klaus Mueller is writing a research paper on the effects of gentrification in low-income communities.",
+  "lifestyle": "Klaus Mueller goes to bed around 11pm, awakes up around 7am, eats dinner around 5pm.",
+  "living_area": "the Ville:Dorm for Oak Hill College:Klaus Mueller's room",
+  "concept_forget": 100,
+  "daily_reflection_time": 180,
+  "daily_reflection_size": 5,
+  "overlap_reflect_th": 4,
+  "kw_strg_event_reflect_th": 10,
+  "kw_strg_thought_reflect_th": 9,
+  "recency_w": 1,
+  "relevance_w": 1,
+  "importance_w": 1,
+  "recency_decay": 0.99,
+  "importance_trigger_max": 150,
+  "importance_trigger_curr": 144,
+  "importance_ele_n": 6,
+  "thought_count": 5,
+  "daily_req": [
+    "wake up and complete the morning routine at 7:00 am",
+    "go to the library at Oak Hill College early in the morning",
+    "spend the day writing his research paper"
+  ],
+  "f_daily_schedule": [
+    [
+      "sleeping",
+      420
+    ],
+    [
+      "waking up and completing his morning routine",
+      60
+    ],
+    [
+      "studying/writing at the Oak Hill College library",
+      60
+    ],
+    [
+      "writing his research paper at the Oak Hill College library",
+      480
+    ],
+    [
+      "eating dinner at Hobbs Cafe",
+      60
+    ],
+    [
+      "studying/writing at the Oak Hill College library (on the way to studying/writing at the Oak Hill College librar)",
+      0
+    ],
+    [
+      "studying/writing at the Oak Hill College library (conversing about Klaus Mueller and Isabella Rodriguez discuss the pressures of gentrification on local businesses like Hobbs Cafe, concluding that community connection and integrating local identity are key to their resilience.)",
+      14
+    ],
+    [
+      "studying/writing at the Oak Hill College library",
+      46
+    ],
+    [
+      "relaxing/reading about social justice topics",
+      60
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (organizing his sociology textbooks)",
+      10
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (highlighting key concepts from last week's readings)",
+      20
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (summarizing the main arguments of his research paper so far)",
+      25
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (looking up recent articles on gentrification)",
+      30
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (outlining the structure for tomorrow's writing session)",
+      20
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (reviewing his bibliography entries)",
+      15
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (making a to-do list for the next day's writing tasks)",
+      10
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (rereading his thesis statement for clarity)",
+      15
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (tidying his desk space)",
+      10
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session (taking a short stretch break)",
+      25
+    ],
+    [
+      "sleeping",
+      60
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ]
+  ],
+  "f_daily_schedule_hourly_org": [
+    [
+      "sleeping",
+      420
+    ],
+    [
+      "waking up and completing his morning routine",
+      60
+    ],
+    [
+      "studying/writing at the Oak Hill College library",
+      60
+    ],
+    [
+      "writing his research paper at the Oak Hill College library",
+      480
+    ],
+    [
+      "eating dinner at Hobbs Cafe",
+      60
+    ],
+    [
+      "studying/writing at the Oak Hill College library",
+      60
+    ],
+    [
+      "relaxing/reading about social justice topics",
+      60
+    ],
+    [
+      "reviewing notes/preparing for the next day's writing session",
+      180
+    ],
+    [
+      "sleeping",
+      60
+    ]
+  ],
+  "act_address": "the Ville:Dorm for Oak Hill College:Klaus Mueller's room:bed",
+  "act_start_time": "February 13, 2023, 23:01:00",
+  "act_duration": 60,
+  "act_description": "sleeping",
+  "act_pronunciatio": "\ud83d\ude34",
+  "act_event": [
+    "Klaus Mueller",
+    "is",
+    "sleep"
+  ],
+  "act_obj_description": "being used",
+  "act_obj_pronunciatio": "\ud83d\udee0\ufe0f",
+  "act_obj_event": [
+    "bed",
+    "be used",
+    ""
+  ],
+  "chatting_with": null,
+  "chat": null,
+  "chatting_with_buffer": {
+    "Isabella Rodriguez": -1570
+  },
+  "chatting_end_time": null,
+  "act_path_set": true,
+  "planned_path": []
+}

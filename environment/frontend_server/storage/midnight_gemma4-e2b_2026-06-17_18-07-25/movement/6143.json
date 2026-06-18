@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        23
+      ],
+      "pronunciatio": "\u2705\ud83e\uddd0",
+      "description": "working at the counter (performing a final check of the counter presentation) @ the Ville:Hobbs Cafe:cafe:kitchen sink",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        94,
+        27
+      ],
+      "pronunciatio": "\ud83c\udfae\ud83d\udd79\ufe0f",
+      "description": "streaming/gaming (playing a different game mode) @ the Ville:Carlos Gomez's apartment:main room:bed",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        57,
+        27
+      ],
+      "pronunciatio": "\ud83c\udf54\ud83d\ude0b",
+      "description": "eating dinner at Hobbs Cafe (ordering his meal) @ the Ville:Hobbs Cafe:cafe:refrigerator",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 17:03:50"
+  }
+}

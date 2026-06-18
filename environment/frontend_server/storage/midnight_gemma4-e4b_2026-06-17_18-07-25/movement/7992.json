@@ -1,0 +1,84 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez discuss Maria's physics studies and Maria's potential to help Isabella with the preparations for a cozy and welcoming Valentine's Day event at the cafe. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! How's the physics going? Hope you're having a productive afternoon studying."
+        ],
+        [
+          "Maria Lopez",
+          "It's going well, actually! I'm really deep into [mention a specific topic if possible, or just 'some thermodynamics stuff']. You're super busy with all the Valentine's Day preparations! How is that coming along? Everything looking good with the catering?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's coming along! We're really excited; it's going to be such a lovely evening for our regulars. I'm just making sure everything is perfectly cozy for everyone. How about you? Any fun plans for the long weekend after the party?"
+        ],
+        [
+          "Maria Lopez",
+          "Not really! I've got a big streaming session scheduled later this afternoon, so I'll probably be glued to my monitor for a while. But between classes and streaming, it's always busy! I'm excited for you though; it sounds like it's going to be such a warm and welcoming event for the community. Maybe I can swing by and help out with setup or anything else later in the week?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That would be so incredibly kind of you, Maria! I really appreciate that. It would be a huge help while I'm coordinating everything. Let me see what I need and I'll get back to you with some specific tasks. Either way, just having you here enjoying the cafe is great!"
+        ],
+        [
+          "Maria Lopez",
+          "No problem at all! I'm happy to help out. Enjoy the rest of your setup today\u2014I'll catch you later then!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        20
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez discuss Maria's physics studies and Maria's potential to help Isabella with the preparations for a cozy and welcoming Valentine's Day event at the cafe. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! How's the physics going? Hope you're having a productive afternoon studying."
+        ],
+        [
+          "Maria Lopez",
+          "It's going well, actually! I'm really deep into [mention a specific topic if possible, or just 'some thermodynamics stuff']. You're super busy with all the Valentine's Day preparations! How is that coming along? Everything looking good with the catering?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's coming along! We're really excited; it's going to be such a lovely evening for our regulars. I'm just making sure everything is perfectly cozy for everyone. How about you? Any fun plans for the long weekend after the party?"
+        ],
+        [
+          "Maria Lopez",
+          "Not really! I've got a big streaming session scheduled later this afternoon, so I'll probably be glued to my monitor for a while. But between classes and streaming, it's always busy! I'm excited for you though; it sounds like it's going to be such a warm and welcoming event for the community. Maybe I can swing by and help out with setup or anything else later in the week?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That would be so incredibly kind of you, Maria! I really appreciate that. It would be a huge help while I'm coordinating everything. Let me see what I need and I'll get back to you with some specific tasks. Either way, just having you here enjoying the cafe is great!"
+        ],
+        [
+          "Maria Lopez",
+          "No problem at all! I'm happy to help out. Enjoy the rest of your setup today\u2014I'll catch you later then!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        123,
+        25
+      ],
+      "pronunciatio": "\ud83e\uddd0\ud83d\udcd6",
+      "description": "reviewing notes/preparing for the next day's writing session (rereading his thesis statement for clarity) @ the Ville:Oak Hill College:library:bookshelf",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 22:12:00"
+  }
+}

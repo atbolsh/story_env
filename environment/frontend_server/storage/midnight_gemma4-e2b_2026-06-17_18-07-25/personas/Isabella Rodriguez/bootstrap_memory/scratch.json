@@ -1,0 +1,1267 @@
+{
+  "vision_r": 8,
+  "att_bandwidth": 8,
+  "retention": 8,
+  "curr_time": "February 13, 2023, 17:40:20",
+  "curr_tile": [
+    77,
+    19
+  ],
+  "daily_plan_req": "Isabella Rodriguez opens Hobbs Cafe at 8am everyday, and works at the counter until 8pm, at which point she closes the cafe.",
+  "name": "Isabella Rodriguez",
+  "first_name": "Isabella",
+  "last_name": "Rodriguez",
+  "age": 34,
+  "innate": "friendly, outgoing, hospitable",
+  "learned": "Isabella Rodriguez is a cafe owner of Hobbs Cafe who loves to make people feel welcome. She is always looking for ways to make the cafe a place where people can come to relax and enjoy themselves.",
+  "currently": "Isabella Rodriguez is planning on having a Valentine's Day party at Hobbs Cafe with her customers on February 14th, 2023 at 5pm. She is gathering party material, and is telling everyone to join the party at Hobbs Cafe on February 14th, 2023, from 5pm to 7pm.",
+  "lifestyle": "Isabella Rodriguez goes to bed around 11pm, awakes up around 6am.",
+  "living_area": "the Ville:Isabella Rodriguez's apartment:main room",
+  "concept_forget": 100,
+  "daily_reflection_time": 180,
+  "daily_reflection_size": 5,
+  "overlap_reflect_th": 4,
+  "kw_strg_event_reflect_th": 10,
+  "kw_strg_thought_reflect_th": 9,
+  "recency_w": 1,
+  "relevance_w": 1,
+  "importance_w": 1,
+  "recency_decay": 0.995,
+  "importance_trigger_max": 150,
+  "importance_trigger_curr": 37,
+  "importance_ele_n": 73,
+  "thought_count": 5,
+  "daily_req": [
+    "wake up and complete the morning routine at 6:00 am",
+    "prepare for opening Hobbs Cafe at 8:00 am",
+    "work at the counter until 8:00 pm",
+    "close the cafe at 8:00 pm"
+  ],
+  "f_daily_schedule": [
+    [
+      "sleeping",
+      360
+    ],
+    [
+      "waking up and completing her morning routine (turning off the alarm clock)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (stretching gently)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (getting out of bed)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (walking to the bathroom)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (washing her face)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (brushing her teeth)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (using the restroom)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (getting dressed for the day)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (tidying the immediate bedside area)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (preparing for the next step)",
+      15
+    ],
+    [
+      "preparing for the cafe opening (waking up from sleep)",
+      5
+    ],
+    [
+      "preparing for the cafe opening (performing her morning hygiene routine)",
+      5
+    ],
+    [
+      "preparing for the cafe opening (getting dressed for the day)",
+      5
+    ],
+    [
+      "preparing for the cafe opening (performing her skincare routine)",
+      5
+    ],
+    [
+      "preparing for the cafe opening (making her bed)",
+      5
+    ],
+    [
+      "preparing for the cafe opening (gathering necessary items for the cafe)",
+      5
+    ],
+    [
+      "preparing for the cafe opening (checking the cafe's opening checklist)",
+      5
+    ],
+    [
+      "preparing for the cafe opening (ensuring the front display is tidy)",
+      5
+    ],
+    [
+      "preparing for the cafe opening (reviewing the daily schedule)",
+      5
+    ],
+    [
+      "preparing for the cafe opening (preparing to leave for the cafe)",
+      15
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (checking the cafe's cleanliness)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (setting up the display area)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (preparing the counter station)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (stocking the register area)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (checking the menu display)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (ensuring all supplies are stocked)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (testing the point-of-sale system)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (arranging any necessary tools)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (performing a final visual check)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (preparing to greet the first customer)",
+      5
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter (finalizing the opening readiness)",
+      10
+    ],
+    [
+      "working at the counter (restocking the pastry display case)",
+      5
+    ],
+    [
+      "working at the counter (wiping down the counter surfaces)",
+      5
+    ],
+    [
+      "working at the counter (preparing the register for the evening rush)",
+      5
+    ],
+    [
+      "working at the counter (organizing the condiment station)",
+      5
+    ],
+    [
+      "working at the counter (checking inventory levels for popular items)",
+      5
+    ],
+    [
+      "working at the counter (sanitizing the seating area)",
+      5
+    ],
+    [
+      "working at the counter (preparing the till for end-of-day reconciliation)",
+      5
+    ],
+    [
+      "working at the counter (tidying up the service station)",
+      5
+    ],
+    [
+      "working at the counter (preparing for the closing procedures)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all service items are stocked)",
+      5
+    ],
+    [
+      "working at the counter (performing a final sweep of the service area)",
+      5
+    ],
+    [
+      "working at the counter (preparing the cash drawer for the night)",
+      5
+    ],
+    [
+      "working at the counter (reviewing the day's sales reports)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all cleaning supplies are accessible)",
+      5
+    ],
+    [
+      "working at the counter (organizing the front-of-house area)",
+      5
+    ],
+    [
+      "working at the counter (preparing for the final closing tasks)",
+      5
+    ],
+    [
+      "working at the counter (double-checking the cash drawer count)",
+      5
+    ],
+    [
+      "working at the counter (ensuring the front door is secured)",
+      5
+    ],
+    [
+      "working at the counter (preparing the closing checklist)",
+      5
+    ],
+    [
+      "working at the counter (checking inventory levels for perishable items)",
+      5
+    ],
+    [
+      "working at the counter (organizing the storage area for dry goods)",
+      5
+    ],
+    [
+      "working at the counter (restocking the beverage station supplies)",
+      5
+    ],
+    [
+      "working at the counter (cleaning and sanitizing the preparation surfaces)",
+      5
+    ],
+    [
+      "working at the counter (organizing the dishware inventory)",
+      5
+    ],
+    [
+      "working at the counter (checking and organizing the cleaning supplies)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all service tools are accounted for)",
+      5
+    ],
+    [
+      "working at the counter (tidying up the service station area)",
+      5
+    ],
+    [
+      "working at the counter (inspecting the refrigerator contents for freshness)",
+      5
+    ],
+    [
+      "working at the counter (organizing the coffee bean supply)",
+      5
+    ],
+    [
+      "working at the counter (preparing the till for the end of the shift)",
+      5
+    ],
+    [
+      "working at the counter (wiping down the counter surfaces thoroughly)",
+      5
+    ],
+    [
+      "working at the counter (sorting and organizing takeout containers)",
+      5
+    ],
+    [
+      "working at the counter (checking the cleanliness of the floor area near the counter)",
+      5
+    ],
+    [
+      "working at the counter (restocking napkins and condiments)",
+      5
+    ],
+    [
+      "working at the counter (organizing the cash drawer contents)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all service stations are fully stocked)",
+      5
+    ],
+    [
+      "working at the counter (performing a final sweep of the back-of-house area)",
+      5
+    ],
+    [
+      "working at the counter (confirming the status of all equipment)",
+      5
+    ],
+    [
+      "working at the counter (checking the front display for misplaced items)",
+      5
+    ],
+    [
+      "working at the counter (organizing the condiment station supplies)",
+      5
+    ],
+    [
+      "working at the counter (wiping down the counter surface)",
+      5
+    ],
+    [
+      "working at the counter (tidying up the customer seating area)",
+      5
+    ],
+    [
+      "working at the counter (restocking napkins and cutlery)",
+      5
+    ],
+    [
+      "working at the counter (checking the trash bins for fullness)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all menus are neatly stacked)",
+      5
+    ],
+    [
+      "working at the counter (straightening any loose decorations)",
+      5
+    ],
+    [
+      "working at the counter (verifying the cleanliness of the sugar caddies)",
+      5
+    ],
+    [
+      "working at the counter (checking the cleanliness of the beverage station)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all promotional flyers are in place)",
+      5
+    ],
+    [
+      "working at the counter (organizing the cash drawer area)",
+      5
+    ],
+    [
+      "working at the counter (checking the cleanliness of the floor near the counter)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all service tools are returned to their designated spots)",
+      5
+    ],
+    [
+      "working at the counter (checking the cleanliness of the service station area)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all non-essential items are secured)",
+      5
+    ],
+    [
+      "working at the counter (performing a final sweep of the counter area)",
+      5
+    ],
+    [
+      "working at the counter (confirming the general tidiness of the service area)",
+      5
+    ],
+    [
+      "working at the counter (double-checking that all non-essential items are secured)",
+      5
+    ],
+    [
+      "working at the counter (checking the cleanliness of the condiment station)",
+      5
+    ],
+    [
+      "working at the counter (organizing the display of napkins and stirrers)",
+      5
+    ],
+    [
+      "working at the counter (inspecting the stock of sugar packets)",
+      5
+    ],
+    [
+      "working at the counter (wiping down the exterior of the cash register)",
+      5
+    ],
+    [
+      "working at the counter (straightening the menu display)",
+      5
+    ],
+    [
+      "working at the counter (ensuring the cleanliness of the customer seating area)",
+      5
+    ],
+    [
+      "working at the counter (checking the condition of the sugar caddies)",
+      5
+    ],
+    [
+      "working at the counter (tidying up any misplaced promotional flyers)",
+      5
+    ],
+    [
+      "working at the counter (verifying the placement of the sugar and sweetener dispensers)",
+      5
+    ],
+    [
+      "working at the counter (inspecting the cleanliness of the floor near the counter)",
+      5
+    ],
+    [
+      "working at the counter (checking the condition of the small decorative items on the counter)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all non-essential items are neatly arranged)",
+      5
+    ],
+    [
+      "working at the counter (confirming the organization of the till area)",
+      5
+    ],
+    [
+      "working at the counter (checking the condition of the small signage near the register)",
+      5
+    ],
+    [
+      "working at the counter (ensuring the counter surface is free of clutter)",
+      5
+    ],
+    [
+      "working at the counter (confirming the organization of the small service tools)",
+      5
+    ],
+    [
+      "working at the counter (checking the condition of the small trash receptacles)",
+      5
+    ],
+    [
+      "working at the counter (ensuring the overall presentation of the counter is welcoming)",
+      5
+    ],
+    [
+      "working at the counter (performing a final visual sweep of the counter area)",
+      5
+    ],
+    [
+      "working at the counter (confirming that all non-essential items are in their designated spots)",
+      5
+    ],
+    [
+      "working at the counter (ensuring the counter area reflects the cafe's welcoming atmosphere)",
+      5
+    ],
+    [
+      "working at the counter (doing a final check of the counter's non-essential items)",
+      5
+    ],
+    [
+      "working at the counter (confirming the arrangement of the small items for the next shift)",
+      5
+    ],
+    [
+      "working at the counter (ensuring the counter is ready for the closing procedures)",
+      5
+    ],
+    [
+      "working at the counter (checking the display case for misplaced items)",
+      5
+    ],
+    [
+      "working at the counter (organizing the condiment station)",
+      5
+    ],
+    [
+      "working at the counter (wiping down the counter surface)",
+      5
+    ],
+    [
+      "working at the counter (inspecting the menu display for accuracy)",
+      5
+    ],
+    [
+      "working at the counter (tidying up the cash register area)",
+      5
+    ],
+    [
+      "working at the counter (straightening any loose napkins or paper goods)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all promotional flyers are neatly stacked)",
+      5
+    ],
+    [
+      "working at the counter (checking the cleanliness of the service station)",
+      5
+    ],
+    [
+      "working at the counter (verifying the stock levels of small items)",
+      5
+    ],
+    [
+      "working at the counter (polishing the front counter edge)",
+      5
+    ],
+    [
+      "working at the counter (confirming the placement of small decor items)",
+      5
+    ],
+    [
+      "working at the counter (ensuring the area is welcoming for evening customers)",
+      5
+    ],
+    [
+      "working at the counter (performing a final sweep of the counter area)",
+      5
+    ],
+    [
+      "working at the counter (confirming the cleanliness of the seating area near the counter)",
+      5
+    ],
+    [
+      "working at the counter (ensuring all necessary supplies are accessible)",
+      5
+    ],
+    [
+      "working at the counter (performing a final check of the counter presentation)",
+      5
+    ],
+    [
+      "working at the counter (confirming the readiness of the till area)",
+      5
+    ],
+    [
+      "working at the counter (ensuring the area is ready for the closing procedures)",
+      5
+    ],
+    [
+      "working at the counter (performing a final visual inspection of the counter)",
+      5
+    ],
+    [
+      "working at the counter (confirming the organization of non-essential items)",
+      5
+    ],
+    [
+      "working at the counter (ensuring the counter reflects the cafe's welcoming atmosphere)",
+      5
+    ],
+    [
+      "working at the counter (performing a final check of the counter presentation details)",
+      5
+    ],
+    [
+      "working at the counter (confirming the readiness of the service area for the next shift)",
+      5
+    ],
+    [
+      "working at the counter (performing a final sweep of the counter area for perfection)",
+      5
+    ],
+    [
+      "working at the counter (confirming the final state of the counter before closing)",
+      15
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (tidying the service counter area)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (wiping down all surfaces on the counter)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (organizing the cash register area)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (restocking napkins and condiments)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (preparing the end-of-day report)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (ensuring all equipment is turned off)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (locking the main entrance door)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (checking the security system status)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (securing the back storage area)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (performing a final sweep of the dining area)",
+      5
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe (ensuring all lights are off)",
+      10
+    ],
+    [
+      "working at the counter",
+      60
+    ],
+    [
+      "closing Hobbs Cafe",
+      60
+    ],
+    [
+      "winding down for bed",
+      60
+    ],
+    [
+      "preparing for bed",
+      120
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ]
+  ],
+  "f_daily_schedule_hourly_org": [
+    [
+      "sleeping",
+      360
+    ],
+    [
+      "waking up and completing her morning routine",
+      60
+    ],
+    [
+      "preparing for the cafe opening",
+      60
+    ],
+    [
+      "opening Hobbs Cafe and working at the counter",
+      60
+    ],
+    [
+      "working at the counter",
+      540
+    ],
+    [
+      "finishing her shift and closing Hobbs Cafe",
+      60
+    ],
+    [
+      "working at the counter",
+      60
+    ],
+    [
+      "closing Hobbs Cafe",
+      60
+    ],
+    [
+      "winding down for bed",
+      60
+    ],
+    [
+      "preparing for bed",
+      120
+    ]
+  ],
+  "act_address": "the Ville:Hobbs Cafe:cafe:kitchen sink",
+  "act_start_time": "February 13, 2023, 17:40:00",
+  "act_duration": 5,
+  "act_description": "working at the counter (performing a final sweep of the counter area for perfection)",
+  "act_pronunciatio": "\ud83e\uddf9\u2728",
+  "act_event": [
+    "Isabella Rodriguez",
+    "perform",
+    "sweep"
+  ],
+  "act_obj_description": "being used",
+  "act_obj_pronunciatio": "\ud83e\uddd6\u200d\u2640",
+  "act_obj_event": [
+    "kitchen sink",
+    "be used",
+    "-"
+  ],
+  "chatting_with": null,
+  "chat": null,
+  "chatting_with_buffer": {},
+  "chatting_end_time": null,
+  "act_path_set": true,
+  "planned_path": []
+}

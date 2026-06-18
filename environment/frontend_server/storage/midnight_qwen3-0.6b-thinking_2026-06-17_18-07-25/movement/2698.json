@@ -1,0 +1,44 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        81,
+        22
+      ],
+      "pronunciatio": "ute",
+      "description": "waking up and beginning her morning routine (conversing about planning a surprise activity at Hobbs Cafe) @ the Ville:Hobbs Cafe:cafe:piano",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        74,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about a party event @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I'm planning to prepare for the party, so I should make sure we're both on track!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        74,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about a party event @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I'm planning to prepare for the party, so I should make sure we're both on track!"
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 07:29:40"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        14
+      ],
+      "pronunciatio": "\ud83d\udc55",
+      "description": "relaxing at home after a long day at Hobbs Cafe (changing into comfortable clothes) @ the Ville:Isabella Rodriguez's apartment:main room:closet",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        74,
+        20
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "having dinner at Hobbs Cafe (chatting with the server) @ the Ville:Hobbs Cafe:cafe:cafe customer seating",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        121,
+        41
+      ],
+      "pronunciatio": "\ud83d\udeb6\u200d\u2642",
+      "description": "at home relaxing and unwinding after a long day of work (taking a short walk around the neighborhood) @ the Ville:Dorm for Oak Hill College:garden:dorm garden",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 21:04:30"
+  }
+}

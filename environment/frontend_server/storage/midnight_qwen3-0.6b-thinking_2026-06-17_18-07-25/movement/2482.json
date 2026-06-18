@@ -1,0 +1,124 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        78,
+        26
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about planning a surprise activity at Hobbs Cafe @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm not sure, but I'll let you know if you need anything."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023. I'll let you know if you need anything."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll let you know if you need anything."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll let you know if you need anything."
+        ],
+        [
+          "Klaus Mueller",
+          "I'll let you know if you need anything."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll let you know if you need anything."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll let you know if you need anything."
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        73,
+        19
+      ],
+      "pronunciatio": "\ud83c\udf7d\ufe0f.",
+      "description": "having lunch at Hobbs Cafe (eating lunch at Hobbs Cafe) @ the Ville:Hobbs Cafe:cafe:refrigerator",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        79,
+        26
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about planning a surprise activity at Hobbs Cafe @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm not sure, but I'll let you know if you need anything."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023. I'll let you know if you need anything."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll let you know if you need anything."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll let you know if you need anything."
+        ],
+        [
+          "Klaus Mueller",
+          "I'll let you know if you need anything."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll let you know if you need anything."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm planning to surprise everyone with a unique Valentine's Day activity at Hobbs Cafe on February 14th, 2023."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll let you know if you need anything."
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 06:53:40"
+  }
+}

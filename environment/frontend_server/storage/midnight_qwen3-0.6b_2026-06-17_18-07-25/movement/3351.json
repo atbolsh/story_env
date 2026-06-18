@@ -1,0 +1,100 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I heard about the gentrification issue, Klaus. I'm curious how it's affecting our caf\u00e9 community."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm really interested in how gentrification is impacting our community, Maria. Can you share some insights?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm really interested in how gentrification is impacting our community, Maria. Can you share some insights?"
+        ],
+        [
+          "Klaus Mueller",
+          "Maria, I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Maria, I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ],
+        [
+          "Klaus Mueller",
+          "I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Maria, I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ],
+        [
+          "Klaus Mueller",
+          "I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        76,
+        19
+      ],
+      "pronunciatio": ".tw",
+      "description": "having lunch and watching Twitch at 12:00 PM (watching Twitch streaming) @ the Ville:Hobbs Cafe:cafe:cooking area",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        75,
+        20
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I heard about the gentrification issue, Klaus. I'm curious how it's affecting our caf\u00e9 community."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm really interested in how gentrification is impacting our community, Maria. Can you share some insights?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm really interested in how gentrification is impacting our community, Maria. Can you share some insights?"
+        ],
+        [
+          "Klaus Mueller",
+          "Maria, I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Maria, I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ],
+        [
+          "Klaus Mueller",
+          "I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Maria, I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ],
+        [
+          "Klaus Mueller",
+          "I think it's important to recognize how gentrification can both enrich and challenge communities. Can you share some thoughts on that?"
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 09:18:30"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I'm glad we're here! I've learned so much from your experience with Klaus and how creativity can connect people. I'd love to hear more about how we can inspire others like you."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm really excited to hear how we can inspire others like you, Maria Lopez! Let's make this a great experience for everyone."
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I'm glad we're here! I've learned so much from your experience with Klaus and how creativity can connect people. I'd love to hear more about how we can inspire others like you."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm really excited to hear how we can inspire others like you, Maria Lopez! Let's make this a great experience for everyone."
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        119,
+        20
+      ],
+      "pronunciatio": "\ud83d\udcd6\ud83d\udcda",
+      "description": "waking up and completing the morning routine at 7:00 pm . (going to the library) @ the Ville:Oak Hill College:library:library sofa",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 19:15:20"
+  }
+}

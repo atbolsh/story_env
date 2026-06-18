@@ -1,0 +1,939 @@
+{
+  "vision_r": 8,
+  "att_bandwidth": 8,
+  "retention": 8,
+  "curr_time": "February 13, 2023, 17:40:10",
+  "curr_tile": [
+    73,
+    19
+  ],
+  "daily_plan_req": "Klaus Mueller goes to the library at Oak Hill College early in the morning, spends his days writing, and eats at Hobbs Cafe.",
+  "name": "Klaus Mueller",
+  "first_name": "Klaus",
+  "last_name": "Mueller",
+  "age": 20,
+  "innate": "kind, inquisitive, passionate",
+  "learned": "Klaus Mueller is a student at Oak Hill College studying sociology. He is passionate about social justice and loves to explore different perspectives.",
+  "currently": "Klaus Mueller is writing a research paper on the effects of gentrification in low-income communities.",
+  "lifestyle": "Klaus Mueller goes to bed around 11pm, awakes up around 7am, eats dinner around 5pm.",
+  "living_area": "the Ville:Dorm for Oak Hill College:Klaus Mueller's room",
+  "concept_forget": 100,
+  "daily_reflection_time": 180,
+  "daily_reflection_size": 5,
+  "overlap_reflect_th": 4,
+  "kw_strg_event_reflect_th": 10,
+  "kw_strg_thought_reflect_th": 9,
+  "recency_w": 1,
+  "relevance_w": 1,
+  "importance_w": 1,
+  "recency_decay": 0.99,
+  "importance_trigger_max": 150,
+  "importance_trigger_curr": 84,
+  "importance_ele_n": 41,
+  "thought_count": 5,
+  "daily_req": [
+    "wake up and complete the morning routine at 7:00 am",
+    "go to the library at Oak Hill College early in the morning",
+    "spend the day writing his research paper",
+    "eat dinner at Hobbs Cafe around 5:00 pm"
+  ],
+  "f_daily_schedule": [
+    [
+      "sleeping",
+      420
+    ],
+    [
+      "waking up and completing morning routine (turning off the alarm)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (stretching lightly)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (getting out of bed)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (going to the bathroom)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (washing his face)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (brushing his teeth)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (getting dressed for the day)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (preparing for the day)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (checking the time)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (performing a quick hygiene check)",
+      5
+    ],
+    [
+      "waking up and completing morning routine (preparing to leave the room)",
+      10
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (waking up from sleep)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (performing his morning hygiene routine)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (preparing for the day)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (gathering necessary materials for research)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (settling in at the library)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (opening his research document)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (reviewing previous research notes)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (setting up his workspace)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (focusing on the research topic)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (beginning to read source material)",
+      5
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper (outlining the next section)",
+      10
+    ],
+    [
+      "writing on his research paper at the library (reviewing relevant sociological theories)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (supporting data from academic sources)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (the next section of the paper)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (initial paragraphs for the section)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (on the way to specific case studies related to gentrification)",
+      0
+    ],
+    [
+      "writing on his research paper at the library (waiting to start initial paragraphs for the section)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (specific case studies related to gentrification)",
+      10
+    ],
+    [
+      "writing on his research paper at the library (gathered information into coherent points)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (on connecting concepts to the central thesis)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (the flow and structure of the argument)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (transitional sentences between ideas)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (citations for accuracy and formatting)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (smooth transitions between paragraphs)",
+      15
+    ],
+    [
+      "writing on his research paper at the library (the written content for clarity)",
+      15
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (ordering a beverage)",
+      5
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (looking at the menu options)",
+      5
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (deciding what to eat)",
+      5
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (placing his order)",
+      5
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (waiting for his food)",
+      5
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (observing the cafe environment)",
+      5
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (on the way to enjoying his meal)",
+      0
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (waiting to start observing the cafe environment)",
+      5
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (enjoying his meal)",
+      5
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (reading something unrelated to his paper)",
+      5
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (on the way to finishing his drink)",
+      0
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (waiting to start reading something unrelated to his paper)",
+      2
+    ],
+    [
+      "at Hobbs Cafe for lunch/break (reading something unrelated to his paper)",
+      13
+    ],
+    [
+      "writing on his research paper at the library (outlining the next section of his paper)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (researching sociological theories related to gentrification)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (taking detailed notes on relevant articles)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (synthesizing gathered information into preliminary arguments)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (reviewing previous notes for coherence)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (drafting introductory sentences for the next section)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (focusing on specific data points for support)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (structuring paragraphs logically)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (refining the flow between ideas)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (checking citations for accuracy)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (expanding on a key concept)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (summarizing a complex finding)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (ensuring the tone aligns with academic standards)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (pausing to reflect on the argument's direction)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (organizing supporting evidence)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (drafting transitional sentences between paragraphs)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (rephrasing complex sentences for clarity)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (cross-referencing sources for consistency)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (developing a counter-argument point)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (ensuring smooth transitions within the section)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (reviewing the section's overall argument structure)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (adding specific examples to illustrate points)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (checking for clarity in the written prose)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (outlining the next section of the paper)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (gathering relevant sociological data points)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (reviewing previous notes on the topic)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (drafting key arguments for the section)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (researching supporting statistics)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (synthesizing gathered information)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (refining the flow between paragraphs)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (checking citations for accuracy)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (ensuring the tone aligns with academic standards)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (proofreading the drafted content for clarity)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (finalizing the core arguments for the section)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (structuring the concluding thoughts for this segment)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (making minor adjustments to phrasing)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (ensuring smooth transitions between ideas)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (reviewing the section against the overall thesis)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (preparing the section for the next stage)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (performing a quick self-review of the content)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (saving the current progress of the writing session)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (organizing digital files related to this section)",
+      5
+    ],
+    [
+      "writing on his research paper at the library (taking a brief mental pause before the next task)",
+      30
+    ],
+    [
+      "eating dinner at Hobbs Cafe (ordering his meal)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (for his food to arrive)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (to eat his meal)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (the taste of his food)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (the main course)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (his plate)",
+      10
+    ],
+    [
+      "relaxing after dinner (putting away dinner dishes)",
+      5
+    ],
+    [
+      "relaxing after dinner (tidying the dining area)",
+      5
+    ],
+    [
+      "relaxing after dinner (organizing books on a nearby shelf)",
+      5
+    ],
+    [
+      "relaxing after dinner (checking his phone notifications briefly)",
+      5
+    ],
+    [
+      "relaxing after dinner (stretching his legs lightly)",
+      5
+    ],
+    [
+      "relaxing after dinner (looking out the window)",
+      5
+    ],
+    [
+      "relaxing after dinner (mentally reviewing the day's work)",
+      5
+    ],
+    [
+      "relaxing after dinner (preparing for the next phase of relaxation)",
+      5
+    ],
+    [
+      "relaxing after dinner (settling down for the evening)",
+      5
+    ],
+    [
+      "relaxing after dinner (dimming the lights in the area)",
+      5
+    ],
+    [
+      "relaxing after dinner (taking a few deep breaths)",
+      10
+    ],
+    [
+      "relaxing/winding down before bed",
+      60
+    ],
+    [
+      "preparing for bed",
+      120
+    ],
+    [
+      "sleeping",
+      120
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ]
+  ],
+  "f_daily_schedule_hourly_org": [
+    [
+      "sleeping",
+      420
+    ],
+    [
+      "waking up and completing morning routine",
+      60
+    ],
+    [
+      "at the library at Oak Hill College working on his research paper",
+      60
+    ],
+    [
+      "writing on his research paper at the library",
+      180
+    ],
+    [
+      "at Hobbs Cafe for lunch/break",
+      60
+    ],
+    [
+      "writing on his research paper at the library",
+      240
+    ],
+    [
+      "eating dinner at Hobbs Cafe",
+      60
+    ],
+    [
+      "relaxing after dinner",
+      60
+    ],
+    [
+      "relaxing/winding down before bed",
+      60
+    ],
+    [
+      "preparing for bed",
+      120
+    ],
+    [
+      "sleeping",
+      120
+    ]
+  ],
+  "act_address": "the Ville:Hobbs Cafe:cafe:refrigerator",
+  "act_start_time": "February 13, 2023, 17:31:00",
+  "act_duration": 10,
+  "act_description": "eating dinner at Hobbs Cafe (the taste of his food)",
+  "act_pronunciatio": "\ud83d\ude0b\ud83c\udf7d\ufe0f",
+  "act_event": [
+    "Klaus Mueller",
+    "is",
+    "taste of his food"
+  ],
+  "act_obj_description": "refrigerator is being used for food storage",
+  "act_obj_pronunciatio": "\ud83e\uddca\ud83c\udf4e",
+  "act_obj_event": [
+    "refrigerator",
+    "be used for food storage",
+    "food storage"
+  ],
+  "chatting_with": null,
+  "chat": null,
+  "chatting_with_buffer": {},
+  "chatting_end_time": null,
+  "act_path_set": true,
+  "planned_path": []
+}

@@ -1,0 +1,84 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> planning a Valentine's Day party @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I'm excited to be here, Klaus. I know the party is coming up, and I'm ready to make it a great event for everyone."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm excited to be here, Klaus. I know the party is coming up, and I'm ready to make it a great event for everyone."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm really excited to help make it a great Valentine's Day party, Klaus. Let's plan it out together!"
+        ],
+        [
+          "Klaus Mueller",
+          "Let's plan the party details together, Isabella!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Let's plan the details together, Isabella!"
+        ],
+        [
+          "Klaus Mueller",
+          "Let's plan the details together, Isabella!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        78,
+        19
+      ],
+      "pronunciatio": "\ud83d\udec1.",
+      "description": "going to bed and finishing her evening routine at 10:00 PM @ the Ville:Hobbs Cafe:cafe:behind the cafe counter",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        75,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> planning a Valentine's Day party @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I'm excited to be here, Klaus. I know the party is coming up, and I'm ready to make it a great event for everyone."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm excited to be here, Klaus. I know the party is coming up, and I'm ready to make it a great event for everyone."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm really excited to help make it a great Valentine's Day party, Klaus. Let's plan it out together!"
+        ],
+        [
+          "Klaus Mueller",
+          "Let's plan the party details together, Isabella!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Let's plan the details together, Isabella!"
+        ],
+        [
+          "Klaus Mueller",
+          "Let's plan the details together, Isabella!"
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 14:03:40"
+  }
+}

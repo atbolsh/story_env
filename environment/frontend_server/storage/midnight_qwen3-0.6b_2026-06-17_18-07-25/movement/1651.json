@@ -1,0 +1,44 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> Maria Lopez and Klaus discussing ideas about Klaus's enthusiasm @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I've been thinking about how Klaus's enthusiasm inspired me, and I want to share some ideas with you."
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        77,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> Maria Lopez and Klaus discussing ideas about Klaus's enthusiasm @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I've been thinking about how Klaus's enthusiasm inspired me, and I want to share some ideas with you."
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        79,
+        23
+      ],
+      "pronunciatio": "\ud83d\udd2c\ud83d\udcda",
+      "description": "writing a research paper on the effects of gentrification in low-income communities (gathering research sources) @ the Ville:Hobbs Cafe:cafe:cafe customer seating",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 04:35:10"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        82,
+        26
+      ],
+      "pronunciatio": "\ud83d\udec1.",
+      "description": "waking up and starting her day (for her morning routine) @ the Ville:Hobbs Cafe:cafe:piano",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        118,
+        40
+      ],
+      "pronunciatio": "ute",
+      "description": "waking up and completing the morning routine at 9:00 AM @ the Ville:Dorm for Oak Hill College:garden:dorm garden",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        76,
+        24
+      ],
+      "pronunciatio": "\ud83d\udcd6\ud83d\udcda",
+      "description": "going to the library at 8:00 am. (reading the introduction to the research paper) @ the Ville:Oak Hill College:library:library sofa",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 01:02:50"
+  }
+}

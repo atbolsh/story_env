@@ -1,0 +1,68 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        23
+      ],
+      "pronunciatio": "\ud83c\udf05\u2728",
+      "description": "waking up and starting her day @ the Ville:Hobbs Cafe:cafe:cafe customer seating",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        128,
+        50
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I'm glad to see you're up, Klaus. How are you doing?"
+        ],
+        [
+          "Klaus Mueller",
+          "I'm up, Maria. How are you doing?"
+        ],
+        [
+          "Maria Lopez",
+          "I'm glad to see you're up, Klaus. How are you doing?"
+        ],
+        [
+          "Klaus Mueller",
+          "I'm glad to see you're up, Maria. How are you doing?"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        127,
+        50
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I'm glad to see you're up, Klaus. How are you doing?"
+        ],
+        [
+          "Klaus Mueller",
+          "I'm up, Maria. How are you doing?"
+        ],
+        [
+          "Maria Lopez",
+          "I'm glad to see you're up, Klaus. How are you doing?"
+        ],
+        [
+          "Klaus Mueller",
+          "I'm glad to see you're up, Maria. How are you doing?"
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 00:03:50"
+  }
+}

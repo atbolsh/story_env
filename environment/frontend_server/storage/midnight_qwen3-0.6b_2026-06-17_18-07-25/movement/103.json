@@ -1,0 +1,60 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        23
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I'm glad you're here, Klaus. I'll be ready to start the day with the caf\u00e9 and the piano."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm glad to meet you too, Isabella. I'll be ready to start the day with the caf\u00e9 and the piano."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm ready to start the day with the caf\u00e9 and the piano, Klaus. Let's get things going!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        118,
+        40
+      ],
+      "pronunciatio": "ute",
+      "description": "waking up and completing the morning routine at 9:00 AM @ the Ville:Dorm for Oak Hill College:garden:dorm garden",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        75,
+        23
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I'm glad you're here, Klaus. I'll be ready to start the day with the caf\u00e9 and the piano."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm glad to meet you too, Isabella. I'll be ready to start the day with the caf\u00e9 and the piano."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'm ready to start the day with the caf\u00e9 and the piano, Klaus. Let's get things going!"
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 00:17:10"
+  }
+}

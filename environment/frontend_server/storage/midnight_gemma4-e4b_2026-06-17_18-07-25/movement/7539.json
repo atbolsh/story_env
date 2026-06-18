@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        79,
+        19
+      ],
+      "pronunciatio": "\u2615\ufe0f\ud83d\udeaa",
+      "description": "closing Hobbs Cafe @ the Ville:Hobbs Cafe:cafe:behind the cafe counter",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        26
+      ],
+      "pronunciatio": "\u231b",
+      "description": "waiting to start waiting to start interacting with viewers in the chat @ <waiting> 75 26",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        123,
+        27
+      ],
+      "pronunciatio": "\ud83d\udcf0\ud83e\uddd0",
+      "description": "reviewing notes/preparing for the next day's writing session (looking up recent articles on gentrification) @ the Ville:Oak Hill College:library:bookshelf",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 20:56:30"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        22
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez assisting Maria Lopez in ordering a hearty breakfast scramble with toast and a medium black coffee for studying at Hobbs Cafe. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Good morning! Welcome to Hobbs Cafe. What can I get for you today?"
+        ],
+        [
+          "Maria Lopez",
+          "Good morning! I'm looking for something for breakfast, something hearty for studying\u2014what do you recommend?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "For studying, you really need something that keeps you going! I highly recommend our hearty breakfast scramble\u2014it's packed with protein and gives you plenty of energy. Alternatively, our avocado toast with feta is also very satisfying. Do either of those sound good, or were you thinking of something specific?"
+        ],
+        [
+          "Maria Lopez",
+          "The hearty breakfast scramble sounds perfect, especially since I need maximum fuel for studying! What does it come with?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It comes with fluffy scrambled eggs mixed with smoked sausage, fresh diced bell peppers, and onions, served with a side of roasted potatoes. We also offer it with toast or a side salad if you'd like! Does that sound like enough fuel for your study session? And is there anything else I can get started for you today?"
+        ],
+        [
+          "Maria Lopez",
+          "Yes, that sounds like exactly what I need! I think I'll take the side of toast with that. Just a coffee, please\u2014a medium black coffee would be perfect to get me started!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Fantastic! So that's one hearty breakfast scramble with toast and a medium black coffee. I'll get that started for you right away. Let me know if you need anything else while you're here!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        22
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez assisting Maria Lopez in ordering a hearty breakfast scramble with toast and a medium black coffee for studying at Hobbs Cafe. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Good morning! Welcome to Hobbs Cafe. What can I get for you today?"
+        ],
+        [
+          "Maria Lopez",
+          "Good morning! I'm looking for something for breakfast, something hearty for studying\u2014what do you recommend?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "For studying, you really need something that keeps you going! I highly recommend our hearty breakfast scramble\u2014it's packed with protein and gives you plenty of energy. Alternatively, our avocado toast with feta is also very satisfying. Do either of those sound good, or were you thinking of something specific?"
+        ],
+        [
+          "Maria Lopez",
+          "The hearty breakfast scramble sounds perfect, especially since I need maximum fuel for studying! What does it come with?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It comes with fluffy scrambled eggs mixed with smoked sausage, fresh diced bell peppers, and onions, served with a side of roasted potatoes. We also offer it with toast or a side salad if you'd like! Does that sound like enough fuel for your study session? And is there anything else I can get started for you today?"
+        ],
+        [
+          "Maria Lopez",
+          "Yes, that sounds like exactly what I need! I think I'll take the side of toast with that. Just a coffee, please\u2014a medium black coffee would be perfect to get me started!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Fantastic! So that's one hearty breakfast scramble with toast and a medium black coffee. I'll get that started for you right away. Let me know if you need anything else while you're here!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        119,
+        20
+      ],
+      "pronunciatio": "\ud83d\uddc2\ufe0f\ud83d\udcbb",
+      "description": "writing his research paper at the library (organizing his digital files for the day) @ the Ville:Oak Hill College:library:library sofa",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 10:19:00"
+  }
+}

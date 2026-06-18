@@ -1,0 +1,68 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        77,
+        22
+      ],
+      "pronunciatio": "\ud83d\udc68\u200d\ud83c\udf73",
+      "description": "finishing her lunch at the counter (preparing her lunch) @ the Ville:Hobbs Cafe:cafe:kitchen sink",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        77,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Klaus Mueller",
+          "I'm glad we're both thinking about the research paper, Maria. I'm really inspired by how we both connect to the topic."
+        ],
+        [
+          "Maria Lopez",
+          "I'm excited to hear about your research, Klaus. I'm really inspired by how we both approach this topic!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'm really inspired by how we both connect to the topic."
+        ],
+        [
+          "Maria Lopez",
+          "I'm excited to hear how we both approach this topic, Klaus. I'm inspired by the way we both connect to it."
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        78,
+        22
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Klaus Mueller",
+          "I'm glad we're both thinking about the research paper, Maria. I'm really inspired by how we both connect to the topic."
+        ],
+        [
+          "Maria Lopez",
+          "I'm excited to hear about your research, Klaus. I'm really inspired by how we both approach this topic!"
+        ],
+        [
+          "Klaus Mueller",
+          "I'm really inspired by how we both connect to the topic."
+        ],
+        [
+          "Maria Lopez",
+          "I'm excited to hear how we both approach this topic, Klaus. I'm inspired by the way we both connect to it."
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 05:08:30"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        74,
+        20
+      ],
+      "pronunciatio": "\ud83d\udec1.",
+      "description": "preparing for her afternoon routine (preparing for her morning routine) @ the Ville:Hobbs Cafe:cafe:cafe customer seating",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about what to eat for lunch @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I found that Klaus's enthusiasm for the conversation interesting."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm glad we're having this conversation, Maria. I've been really inspired by your perspective on the topic."
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        75,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about what to eat for lunch @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I found that Klaus's enthusiasm for the conversation interesting."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm glad we're having this conversation, Maria. I've been really inspired by your perspective on the topic."
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 02:30:30"
+  }
+}

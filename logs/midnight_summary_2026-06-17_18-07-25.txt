@@ -1,0 +1,8 @@
+midnight_test 2026-06-17_18-07-25: 8640 steps each on: gemma4-e2b gemma4-e4b legacy-gpt qwen3-0.6b gemma4-e2b-thinking gemma4-e4b-thinking qwen3-0.6b-thinking
+gemma4-e2b: CRASHED at step 6362, 5234s, sim midnight_gemma4-e2b_2026-06-17_18-07-25, logs /workspace/story_env/logs/midnight_gemma4-e2b_2026-06-17_18-07-25
+gemma4-e4b: COMPLETED, 5415s, sim midnight_gemma4-e4b_2026-06-17_18-07-25, logs /workspace/story_env/logs/midnight_gemma4-e4b_2026-06-17_18-07-25
+legacy-gpt: COMPLETED, 2772s, sim midnight_legacy-gpt_2026-06-17_18-07-25, logs /workspace/story_env/logs/midnight_legacy-gpt_2026-06-17_18-07-25
+qwen3-0.6b: COMPLETED, 3133s, sim midnight_qwen3-0.6b_2026-06-17_18-07-25, logs /workspace/story_env/logs/midnight_qwen3-0.6b_2026-06-17_18-07-25
+gemma4-e2b-thinking: TIMED OUT at step 3871, 10834s, sim midnight_gemma4-e2b-thinking_2026-06-17_18-07-25, logs /workspace/story_env/logs/midnight_gemma4-e2b-thinking_2026-06-17_18-07-25
+gemma4-e4b-thinking: TIMED OUT at step 4328, 10833s, sim midnight_gemma4-e4b-thinking_2026-06-17_18-07-25, logs /workspace/story_env/logs/midnight_gemma4-e4b-thinking_2026-06-17_18-07-25
+qwen3-0.6b-thinking: CRASHED at step 3016, 6676s, sim midnight_qwen3-0.6b-thinking_2026-06-17_18-07-25, logs /workspace/story_env/logs/midnight_qwen3-0.6b-thinking_2026-06-17_18-07-25

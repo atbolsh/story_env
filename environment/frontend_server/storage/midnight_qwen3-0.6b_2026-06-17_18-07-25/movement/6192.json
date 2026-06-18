@@ -1,0 +1,44 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        24
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> Klaus is waking up for the party planning, and Isabella is checking if he's ready. @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I heard Klaus is waking up, let's check if he's ready for the party planning."
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        77,
+        19
+      ],
+      "pronunciatio": "\ud83d\ude42",
+      "description": "finishing her evening routine at 10:00 PM (talking to Isabella about lunch) @ the Ville:Hobbs Cafe:cafe:kitchen sink",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        72,
+        26
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> Klaus is waking up for the party planning, and Isabella is checking if he's ready. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I heard Klaus is waking up, let's check if he's ready for the party planning."
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 17:12:00"
+  }
+}

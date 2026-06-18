@@ -1,0 +1,44 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        21
+      ],
+      "pronunciatio": "\ud83d\ude42",
+      "description": "closing the cafe at 8pm (on the way to organizing the event space and setting up the table) @ the Ville:Hobbs Cafe:cafe:cooking area",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        82,
+        26
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> Maria Lopez and Klaus @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I've been thinking about how creativity can bridge gaps and inspire others like Klaus did, and I want to share my own perspective on the importance of collaboration and ideas."
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        76,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> Maria Lopez and Klaus @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I've been thinking about how creativity can bridge gaps and inspire others like Klaus did, and I want to share my own perspective on the importance of collaboration and ideas."
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 20:01:10"
+  }
+}

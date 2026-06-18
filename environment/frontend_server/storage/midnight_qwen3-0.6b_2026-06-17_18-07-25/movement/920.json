@@ -1,0 +1,52 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        73,
+        22
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Klaus Mueller",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I'm glad to meet you, Klaus. I'm excited to collaborate on our Valentine's Day party planning."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm excited to collaborate on our Valentine's Day party planning."
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        81,
+        22
+      ],
+      "pronunciatio": "\ud83d\udec1.\u03c3",
+      "description": "having dinner and relaxing at 6:00 PM @ the Ville:Hobbs Cafe:cafe:piano",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        74,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "I'm glad to meet you, Klaus. I'm excited to collaborate on our Valentine's Day party planning."
+        ],
+        [
+          "Klaus Mueller",
+          "I'm excited to collaborate on our Valentine's Day party planning."
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 02:33:20"
+  }
+}

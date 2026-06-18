@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        77,
+        19
+      ],
+      "pronunciatio": "\ud83d\udc69\u200d\ud83c\udf73",
+      "description": "opening the cafe at 8am (preparing her lunch at the counter) @ the Ville:Hobbs Cafe:cafe:kitchen sink",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        19
+      ],
+      "pronunciatio": "\ud83d\udec1.",
+      "description": "going to bed and finishing her evening routine at 10:00 PM (on the way to going to bed and finishing her evening routine at 10:00 P) @ the Ville:Hobbs Cafe:cafe:cooking area",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        112,
+        33
+      ],
+      "pronunciatio": "\ud83d\udca1\ud83e\udde0",
+      "description": "writing a research paper on the effects of gentrification in low-income communities (outlining the research question) @ the Ville:Oak Hill College:hallway:<random>",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 06:23:30"
+  }
+}

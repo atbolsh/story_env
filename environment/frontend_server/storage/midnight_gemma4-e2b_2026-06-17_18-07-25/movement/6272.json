@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        65,
+        32
+      ],
+      "pronunciatio": "\u2615\ud83d\ude0a",
+      "description": "working at the counter (ensuring the counter reflects the cafe's welcoming atmosphere) @ the Ville:Hobbs Cafe:cafe:behind the cafe counter",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        94,
+        24
+      ],
+      "pronunciatio": "\ud83d\udc40\ud83d\udc4d",
+      "description": "streaming/gaming (interacting with viewers actively) @ the Ville:The Rose and Crown Pub:pub:microphone",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        77,
+        19
+      ],
+      "pronunciatio": "\ud83c\udf7d\ufe0f\ud83d\ude0b",
+      "description": "eating dinner at Hobbs Cafe (to eat his meal) @ the Ville:Hobbs Cafe:cafe:kitchen sink",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 17:25:20"
+  }
+}

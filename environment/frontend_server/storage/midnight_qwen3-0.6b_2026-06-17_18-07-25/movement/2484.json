@@ -1,0 +1,44 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> Maria Lopez and Klaus are discussing how Klaus's enthusiasm inspired Maria to share ideas with others. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I've been thinking about how Klaus's enthusiasm inspired me to share ideas with others, and I want to connect with you as well!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        19
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about <fill in> Maria Lopez and Klaus are discussing how Klaus's enthusiasm inspired Maria to share ideas with others. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "I've been thinking about how Klaus's enthusiasm inspired me to share ideas with others, and I want to connect with you as well!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        79,
+        23
+      ],
+      "pronunciatio": "ute",
+      "description": "waking up and completing the morning routine at 7:00 am. @ the Ville:Hobbs Cafe:cafe:cafe customer seating",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 06:54:00"
+  }
+}
