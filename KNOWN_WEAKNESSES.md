@@ -1,4 +1,4 @@
-# Known Technical Weaknesses
+# Known Weaknesses
 
 This document is an audit of the original `generative_agents` codebase
 (Park et al., 2023, the "Smallville" paper at <https://arxiv.org/abs/2304.03442>),
@@ -11,9 +11,86 @@ Items are grouped by category and rated:
 - **[BLOCKER]** — would prevent or silently corrupt a multi-day run.
 - **[SCALING]** — works fine for the demo but degrades super-linearly.
 - **[CORRECTNESS]** — produces wrong but non-fatal behavior.
+- **[DESIGN]** — the architecture is missing a capability you'd expect it to have.
 - **[CLEANUP]** — code-quality / maintainability concern.
 
 All file paths are relative to the repository root.
+
+---
+
+## 0. Headline: memory "connections" are recorded but never used, so chat outcomes don't reach plans
+
+### 0.1 [DESIGN] Agreements made in conversation do not propagate into plans
+
+This is the single most consequential behavioral gap we've found: when two
+agents agree on something in a conversation ("let's meet at 3pm", "I'll come to
+your Valentine's party Friday at 5pm"), that commitment essentially never shows
+up in anyone's future schedule. We initially suspected an LLM failure, but after
+tracing the code the conclusion is that **this is primarily structural** — even a
+perfect model could not make a *same-day* agreement propagate, because the wiring
+to carry it does not exist.
+
+**The connection graph is effectively write-only.** Every `ConceptNode` carries a
+`filling` field that is meant to be the edge set of the memory graph
+(`associative_memory.py`): for a chat node it stores the full raw transcript
+`[[speaker, utterance], …]`, and for a reflection thought it stores the
+`node_id`s of the evidence it was drawn from. These connections are dutifully
+written on essentially every node and persisted to `nodes.json`, but in the live
+autonomous loop they are **almost never read back**:
+
+- The raw-transcript `filling` on chat nodes is consumed only by
+  `run_gpt_prompt_create_conversation` (`run_gpt_prompt.py:1571`) — whose sole
+  call site (`plan.py:280`) is **commented out** — and by the interactive debug
+  command `print persona associative memory (chat)`. The live conversation path
+  (`generate_convo` → `agent_chat_v2`, `converse.py:126`) rebuilds context purely
+  from embedding retrieval (`new_retrieve`, which scans only `seq_event +
+  seq_thought` and *skips chat nodes entirely*) plus an LLM relationship summary.
+  It never reads the stored turns.
+- The evidence `filling` on reflection thoughts is read in exactly one place —
+  the thought-`depth` bookkeeping in `add_thought` (`associative_memory.py:209-210`).
+  Nothing uses those edges to traverse, justify, or surface a memory during
+  planning.
+
+So the data model *has* a memory graph, but the agents do not actually walk it.
+
+**The three paths by which a conversation could touch a plan, and where each drops the agreement:**
+
+1. *Immediate same-day schedule revision.* `_chat_react` → `_create_react` →
+   `generate_new_decomp_schedule` (`plan.py:847`) feeds in only the **one-line
+   conversation summary** and only re-decomposes the **current hour or two**
+   (`start_hour..end_hour` around *now*). Any future-dated commitment is
+   discarded — there is no "appointment" / "commitment" object anywhere in the
+   schedule data model.
+2. *Planning/memo thoughts.* At conversation end, `reflect.py:216-244` writes a
+   `planning_thought` and a `memo_thought` (LLM summaries of the transcript).
+   These persist and are embedding-retrievable, but the only consumer that could
+   turn them into a *plan* is `revise_identity` (Path 3); same-day reactions
+   (`_should_react`) only decide chat/wait/react to a currently-perceived event,
+   never a future commitment.
+3. *Next-day re-planning.* `_long_term_planning` calls `revise_identity`
+   (`plan.py:413`) **only when `new_day == "New day"`**, which rewrites the
+   persona's `currently` string and, from it, the next day's schedule. This is
+   the genuine propagation path — but (a) it never meaningfully fires in a
+   single-day run (our overnight runs are exactly one in-game day; the base sim
+   starts `2023-02-13 00:00:00`, so the only rollover lands on the final step),
+   and (b) `daily_req` is explicitly **not** regenerated on a new day
+   (`plan.py:494`, a literal `TODO`). Even when it does fire, the agreement must
+   survive ~3-4 lossy LLM hops (summarize → embed/retrieve → re-extract into
+   `currently` → re-decompose), and small local models routinely drop the
+   specific date/time/location despite the prompt asking for them.
+
+**LLM failures stack on top of the structural gap but are secondary.** The
+convo-summary step is the one that crashed `gemma4-e2b` (model returned prose,
+not JSON); its fail-safe is the generic
+`"conversing with a housemate about morning greetings"`, so a parse failure
+doesn't merely lose the agreement — it *overwrites* it with a meaningless
+placeholder.
+
+**Fix direction:** introduce a first-class "commitment" memory type with explicit
+`when` / `where` / `who` fields that the planner reads directly when building both
+the same-day schedule and the next day's `daily_req`; and actually traverse
+`filling` edges during retrieval/planning so the recorded connections stop being
+write-only. Better prompting alone will not close this — the carrier has to exist.
 
 ---
 
