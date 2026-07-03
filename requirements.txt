@@ -62,3 +62,20 @@ huggingface_hub>=0.30.0
 # Local retrieval embedder used by the Gemma 4 harness (BAAI/bge-small-en-v1.5).
 sentence-transformers>=3.0
 einops>=0.7.0
+
+# --- NAMS-backed harnesses (reverie/backend_server/harnesses/nams/) ---
+# Local, no-API-key Neo4j Agent Memory System. The [sentence-transformers]
+# extra wires the local BGE embedder used by the Gemma 4 NAMS harness; the
+# [openai] extra wires OpenAI embeddings used by the GPT NAMS harness. Pulls
+# in the `neo4j` python driver as a transitive dep. Requires Neo4j 5.20+ for
+# vector indexes -- see docker-compose.yml.
+neo4j-agent-memory[sentence-transformers,openai,spacy,gliner]>=0.5.0
+neo4j>=5.20
+# Entity / relation extraction pipeline used by the NAMS bolt backend when
+# aging short-term messages into long-term POLE+O facts. spaCy is the
+# rule-based first stage; GLiNER2 is the zero-shot NER stage; GLiREL extracts
+# typed relationships between the GLiNER entities. After installing spacy,
+# download its English model once:  python -m spacy download en_core_web_sm
+spacy>=3.7
+gliner>=0.2
+glirel>=0.1

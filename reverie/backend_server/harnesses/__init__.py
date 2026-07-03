@@ -29,6 +29,9 @@ _AVAILABLE: Dict[str, str] = {
   "qwen3-0.6b-thinking":  "Local Qwen3-0.6B with thinking mode (reasoning logged, stripped from outputs).",
   "claude":               "Anthropic Claude (scaffolded; not implemented).",
   "latest-gpt":           "Latest OpenAI chat models (scaffolded; not implemented).",
+  "gemma4-e4b-nams":      "Local Gemma 4 E4B + Neo4j Agent Memory System on local bolt Neo4j (no API keys).",
+  "gemma4-e4b-nams-thinking": "Local Gemma 4 E4B (thinking) + Neo4j Agent Memory System on local bolt Neo4j.",
+  "latest-gpt-nams":      "Modern OpenAI chat models + Neo4j Agent Memory System on local bolt Neo4j.",
 }
 
 
@@ -72,6 +75,15 @@ def _resolve(name: str) -> Any:
   if name == "latest-gpt":
     from . import latest_gpt
     return latest_gpt
+  if name == "gemma4-e4b-nams":
+    from .nams import gemma4_llm
+    return gemma4_llm.build(use_thinking=False)
+  if name == "gemma4-e4b-nams-thinking":
+    from .nams import gemma4_llm
+    return gemma4_llm.build(use_thinking=True)
+  if name == "latest-gpt-nams":
+    from .nams import gpt_llm
+    return gpt_llm.build()
   raise ValueError(
     f"unknown harness {name!r}; valid: {sorted(_AVAILABLE)}"
   )

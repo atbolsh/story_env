@@ -1,0 +1,54 @@
+# Local Neo4j database for the NAMS-backed reverie harnesses
+# (gemma4-e4b-nams, latest-gpt-nams).
+#
+# The Neo4j Agent Memory System SDK connects to this database over the bolt
+# protocol; no Neo4j Aura / NAMS hosted API keys are involved. Every persona
+# gets its own memory graph keyed by its persona name as the NAMS session_id,
+# all inside this one local database.
+#
+# Bring it up once and leave it running:
+#     docker compose up -d neo4j
+#
+# Browse the graph at http://localhost:7474 (user: neo4j, password from
+# .env's NEO4J_PASSWORD). The bolt endpoint the harnesses use is
+# bolt://localhost:7687.
+#
+# The data volume (neo4j_data) persists across container restarts, so a
+# simulation's memory graph survives `docker compose down` + `up`. Use
+# `docker compose down -v` to wipe the database (e.g. before re-importing a
+# forked JSON bootstrap into a clean graph).
+
+services:
+  neo4j:
+    image: neo4j:5.20
+    container_name: generative_agents_neo4j
+    # APOC is required by the NAMS bolt backend for several extraction /
+    # dedup helpers. The image bundles the apoc .jar when these env vars are
+    # set; we mount the plugins dir so the jar persists across restarts.
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-password}
+      NEO4J_PLUGINS: '["apoc"]'
+      APOC_PROCEDURE_ENABLE: "true"
+      APOC_IMPORT_FILE_ENABLED: "true"
+      APOC_EXPORT_FILE_ENABLED: "true"
+      # Allow the longer transactions NAMS uses for batch message loads.
+      NEO4J_server_memory_heap_initial__size: 512m
+      NEO4J_server_memory_heap_max__size: 2G
+      NEO4J_server_direct_memory__max__size: 1G
+    ports:
+      - "7474:7474"   # HTTP browser
+      - "7687:7687"   # bolt
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_plugins:/plugins
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  neo4j_data:
+  neo4j_logs:
+  neo4j_plugins:

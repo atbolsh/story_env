@@ -161,14 +161,60 @@ class ReverieServer:
     # # e.g., dict[("Adam Abraham", "Zane Xu")] = "Adam: baba \n Zane:..."
     # self.persona_convo = dict()
 
-    # Loading in all personas. 
+    # Loading in all personas.
     init_env_file = f"{sim_folder}/environment/{str(self.step)}.json"
     init_env = json.load(open(init_env_file))
-    for persona_name in reverie_meta['persona_names']: 
+
+    # NAMS-backed harnesses construct NamsPersona (per-persona NamsMemory on
+    # local bolt Neo4j) instead of the JSON-backed Persona. The first time a
+    # *-nams harness boots a sim forked from a JSON bootstrap, we run the
+    # one-way JSON -> NAMS importer (gated by graph_exists) so the persona's
+    # long-term memory is seeded into the graph. See
+    # harnesses/nams/json_to_nams_import.py.
+    is_nams = "-nams" in (harnesses.get_active_name() or "")
+    if is_nams:
+      from harnesses.nams import (
+        NamsMemory, NamsPersona, NAMS_EXTRACTION_NO_LLM, NAMS_EXTRACTION_HARNESS_LLM,
+      )
+      from harnesses.nams.json_to_nams_import import import_persona_bootstrap
+      extraction_mode = os.environ.get("REVERIE_NAMS_EXTRACTION",
+                                       NAMS_EXTRACTION_NO_LLM)
+      llm_harness = harnesses.get_active()
+      embedder_name = getattr(llm_harness, "embedder_name", "BAAI/bge-small-en-v1.5")
+      self._nams_llm_harness = llm_harness
+      self._nams_embedder_name = embedder_name
+      self._nams_extraction_mode = extraction_mode
+
+      def _build_nams(persona_name):
+        return NamsMemory(
+          session_id=persona_name,
+          embedder_name=embedder_name,
+          extraction_mode=extraction_mode,
+          llm_harness=llm_harness,
+        )
+
+    for persona_name in reverie_meta['persona_names']:
       persona_folder = f"{sim_folder}/personas/{persona_name}"
       p_x = init_env[persona_name]["x"]
       p_y = init_env[persona_name]["y"]
-      curr_persona = Persona(persona_name, persona_folder)
+      if is_nams:
+        nams = _build_nams(persona_name)
+        try:
+          if not nams.graph_exists():
+            print(f"[reverie] importing JSON bootstrap -> NAMS for "
+                  f"{persona_name!r}...")
+            import_persona_bootstrap(
+              nams=nams, bootstrap_dir=f"{persona_folder}/bootstrap_memory",
+            )
+        except Exception as e:
+          print(f"[reverie] NAMS import for {persona_name!r} failed "
+                f"({type(e).__name__}: {e}); continuing with empty graph.")
+        curr_persona = NamsPersona(
+          persona_name, persona_folder,
+          nams_memory=nams, llm_harness=llm_harness,
+        )
+      else:
+        curr_persona = Persona(persona_name, persona_folder)
 
       self.personas[persona_name] = curr_persona
       self.personas_tile[persona_name] = (p_x, p_y)
@@ -709,6 +755,27 @@ if __name__ == '__main__':
     )
   os.environ["REVERIE_HARNESS"] = harness_choice
   print(f"[reverie] using harness: {harness_choice}")
+
+  # NAMS-backed harnesses need a second startup answer: the extraction mode.
+  #   A / no-llm     -- spaCy + GLiNER + GLiREL only (air-gapped, deterministic)
+  #   C / harness-llm -- spaCy + GLiNER for raw messages + the harness chat
+  #                     LLM as the NAMS extraction LLM stage (richer facts)
+  # Both modes still call add_fact directly from the reflect / converse
+  # cognitive modules; mode C additionally lets NAMS's internal LLM
+  # extractor run on raw short-term text. See
+  # harnesses/nams/nams_memory.py for how this wires into MemorySettings.
+  is_nams = "-nams" in harness_choice
+  if is_nams:
+    print("NAMS extraction mode:")
+    print("  [A] no-llm      -- spaCy + GLiNER + GLiREL only (deterministic)")
+    print("  [C] harness-llm -- + harness chat LLM for raw-message extraction")
+    ext_choice = (input("Select extraction mode [A]: ").strip().lower()
+                  or "a")
+    if ext_choice.startswith("c"):
+      os.environ["REVERIE_NAMS_EXTRACTION"] = "harness-llm"
+    else:
+      os.environ["REVERIE_NAMS_EXTRACTION"] = "no-llm"
+    print(f"[reverie] NAMS extraction mode: {os.environ['REVERIE_NAMS_EXTRACTION']}")
 
   origin = input("Enter the name of the forked simulation: ").strip()
   target = input("Enter the name of the new simulation: ").strip()

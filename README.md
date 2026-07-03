@@ -48,8 +48,56 @@ This will start the simulation server. It first prints the list of available **m
 | `gemma4-e2b-thinking` / `gemma4-e4b-thinking` | Same Gemma 4 models with **thinking mode** on |
 | `qwen3-0.6b` | Local Qwen3-0.6B (non-thinking) via transformers |
 | `qwen3-0.6b-thinking` | Qwen3-0.6B with **thinking mode** on |
+| `gemma4-e4b-nams` / `gemma4-e4b-nams-thinking` | Local Gemma 4 E4B + **NAMS** graph memory on a local Neo4j (no API keys) |
+| `latest-gpt-nams` | Modern OpenAI chat models (`openai>=1.0`) + **NAMS** graph memory on a local Neo4j |
 
 The `*-thinking` variants are just convenience aliases for the same model with its reasoning channel enabled: the model "thinks" before answering, and that reasoning is written to the prompt-pair logs (the `thinking` field) but is **stripped from everything else** — it never enters an agent's memory, a conversation, or any JSON the cognitive modules parse. Thinking runs also raise each call's token budget (2x) to leave room for the reasoning. Pick one the same way you'd pick any other harness; there's no separate flag to set.
+
+#### NAMS-backed harnesses (`gemma4-e4b-nams`, `latest-gpt-nams`)
+
+These harnesses replace the JSON memory stream with a **Neo4j Agent Memory System (NAMS)** graph running on a **local Neo4j database** — no Neo4j Aura / NAMS hosted API keys involved. The per-character long-term memory (identity, events, thoughts, plans, schedule, relationships) lives as POLE+O entities + temporal Facts in the graph; only `scratch.json` (transient state) and `spatial_memory.json` (world layout) stay on disk. See `reverie/backend_server/harnesses/nams/` for the implementation.
+
+**One-time local DB setup:**
+
+1. Start a local Neo4j 5.20+ with APOC via the included compose file (bolt on `7687`, HTTP browser on `7474`):
+
+       docker compose up -d neo4j
+
+   The compose file sets the password from the `NEO4J_PASSWORD` env var (default `password`). Data persists in a named volume, so a sim's memory graph survives `docker compose down` + `up`. Use `docker compose down -v` to wipe the database (e.g. before re-importing a forked JSON bootstrap into a clean graph).
+
+2. Tell the harness how to reach the database (defaults shown):
+
+       export NEO4J_URI="bolt://localhost:7687"
+       export NEO4J_USER="neo4j"
+       export NEO4J_PASSWORD="password"
+
+   You can put these in your `.env` next to this README (alongside `OPENAI_API_KEY`); `reverie_config.py` already loads `.env` into the environment at import time.
+
+3. Install the NAMS extras (already in `requirements.txt`). The `neo4j-agent-memory` SDK requires **Python 3.10+** (the rest of this repo targets 3.12), so use a 3.10+ interpreter for the `*-nams` harnesses:
+
+       pip install -r requirements.txt
+       python -m spacy download en_core_web_sm
+
+   The package ships as `neo4j-agent-memory` on PyPI (https://pypi.org/project/neo4j-agent-memory/). The `[sentence-transformers]` extra wires the local BGE embedder used by `gemma4-e4b-nams`; the `[openai]` extra wires OpenAI embeddings used by `latest-gpt-nams`; `[spacy]` + `[gliner]` drive the NERS entity/relation extraction pipeline that ages short-term messages into long-term POLE+O facts. `glirel` (relation extraction) is pulled in separately.
+
+**Each character = one session in the shared graph.** The persona's full name is used as the NAMS `session_id`, so all of a character's short-term messages, long-term facts, and reasoning traces are scoped under it inside the one local database. There is no per-character database to create — just the one Neo4j instance.
+
+**First run against a JSON-forked sim.** When you fork a sim that was built up under a legacy JSON harness (e.g. `base_the_ville_isabella_maria_klaus`), the first `*-nams` run automatically imports each persona's `bootstrap_memory/` (spatial, identity, schedule, `associative_memory/nodes.json`) into the graph as POLE+O entities + Facts. The import is gated by a `graph_exists` check, so re-runs against an already-imported graph are no-ops. To force a fresh re-import, wipe the database (`docker compose down -v && docker compose up -d neo4j`).
+
+**Extraction mode prompt.** After selecting a `*-nams` harness, reverie asks:
+
+    NAMS extraction mode:
+      [A] no-llm      -- spaCy + GLiNER + GLiREL only (deterministic)
+      [C] harness-llm -- + harness chat LLM for raw-message extraction
+    Select extraction mode [A]:
+
+Mode **A** runs the NAMS extractor pipeline without any LLM stage (air-gapped, deterministic) — the harness LLM is still used by the cognitive modules directly (reflection insights, conversation summaries, poignancy scoring) via explicit `add_fact` calls. Mode **C** additionally wires the harness chat LLM as the NAMS extractor's LLM stage so raw short-term text is also LLM-summarized into facts. Both modes keep the same cognitive-module behavior; the difference is only whether NAMS's *internal* extractor gets an LLM stage.
+
+Browse any character's graph at `http://localhost:7474` (user `neo4j`, password from `NEO4J_PASSWORD`). Useful Cypher for a quick sanity check:
+
+    MATCH (f:Fact) WHERE f.metadata CONTAINS '"kind": "plan"' RETURN f LIMIT 5;
+    MATCH (a:Entity {type:'PERSON'})-[r:TALKED_WITH]->(b:Entity) RETURN a,r,b LIMIT 5;
+    MATCH (t:ReasoningTrace) RETURN t.task, t.outcome LIMIT 5;
 
 After the harness, a prompt will appear asking the following: "Enter the name of the forked simulation: ". To start a 3-agent simulation with Isabella Rodriguez, Maria Lopez, and Klaus Mueller, type the following:
     
