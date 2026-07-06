@@ -158,6 +158,7 @@ def build_memory_settings(*, embedder_name: str,
   embedding_str = embedder_name
 
   llm_provider = None
+  enable_llm_fallback = False
   if extraction_mode == NAMS_EXTRACTION_HARNESS_LLM:
     # In the dedicated *-nams harnesses, llm_harness is a Gemma4NamsLLM /
     # LatestGPTNamsLLM with its own as_nams_llm_provider(). In the mixed
@@ -166,13 +167,25 @@ def build_memory_settings(*, embedder_name: str,
     # generic NamsLLMProvider adapter that drives _generate off-thread.
     from .llm_harness import nams_llm_provider_for
     llm_provider = nams_llm_provider_for(llm_harness)
+    enable_llm_fallback = True
 
-  # When llm is None the SDK runs the spaCy/GLiNER extractor pipeline without
-  # the LLM stage (air-gapped / deterministic). That's mode A.
+  # Build an explicit ExtractionConfig so the SDK's llm-consistency validator
+  # is satisfied: when llm is None (no-llm mode, and the import-only path
+  # which has no harness), enable_llm_fallback MUST be False or the SDK
+  # rejects the settings (see _validate_llm_consistency in the SDK). The
+  # PIPELINE extractor with enable_spacy + enable_gliner + extract_relations
+  # (default True) gives the spaCy + GLiNER + GLiREL pipeline we want; the
+  # only knob that changes between modes is enable_llm_fallback.
+  from neo4j_agent_memory import ExtractionConfig
+  extraction_cfg = ExtractionConfig(enable_llm_fallback=enable_llm_fallback)
+
+  # When llm is None the SDK runs the spaCy/GLiNER/GLiREL extractor pipeline
+  # without the LLM fallback stage (air-gapped / deterministic). That's mode A.
   return MemorySettings(
     neo4j=neo4j_cfg,
     embedding=embedding_str,
     llm=llm_provider,
+    extraction=extraction_cfg,
   )
 
 
