@@ -80,9 +80,33 @@ These harnesses replace the JSON memory stream with a **Neo4j Agent Memory Syste
 
    The package ships as `neo4j-agent-memory` on PyPI (https://pypi.org/project/neo4j-agent-memory/). The `[sentence-transformers]` extra wires the local BGE embedder used by `gemma4-e4b-nams`; the `[openai]` extra wires OpenAI embeddings used by `latest-gpt-nams`; `[spacy]` + `[gliner]` drive the NERS entity/relation extraction pipeline that ages short-term messages into long-term POLE+O facts. `glirel` (relation extraction) is pulled in separately.
 
-**Each character = one session in the shared graph.** The persona's full name is used as the NAMS `session_id`, so all of a character's short-term messages, long-term facts, and reasoning traces are scoped under it inside the one local database. There is no per-character database to create — just the one Neo4j instance.
+**Per-character isolation.** Each character's semantic model must be his own — never mutually visible to another character. Neo4j **Community Edition** (the free GPLv3 image in `docker-compose.yml`) supports only one database per instance, so isolation is achieved at the *instance* level:
 
-**First run against a JSON-forked sim.** When you fork a sim that was built up under a legacy JSON harness (e.g. `base_the_ville_isabella_maria_klaus`), the first `*-nams` run automatically imports each persona's `bootstrap_memory/` (spatial, identity, schedule, `associative_memory/nodes.json`) into the graph as POLE+O entities + Facts. The import is gated by a `graph_exists` check, so re-runs against an already-imported graph are no-ops. To force a fresh re-import, wipe the database (`docker compose down -v && docker compose up -d neo4j`).
+- **When at most ONE persona in a sim is on NAMS** (e.g. `midnight_test.sh` with only Klaus Mueller on NAMS): the single `docker compose up -d neo4j` instance is enough. That one persona's graph lives in it and isolation is trivially satisfied. No extra setup. This is the default path.
+
+- **When TWO OR MORE personas in the same sim are on NAMS:** launch one dedicated Community container per persona with `scripts/nams_db.sh`. Each gets its own container, its own data volume, and its own bolt port; their memory graphs are physically separate. The script writes a registry (`nams_databases.json`) that the harness reads at startup to route each persona to its own instance. This keeps the whole stack on the free GPLv3 Community Edition — no Neo4j Enterprise license flag, no account.
+
+       # Launch dedicated containers for two NAMS personas
+       scripts/nams_db.sh up "Klaus Mueller" "Isabella Rodriguez"
+
+       # See what's running + dump files on disk
+       scripts/nams_db.sh list
+
+       # When the run is over: save each persona, then stop its container,
+       # then spin the server down yourself.
+       scripts/nams_db.sh teardown "Klaus Mueller"
+       scripts/nams_db.sh teardown "Isabella Rodriguez"
+
+       # Later, on any machine with the .dump files + this repo:
+       scripts/nams_db.sh up "Klaus Mueller" "Isabella Rodriguez"
+       scripts/nams_db.sh load "Klaus Mueller" nams_dumps/klaus_mueller__<timestamp>.dump
+       scripts/nams_db.sh load "Isabella Rodriguez" nams_dumps/isabella_rodriguez__<timestamp>.dump
+
+**Save-file format.** `scripts/nams_db.sh save`/`teardown` use Neo4j's native `neo4j-admin database dump` output — a binary archive of the store files, one `.dump` file per persona (`nams_dumps/<sanitized>__<UTC-timestamp>.dump`). It is not human-readable; it is only meaningful to `neo4j-admin database load` on the same (or newer) Neo4j major version. Restored with `scripts/nams_db.sh load <persona> <dump_file>`. `save` is non-destructive (the persona's container is restarted after the dump); `teardown` saves + stops the container (and with `--purge` also drops the volume + registry entry), leaving the server clean for you to spin down.
+
+`scripts/nams_db.sh --help` prints the full subcommand reference. The single-instance compose path and the per-persona-container path coexist: the harness falls back to `bolt://localhost:7687` for any persona not in the registry, so a sim mixing one NAMS persona (in the compose instance) with JSON-backed personas just works without touching `nams_db.sh`.
+
+**First run against a JSON-forked sim.** When you fork a sim that was built up under a legacy JSON harness (e.g. `base_the_ville_isabella_maria_klaus`), the first `*-nams` run automatically imports each persona's `bootstrap_memory/` (spatial, identity, schedule, `associative_memory/nodes.json`) into the graph as POLE+O entities + Facts. The import is gated by a `graph_exists` check, so re-runs against an already-imported graph are no-ops. To force a fresh re-import, wipe the database (`docker compose down -v && docker compose up -d neo4j` for the single instance, or `scripts/nams_db.sh down "Klaus Mueller" --purge` for a per-persona container).
 
 **Extraction mode prompt.** After selecting a `*-nams` harness, reverie asks:
 

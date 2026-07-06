@@ -59,22 +59,91 @@ def _neo4j_user() -> str:
   return os.environ.get("NEO4J_USER", "neo4j").strip()
 
 
+#: Default bolt URI = the single shared Community instance from
+#: ``docker-compose.yml``. Used when a persona has no entry in the per-persona
+#: registry (``nams_databases.json``), i.e. when at most one persona in the
+#: simulation is backed by NAMS and isolation is trivially satisfied by the
+#: single instance.
+_DEFAULT_BOLT_URI = "bolt://localhost:7687"
+
+#: Community Edition exposes exactly one database per instance, always named
+#: ``neo4j``. Per-persona isolation is achieved at the *instance* level (one
+#: container per persona, each on its own bolt port), not the database-name
+#: level -- that would require Neo4j Enterprise, which we deliberately avoid
+#: to keep the stack on the free GPLv3 Community Edition.
+_DEFAULT_DATABASE = "neo4j"
+
+
+def _registry_path() -> str:
+  """Path to the per-persona NAMS database registry.
+
+  Written by ``scripts/nams_db.sh up``; read by every ``NamsMemory`` to find
+  its persona's dedicated container. Overridable via ``NAMS_DB_REGISTRY`` for
+  tests / non-standard install layouts.
+  """
+  env = os.environ.get("NAMS_DB_REGISTRY", "").strip()
+  if env:
+    return env
+  # Default to <repo_root>/nams_databases.json.
+  here = os.path.dirname(os.path.abspath(__file__))
+  # .../reverie/backend_server/harnesses/nams -> repo root is 5 levels up.
+  root = here
+  for _ in range(5):
+    root = os.path.dirname(root)
+  return os.path.join(root, "nams_databases.json")
+
+
+def _persona_bolt_uri(persona_name: str) -> str:
+  """Resolve the bolt URI for ``persona_name``'s dedicated Neo4j container.
+
+  Reads the registry written by ``scripts/nams_db.sh up``. If the persona is
+  registered, returns ``bolt://localhost:<port>`` for its dedicated
+  container. Otherwise falls back to the single shared compose instance
+  (:data:`_DEFAULT_BOLT_URI`) -- correct when only one persona is on NAMS.
+
+  Per-character isolation: each registered persona gets its own Community
+  instance + data volume, so their memory graphs are physically separate.
+  """
+  path = _registry_path()
+  try:
+    with open(path, "r", encoding="utf-8") as f:
+      reg = json.load(f)
+  except (FileNotFoundError, json.JSONDecodeError):
+    return _DEFAULT_BOLT_URI
+  entry = reg.get(persona_name)
+  if not isinstance(entry, dict):
+    return _DEFAULT_BOLT_URI
+  port = entry.get("port")
+  host = entry.get("host", "localhost")
+  if not port:
+    return _DEFAULT_BOLT_URI
+  return f"bolt://{host}:{port}"
+
+
 def build_memory_settings(*, embedder_name: str,
                           extraction_mode: str,
-                          llm_harness: Any) -> Any:
+                          llm_harness: Any,
+                          persona_name: str = "") -> Any:
   """Construct a ``MemorySettings`` for the bolt backend.
 
   ``embedder_name`` is the active harness's embedder (e.g.
   ``"BAAI/bge-small-en-v1.5"`` or ``"openai/text-embedding-3-small"``). The
   caller passes its own ``llm_harness`` so that in mode C we can wire its
   ``as_nams_llm_provider()`` shim into the SDK.
+
+  ``persona_name`` selects the per-persona bolt URI (see
+  :func:`_persona_bolt_uri`). Empty = use the default single instance.
   """
   from neo4j_agent_memory import MemorySettings
 
   neo4j_cfg = {
-    "uri": _neo4j_uri(),
+    "uri": _persona_bolt_uri(persona_name) if persona_name else _neo4j_uri(),
     "user": _neo4j_user(),
     "password": _neo4j_password(),
+    # Community Edition: always the single ``neo4j`` database. Kept here so
+    # that a future switch to Enterprise (per-persona database names) is a
+    # one-line change in _persona_bolt_uri / build_memory_settings.
+    "database": _DEFAULT_DATABASE,
   }
 
   # Provider-string shorthand is supported by the SDK: a sentence-transformers
@@ -131,6 +200,7 @@ class NamsMemory:
       embedder_name=self._embedder_name,
       extraction_mode=self._extraction_mode,
       llm_harness=self._llm_harness,
+      persona_name=self.session_id,
     )
     self._settings = settings
 

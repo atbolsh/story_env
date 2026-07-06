@@ -113,3 +113,10 @@ ENV/
 
 # temp files from vim
 *.swp
+
+# NAMS per-persona Neo4j state
+# nams_databases.json: registry mapping persona name -> {container, port},
+#   written by scripts/nams_db.sh up, read by the harness at runtime.
+# nams_dumps/: per-persona .dump save files (neo4j-admin database dump output).
+nams_databases.json
+nams_dumps/

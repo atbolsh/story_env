@@ -2,14 +2,29 @@
 # (gemma4-e4b-nams, latest-gpt-nams).
 #
 # The Neo4j Agent Memory System SDK connects to this database over the bolt
-# protocol; no Neo4j Aura / NAMS hosted API keys are involved. Every persona
-# gets its own memory graph keyed by its persona name as the NAMS session_id,
-# all inside this one local database.
+# protocol; no Neo4j Aura / NAMS hosted API keys are involved.
 #
-# Bring it up once and leave it running:
+# This is the *single shared* Community Edition instance. It is enough when at
+# most ONE persona in a simulation is backed by NAMS (e.g. tonight's
+# midnight_test.sh where only Klaus Mueller is on NAMS) -- that one persona's
+# graph lives in this single database and isolation is trivially satisfied.
+#
+# When TWO OR MORE personas in the same simulation are backed by NAMS, true
+# per-character isolation requires a separate Neo4j instance per persona
+# (Community Edition supports only one database per instance). In that case do
+# NOT use this compose service for NAMS -- instead launch one container per
+# NAMS persona with:
+#     scripts/nams_db.sh up "Klaus Mueller" "Isabella Rodriguez"
+# That script writes a registry (nams_databases.json) mapping each persona to
+# its container + bolt port; the harness reads that registry to find the right
+# instance. Per-persona .dump save/restore is handled by the same script
+# (save / teardown / load / list subcommands). This keeps the stack on the
+# free GPLv3 Community Edition -- no Neo4j Enterprise license flag, no account.
+#
+# Bring this single instance up once and leave it running:
 #     docker compose up -d neo4j
 #
-# Browse the graph at http://localhost:7474 (user: neo4j, password from
+# Browse its graph at http://localhost:7474 (user: neo4j, password from
 # .env's NEO4J_PASSWORD). The bolt endpoint the harnesses use is
 # bolt://localhost:7687.
 #
