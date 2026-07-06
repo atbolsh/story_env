@@ -237,7 +237,8 @@ class _Gemma4Harness:
     import torch
     from transformers import AutoModelForCausalLM, AutoProcessor
 
-    print(f"[gemma4] loading {self.model_id} ...")
+    print(f"[gemma4] loading {self.model_id} (downloading weights on first "
+          f"run -- several GB, silent until ready) ...", flush=True)
     t0 = time.time()
     processor = AutoProcessor.from_pretrained(self.model_id)
     model = AutoModelForCausalLM.from_pretrained(
@@ -249,7 +250,8 @@ class _Gemma4Harness:
     self._processor = processor
     self._model = model
     self._device = model.device
-    print(f"[gemma4] loaded in {time.time() - t0:.1f}s on {self._device}")
+    print(f"[gemma4] loaded in {time.time() - t0:.1f}s on {self._device}",
+          flush=True)
 
   def _ensure_embedder(self) -> None:
     if self._embedder is not None:
@@ -261,10 +263,11 @@ class _Gemma4Harness:
       device = "cuda" if torch.cuda.is_available() else "cpu"
     except Exception:
       device = "cpu"
-    print(f"[gemma4] loading embedder {self.embedder_name} on {device} ...")
+    print(f"[gemma4] loading embedder {self.embedder_name} on {device} ...",
+          flush=True)
     t0 = time.time()
     self._embedder = SentenceTransformer(self.embedder_name, device=device)
-    print(f"[gemma4] embedder ready in {time.time() - t0:.1f}s")
+    print(f"[gemma4] embedder ready in {time.time() - t0:.1f}s", flush=True)
 
   # -------------------------------------------------------------- generate
   def _generate(self,

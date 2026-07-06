@@ -214,28 +214,41 @@ class ReverieServer:
     else:
       nams_persona_names = set()
 
+    n_persona_total = len(reverie_meta['persona_names'])
+    n_persona_i = 0
     for persona_name in reverie_meta['persona_names']:
+      n_persona_i += 1
       persona_folder = f"{sim_folder}/personas/{persona_name}"
       p_x = init_env[persona_name]["x"]
       p_y = init_env[persona_name]["y"]
       if persona_name in nams_persona_names:
+        print(f"[reverie] loading persona {n_persona_i}/{n_persona_total}: "
+              f"{persona_name!r} (NAMS -- connecting to Neo4j + initializing "
+              f"the no-llm extraction pipeline; first run downloads spaCy + "
+              f"GLiNER + GLiREL models, which is silent and can take minutes)...",
+              flush=True)
         nams = _build_nams(persona_name)
         try:
           if not nams.graph_exists():
             print(f"[reverie] importing JSON bootstrap -> NAMS for "
-                  f"{persona_name!r}...")
+                  f"{persona_name!r}...", flush=True)
             import_persona_bootstrap(
               nams=nams, bootstrap_dir=f"{persona_folder}/bootstrap_memory",
             )
         except Exception as e:
           print(f"[reverie] NAMS import for {persona_name!r} failed "
-                f"({type(e).__name__}: {e}); continuing with empty graph.")
+                f"({type(e).__name__}: {e}); continuing with empty graph.",
+                flush=True)
         curr_persona = NamsPersona(
           persona_name, persona_folder,
           nams_memory=nams, llm_harness=nams_llm_harness,
         )
+        print(f"[reverie] loaded persona {persona_name!r} (NAMS).", flush=True)
       else:
+        print(f"[reverie] loading persona {n_persona_i}/{n_persona_total}: "
+              f"{persona_name!r} (JSON memory)...", flush=True)
         curr_persona = Persona(persona_name, persona_folder)
+        print(f"[reverie] loaded persona {persona_name!r} (JSON).", flush=True)
 
       self.personas[persona_name] = curr_persona
       self.personas_tile[persona_name] = (p_x, p_y)
@@ -549,12 +562,17 @@ class ReverieServer:
           with open(next_env_file, "w") as outfile: 
             outfile.write(json.dumps(next_env, indent=2))
 
-          # After this cycle, the world takes one step forward, and the 
-          # current time moves by <sec_per_step> amount. 
+          # After this cycle, the world takes one step forward, and the
+          # current time moves by <sec_per_step> amount.
           self.step += 1
           self.curr_time += datetime.timedelta(seconds=self.sec_per_step)
           # Let any attached observer know where the live simulation is.
           self.signal_curr_step()
+          # Per-step progress so the operator can see the sim advancing (and
+          # so a silent hang is distinguishable from a slow-but-healthy run).
+          print(f"[reverie] step {self.step}/{int_counter + self.step} "
+                f"({self.curr_time.strftime('%B %d, %Y, %H:%M:%S')})",
+                flush=True)
 
           int_counter -= 1
           continue
@@ -905,10 +923,14 @@ def _run_cli():
     os.environ["REVERIE_NAMS_PERSONAS"] = args.nams_personas
   os.environ["REVERIE_NAMS_EXTRACTION"] = args.nams_extraction
   print(f"[reverie] CLI: harness={args.harness} fork={args.fork} "
-        f"target={args.target} steps={args.steps}")
+        f"target={args.target} steps={args.steps}", flush=True)
   if args.nams_personas:
     print(f"[reverie] NAMS personas: {args.nams_personas} "
-          f"(extraction={args.nams_extraction})")
+          f"(extraction={args.nams_extraction})", flush=True)
+  print("[reverie] booting: building harness + forking sim + loading personas "
+        "(first run downloads the Gemma model + NAMS spaCy/GLiNER/GLiREL "
+        "models; this can take several minutes -- progress will print as each "
+        "phase starts)", flush=True)
 
   rs = ReverieServer(args.fork, args.target)
   # Headless mode always saves, no matter how the run ends:
@@ -920,6 +942,10 @@ def _run_cli():
   # The orchestrator (midnight_test.sh) greps the backend log for the
   # "COMPLETED" marker to distinguish a clean finish from a crash where the
   # process also exited (both leave backend_running() false).
+  print(f"[reverie] all personas loaded; starting step loop: {args.steps} "
+        f"steps. The first step loads the Gemma model onto the GPU (one-time, "
+        f"several GB) -- silent until the model is ready, then each step prints "
+        f"progress.", flush=True)
   try:
     rs.start_server(args.steps)
   except KeyboardInterrupt:

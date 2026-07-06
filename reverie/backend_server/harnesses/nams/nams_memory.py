@@ -215,6 +215,11 @@ class NamsMemory:
   def _ensure_client(self):
     if self._client is not None:
       return self._client
+    print(f"[nams] {self.session_id!r}: connecting to Neo4j "
+          f"({_persona_bolt_uri(self.session_id) or 'bolt://localhost:7687'}) "
+          f"and initializing the extraction pipeline (first run downloads "
+          f"spaCy + GLiNER + GLiREL models -- silent, can take minutes)...",
+          flush=True)
     settings = build_memory_settings(
       embedder_name=self._embedder_name,
       extraction_mode=self._extraction_mode,
@@ -233,6 +238,7 @@ class NamsMemory:
       return client
 
     self._client = async_bridge.run(_connect())
+    print(f"[nams] {self.session_id!r}: connected + pipeline ready.", flush=True)
     return self._client
 
   @property
