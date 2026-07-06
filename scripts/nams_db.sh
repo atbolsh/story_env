@@ -220,16 +220,24 @@ cmd_up() {
       port="$(next_port)"
       http_port=$((NAMS_HTTP_BASE + (port - NAMS_BOLT_BASE)))
       log "creating container $cont for '$name' on bolt :$port http :$http_port"
+      # APOC settings go in a mounted apoc.conf (v5 strict_validation rejects
+      # apoc.* inside neo4j.conf). The repo's docker/neo4j/apoc.conf is the
+      # same file the compose path mounts.
+      local apoc_conf
+      apoc_conf="$(cd "$(dirname "$0")/.." && pwd)/docker/neo4j/apoc.conf"
+      [[ -f "$apoc_conf" ]] || die "missing $apoc_conf (required for APOC)"
       docker run -d \
         --name "$cont" \
         -p "${port}:7687" \
         -p "${http_port}:7474" \
         -e "NEO4J_AUTH=neo4j/${NEO4J_PASSWORD}" \
         -e 'NEO4J_PLUGINS=["apoc"]' \
-        -e APOC_PROCEDURE_ENABLE=true \
+        -e NEO4J_dbms_security_procedures_unrestricted=apoc.* \
+        -e NEO4J_dbms_security_procedures_allowlist=apoc.* \
         -e NEO4J_server_memory_heap_initial__size=512m \
         -e NEO4J_server_memory_heap_max__size=2G \
         -v "${vol}:/data" \
+        -v "${apoc_conf}:/var/lib/neo4j/conf/apoc.conf:ro" \
         "$NEO4J_IMAGE" >/dev/null
       reg_set "$name" "$cont" "$port" "$http_port"
     fi

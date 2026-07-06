@@ -38,14 +38,18 @@ services:
     image: neo4j:5.20
     container_name: generative_agents_neo4j
     # APOC is required by the NAMS bolt backend for several extraction /
-    # dedup helpers. The image bundles the apoc .jar when these env vars are
-    # set; we mount the plugins dir so the jar persists across restarts.
+    # dedup helpers. NEO4J_PLUGINS=["apoc"] makes the image download the
+    # matching apoc core jar into /plugins on first boot.
+    #
+    # In Neo4j v5+, APOC settings (apoc.import.file.enabled etc.) MUST live
+    # in a separate apoc.conf -- putting them in neo4j.conf trips
+    # server.config.strict_validation. We mount our own apoc.conf read-only
+    # into the image's conf dir for that reason.
     environment:
       NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-password}
       NEO4J_PLUGINS: '["apoc"]'
-      APOC_PROCEDURE_ENABLE: "true"
-      APOC_IMPORT_FILE_ENABLED: "true"
-      APOC_EXPORT_FILE_ENABLED: "true"
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+      NEO4J_dbms_security_procedures_allowlist: apoc.*
       # Allow the longer transactions NAMS uses for batch message loads.
       NEO4J_server_memory_heap_initial__size: 512m
       NEO4J_server_memory_heap_max__size: 2G
@@ -57,6 +61,7 @@ services:
       - neo4j_data:/data
       - neo4j_logs:/logs
       - neo4j_plugins:/plugins
+      - ./docker/neo4j/apoc.conf:/var/lib/neo4j/conf/apoc.conf:ro
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://localhost:7474 || exit 1"]
       interval: 10s
