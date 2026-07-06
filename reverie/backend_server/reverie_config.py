@@ -22,14 +22,21 @@ load_dotenv(_REPO_ROOT / ".env")
 # Secrets / per-user values: from .env (or the surrounding shell env).
 openai_api_key = os.environ.get("OPENAI_API_KEY", "")
 
-# Asset / storage paths -- relative to the backend_server CWD, since the
-# README's documented invocation is `cd reverie/backend_server && python reverie.py`.
-maze_assets_loc = "../../environment/frontend_server/static_dirs/assets"
-env_matrix = f"{maze_assets_loc}/the_ville/matrix"
-env_visuals = f"{maze_assets_loc}/the_ville/visuals"
+# Asset / storage paths -- anchored to the repo root so they resolve
+# correctly regardless of the caller's CWD. (Historically these were relative
+# "../../environment/..." paths that only worked if the caller had `cd`'d into
+# reverie/backend_server first; the headless CLI and import-only paths can be
+# launched from the repo root, so absolute is safer. When CWD is
+# reverie/backend_server, these absolute paths are identical to the old
+# relative ones, so the documented `cd reverie/backend_server && python
+# reverie.py` invocation is unaffected.)
+_maze_assets = _REPO_ROOT / "environment/frontend_server/static_dirs/assets"
+maze_assets_loc = str(_maze_assets)
+env_matrix = str(_maze_assets / "the_ville/matrix")
+env_visuals = str(_maze_assets / "the_ville/visuals")
 
-fs_storage = "../../environment/frontend_server/storage"
-fs_temp_storage = "../../environment/frontend_server/temp_storage"
+fs_storage = str(_REPO_ROOT / "environment/frontend_server/storage")
+fs_temp_storage = str(_REPO_ROOT / "environment/frontend_server/temp_storage")
 
 collision_block_id = "32125"
 
