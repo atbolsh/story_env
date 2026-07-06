@@ -62,17 +62,22 @@ def _ensure_loop() -> asyncio.AbstractEventLoop:
     return _loop
 
 
-def run(coro: Awaitable[T]) -> T:
+def run(coro: Awaitable[T], timeout: float | None = None) -> T:
   """Submit ``coro`` to the persistent background loop and block on its result.
 
   Safe to call from any sync thread (including the main reverie thread). Re-
-  raises any exception the coroutine raised.
+  raises any exception the coroutine raised. If ``timeout`` is set, raises
+  ``concurrent.futures.TimeoutError`` if the coroutine doesn't finish within
+  ``timeout`` seconds -- without this, a coroutine that stalls on the
+  background loop blocks the caller forever (which is what we saw on Neo4j
+  2026.05: the SDK's __aenter__ runs fine under asyncio.run but stalls under
+  the persistent background loop).
   """
   loop = _ensure_loop()
   if not asyncio.iscoroutine(coro):
     raise TypeError(f"run() expects a coroutine, got {type(coro).__name__}")
   fut: Future = asyncio.run_coroutine_threadsafe(coro, loop)  # type: ignore[arg-type]
-  return fut.result()
+  return fut.result(timeout=timeout)
 
 
 def shutdown() -> None:

@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 """
-nams_connect_diagnostic.py -- standalone probe for the NAMS MemoryClient
-__aenter__ hang.
+nams_connect_diagnostic.py -- standalone probe for the NAMS MemoryClient hang.
 
-Reproduces exactly what NamsMemory._ensure_client does (build MemorySettings,
-construct MemoryClient, call __aenter__) but with:
-  * a hard timeout (asyncio.wait_for) so it can never hang forever,
-  * granular flushed prints around every step,
-  * a direct bolt-connectivity pre-check (rules out Neo4j itself),
-  * the SDK's own logger cranked to DEBUG so any internal download / query
-    shows up on stderr.
+Runs three probes and compares them:
+
+  1. bolt pre-check       -- direct neo4j-driver connectivity (bypasses SDK).
+  2. asyncio.run path     -- build MemoryClient, __aenter__, get_stats on a
+                             fresh main-thread event loop (the control).
+  3. async_bridge path    -- the SAME calls via harnesses.nams.async_bridge.run
+                             (the persistent background loop the sim uses),
+                             with a hard timeout. This is the suspect: probe 2
+                             completes in <1s but the sim hangs for 20+ min
+                             on this path.
+
+If probe 3 times out where probe 2 succeeded, the bug is in the async bridge
+(not the SDK, not Neo4j).
 
 Run from the repo root:
     PYTHONPATH=shared:reverie/backend_server python3 scripts/nams_connect_diagnostic.py
-
-If it times out, the last printed line tells you which sub-step is stuck.
 """
 import asyncio
 import datetime
@@ -23,22 +26,18 @@ import os
 import sys
 import time
 
-# Crank the NAMS SDK + neo4j driver loggers to DEBUG so downloads / queries
-# surface on stderr instead of being silent.
-for name in ("neo4j_agent_memory", "neo4j", "urllib3", "sentence_transformers",
-             "transformers", "gliner", "spacy"):
-  logging.getLogger(name).setLevel(logging.DEBUG)
-  logging.getLogger(name).addHandler(logging.StreamHandler(sys.stderr))
+for name in ("neo4j_agent_memory", "neo4j"):
+  logging.getLogger(name).setLevel(logging.INFO)  # DEBUG is very noisy; bump to DEBUG if needed
 
-# Make sure the harness path resolves.
 sys.path.insert(0, os.path.join(os.getcwd(), "reverie", "backend_server"))
 sys.path.insert(0, os.path.join(os.getcwd(), "shared"))
 
 from harnesses.nams.nams_memory import build_memory_settings, NAMS_EXTRACTION_NO_LLM
+from harnesses.nams import async_bridge
 
 PERSONA = "Klaus Mueller"
 EMBEDDER = "BAAI/bge-small-en-v1.5"
-TIMEOUT_S = 120  # hard cap; the sim path hangs indefinitely, this won't
+BRIDGE_TIMEOUT = 30  # probe 2 finishes in <1s; give the bridge 30s, plenty.
 
 
 def log(msg):
@@ -46,10 +45,7 @@ def log(msg):
 
 
 def bolt_precheck():
-  """Direct neo4j-driver connectivity check, bypassing the NAMS SDK entirely.
-  If this hangs too, the problem is Neo4j; if it's fast, the problem is in the
-  SDK's __aenter__ (extraction pipeline init)."""
-  log("bolt pre-check: connecting directly with the neo4j driver (bypasses SDK)...")
+  log("PROBE 1: bolt pre-check (direct neo4j driver, bypasses SDK)...")
   t0 = time.time()
   from neo4j import GraphDatabase
   uri = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
@@ -59,77 +55,87 @@ def bolt_precheck():
   try:
     with driver.session() as s:
       rec = s.run("RETURN 1 AS x").single()
-      log(f"bolt pre-check ok in {time.time() - t0:.1f}s: RETURN 1 -> {rec['x']}")
+      log(f"PROBE 1 ok in {time.time() - t0:.1f}s: RETURN 1 -> {rec['x']}")
   finally:
     driver.close()
 
 
-async def connect_with_probes():
-  log("building MemorySettings (no-llm, same as the sim path)...")
+async def _build_and_enter():
+  """Build a MemoryClient and enter its context. Used by both probes."""
   settings = build_memory_settings(
     embedder_name=EMBEDDER,
     extraction_mode=NAMS_EXTRACTION_NO_LLM,
     llm_harness=None,
     persona_name=PERSONA,
   )
-  log("MemorySettings built.")
-
-  log("constructing MemoryClient(settings) (cheap; no I/O yet)...")
   from neo4j_agent_memory import MemoryClient
   client = MemoryClient(settings)
-  log("MemoryClient constructed.")
+  await client.__aenter__()
+  return client
 
-  log("calling client.__aenter__() -- this is where the sim hangs. "
-      "It initializes the bolt driver pool + the extraction pipeline "
-      "(spaCy + GLiNER + GLiREL models). Hard timeout = "
-      f"{TIMEOUT_S}s. Watch stderr for SDK DEBUG logs / download bars.")
+
+def probe_asyncio_run():
+  """Control: run __aenter__ + get_stats on a fresh main-thread loop."""
+  log("PROBE 2 (control): __aenter__ + get_stats via asyncio.run (fresh loop)...")
+  t0 = time.time()
+
+  async def _go():
+    client = await _build_and_enter()
+    try:
+      if hasattr(client, "get_stats"):
+        await client.get_stats()
+      log(f"PROBE 2 ok in {time.time() - t0:.1f}s: connected + get_stats done.")
+    finally:
+      await client.__aexit__(None, None, None)
+  try:
+    asyncio.run(_go())
+  except Exception as e:
+    log(f"PROBE 2 FAILED in {time.time() - t0:.1f}s: {type(e).__name__}: {e}")
+
+
+def probe_bridge_enter():
+  """Suspect: __aenter__ via the persistent background loop (what the sim does)."""
+  log(f"PROBE 3 (suspect): __aenter__ via async_bridge.run "
+      f"(persistent background loop) with {BRIDGE_TIMEOUT}s timeout...")
   t0 = time.time()
   try:
-    await asyncio.wait_for(client.__aenter__(), timeout=TIMEOUT_S)
-  except asyncio.TimeoutError:
-    elapsed = time.time() - t0
-    log(f"__aenter__ TIMED OUT after {elapsed:.1f}s. The SDK's context-entry "
-        "is stuck -- not a download (no tqdm bars), so likely a Neo4j schema "
-        "op (vector-index create/constraint) or an async deadlock inside the "
-        "SDK. Check the DEBUG logs above for the last query / download it "
-        "attempted.")
-    return
-  log(f"__aenter__ returned in {time.time() - t0:.1f}s -- connected + "
-      "pipeline ready.")
+    client = async_bridge.run(_build_and_enter(), timeout=BRIDGE_TIMEOUT)
+    log(f"PROBE 3 ok in {time.time() - t0:.1f}s: __aenter__ returned via bridge.")
+    # If enter worked, try the actual graph_exists-style cypher read the sim does.
+    log("PROBE 3b: client.query.cypher (the graph_exists query) via bridge...")
+    t1 = time.time()
 
-  log("sanity: calling client.is_connected / get_stats...")
-  try:
-    connected = await asyncio.wait_for(_is_connected(client), timeout=30)
-    log(f"is_connected -> {connected}")
+    async def _q():
+      return await client.query.cypher(
+        "OPTIONAL MATCH (c:Conversation {session_id: $sid}) "
+        "OPTIONAL MATCH (e:Entity {name: $sid}) "
+        "OPTIONAL MATCH (f:Fact) WHERE f.subject = $sid OR f.object = $sid "
+        "RETURN count(c) + count(e) + count(f) AS c LIMIT 1",
+        {"sid": PERSONA},
+      )
+    try:
+      rows = async_bridge.run(_q(), timeout=BRIDGE_TIMEOUT)
+      log(f"PROBE 3b ok in {time.time() - t1:.1f}s: rows = {rows}")
+    except Exception as e:
+      log(f"PROBE 3b FAILED in {time.time() - t1:.1f}s: {type(e).__name__}: {e}")
+    # Close via the bridge too.
+    try:
+      async_bridge.run(client.__aexit__(None, None, None), timeout=BRIDGE_TIMEOUT)
+    except Exception:
+      pass
   except Exception as e:
-    log(f"is_connected probe failed: {type(e).__name__}: {e}")
-
-  try:
-    await client.__aexit__(None, None, None)
-    log("client closed cleanly.")
-  except Exception as e:
-    log(f"__aexit__ failed: {type(e).__name__}: {e}")
-
-
-async def _is_connected(client):
-  if hasattr(client, "is_connected"):
-    return client.is_connected
-  if hasattr(client, "get_stats"):
-    await client.get_stats()
-    return True
-  return "no is_connected attr"
+    log(f"PROBE 3 FAILED/TIMED OUT in {time.time() - t0:.1f}s: "
+        f"{type(e).__name__}: {e}")
+    log("  -> The bug is in async_bridge.run (persistent background loop), "
+        "NOT the SDK: probe 2 ran the same __aenter__ in <1s on a fresh loop.")
 
 
 def main():
-  log(f"NAMS connect diagnostic: persona={PERSONA!r} embedder={EMBEDDER!r} "
-      f"timeout={TIMEOUT_S}s")
+  log(f"NAMS connect diagnostic: persona={PERSONA!r} embedder={EMBEDDER!r}")
   bolt_precheck()
-  try:
-    asyncio.run(connect_with_probes())
-  except Exception as e:
-    log(f"top-level error: {type(e).__name__}: {e}")
-    import traceback
-    traceback.print_exc()
+  probe_asyncio_run()
+  probe_bridge_enter()
+  async_bridge.shutdown()
   log("done.")
 
 
