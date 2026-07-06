@@ -115,9 +115,14 @@ if [ ! -d "${REPO_ROOT}/environment/frontend_server/storage/${FORK_SIM}" ]; then
   echo "error: fork sim ${FORK_SIM} not found in storage/." >&2
   exit 1
 fi
-if ! command -v docker >/dev/null 2>&1; then
-  echo "error: docker is not installed / not on PATH." >&2
-  exit 1
+# Docker is OPTIONAL. The preferred path is `docker compose up -d neo4j` for
+# the single shared instance, but on hosts where the docker daemon isn't
+# available (e.g. inside a container running Neo4j bare-metal), we just rely
+# on whatever Neo4j is already listening on localhost:7687 -- the bolt
+# connectivity check below is what actually gates us, not the daemon.
+HAVE_DOCKER=0
+if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+  HAVE_DOCKER=1
 fi
 
 # Source .env for OPENAI_API_KEY etc. (the headless backend + the tmux windows
@@ -135,8 +140,15 @@ echo "  NAMS personas=${NAMS_PERSONAS}, runs: ${RUNS[*]}" > "$SUMMARY"
 # Bring up the local Neo4j (idempotent) and wait for bolt to answer. The
 # NAMS SDK connects to bolt://localhost:7687; without this, both the
 # JSON->NAMS translation and the NAMS personas at runtime will fail.
-log "ensuring local Neo4j is up (docker compose up -d neo4j)..."
-docker compose up -d neo4j >/dev/null 2>&1 || true
+# If docker is available, use the compose single instance; otherwise assume
+# a bare-metal/external Neo4j is already running on :7687 (the bolt check
+# below gates either path).
+if [ "$HAVE_DOCKER" -eq 1 ]; then
+  log "ensuring local Neo4j is up (docker compose up -d neo4j)..."
+  docker compose up -d neo4j >/dev/null 2>&1 || true
+else
+  log "no docker daemon detected; assuming bare-metal Neo4j on localhost:7687."
+fi
 bolt_ok=0
 for _ in $(seq 1 60); do
   if python3 -c "import neo4j,os; d=neo4j.GraphDatabase.driver(os.environ.get('NEO4J_URI','bolt://localhost:7687'),auth=(os.environ.get('NEO4J_USER','neo4j'),os.environ.get('NEO4J_PASSWORD','password'))); s=d.session(); s.run('RETURN 1').consume(); d.close()" 2>/dev/null; then
@@ -146,7 +158,11 @@ for _ in $(seq 1 60); do
 done
 if [ "$bolt_ok" -ne 1 ]; then
   log "error: Neo4j bolt never answered on localhost:7687."
-  log "  Check: docker compose ps neo4j ; docker compose logs neo4j"
+  if [ "$HAVE_DOCKER" -eq 1 ]; then
+    log "  Check: docker compose ps neo4j ; docker compose logs neo4j"
+  else
+    log "  Check: neo4j status ; tail /var/log/neo4j/neo4j.log"
+  fi
   echo "ALL RUNS: FAILED (Neo4j bolt unreachable)" >> "$SUMMARY"
   exit 1
 fi
