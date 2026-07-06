@@ -234,7 +234,15 @@ class NamsMemory:
       # MemoryClient is an async context manager; for the long-lived
       # per-persona client we drive __aenter__/__aexit__ manually so it
       # stays connected for the whole simulation.
-      await client.__aenter__()
+      #
+      # Hard timeout: the SDK's __aenter__ has been observed to hang
+      # indefinitely on Neo4j 2026.05 (no tqdm bars, so not a download --
+      # likely a schema op or async deadlock inside the SDK). Cap it so the
+      # sim fails with a clear message instead of hanging silently. 180s is
+      # ample for a real first-run pipeline init (spaCy/GLiNER/GLiREL load);
+      # if genuine model downloads need more on a slow link, raise via env.
+      timeout = float(os.environ.get("NAMS_CONNECT_TIMEOUT", "180"))
+      await asyncio.wait_for(client.__aenter__(), timeout=timeout)
       return client
 
     self._client = async_bridge.run(_connect())

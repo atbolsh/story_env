@@ -178,6 +178,28 @@ verify_apoc() {
   fi
 }
 
+# Write the Neo4j connection vars into the repo-root .env so the harness picks
+# them up explicitly (reverie_config.py loads .env on import). The harness's
+# defaults already match (bolt://localhost:7687 / neo4j / password), so this is
+# for explicitness, not necessity. Idempotent: only appends vars that aren't
+# already present.
+write_env_file() {
+  local env_file
+  env_file="$(cd "$(dirname "$0")/.." && pwd)/.env"
+  touch "$env_file"
+  for kv in "NEO4J_URI=bolt://localhost:7687" \
+            "NEO4J_USER=neo4j" \
+            "NEO4J_PASSWORD=${NEO4J_PASSWORD}"; do
+    local key="${kv%%=*}"
+    if ! grep -qE "^${key}=" "$env_file"; then
+      printf '%s\n' "$kv" >> "$env_file"
+      log "appended ${key}=... to ${env_file}"
+    else
+      log "${key} already present in ${env_file}; left as-is"
+    fi
+  done
+}
+
 # --------------------------------------------------------------------- main
 install_neo4j_if_missing
 configure_neo4j
@@ -186,6 +208,7 @@ set_initial_password_if_fresh
 start_neo4j
 wait_for_bolt
 verify_apoc
+write_env_file
 
 log "Neo4j is ready for NAMS:"
 log "  bolt:    bolt://localhost:7687"
