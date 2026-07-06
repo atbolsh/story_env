@@ -29,11 +29,18 @@ these via ``from persona.prompt_template.gpt_structure import *``):
   GPT4_safe_generate_response        -> safe_chat_response_json_strong
 """
 
+import os
 import random  # noqa: F401  -- historical: callers do `import *`
 import string  # noqa: F401  -- historical: callers do `import *`
 import time    # noqa: F401  -- historical: callers do `import *`
 
 from harnesses import get_active
+
+# Anchored so the prompt-template files resolve regardless of the process's
+# current working directory (e.g. when reverie.py is launched from the repo
+# root rather than from reverie/backend_server/). Callers throughout the
+# codebase pass repo-relative paths like "persona/prompt_template/v2/...".
+_BACKEND_SERVER_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ---------------------------------------------------------------------------
 # Vendor-neutral public API -- each function defers to the active harness.
@@ -133,6 +140,11 @@ def generate_prompt(curr_input, prompt_lib_file):
   if type(curr_input) == type("string"):
     curr_input = [curr_input]
   curr_input = [str(i) for i in curr_input]
+
+  # Resolve repo-relative prompt paths against the backend_server dir so the
+  # simulation works no matter what CWD it was launched from.
+  if not os.path.isabs(prompt_lib_file):
+    prompt_lib_file = os.path.join(_BACKEND_SERVER_DIR, prompt_lib_file)
 
   f = open(prompt_lib_file, "r")
   prompt = f.read()
