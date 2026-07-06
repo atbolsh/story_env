@@ -165,39 +165,60 @@ class ReverieServer:
     init_env_file = f"{sim_folder}/environment/{str(self.step)}.json"
     init_env = json.load(open(init_env_file))
 
-    # NAMS-backed harnesses construct NamsPersona (per-persona NamsMemory on
-    # local bolt Neo4j) instead of the JSON-backed Persona. The first time a
-    # *-nams harness boots a sim forked from a JSON bootstrap, we run the
-    # one-way JSON -> NAMS importer (gated by graph_exists) so the persona's
-    # long-term memory is seeded into the graph. See
+    # NAMS-backed personas.
+    #
+    # Two ways a persona ends up on NAMS (Neo4j Agent Memory System on local
+    # bolt Neo4j) instead of the legacy JSON AssociativeMemory:
+    #
+    #   1. Dedicated *-nams harness (gemma4-e4b-nams / latest-gpt-nams): every
+    #      persona in the sim is a NamsPersona. Selected interactively at
+    #      startup; back-compat with the single-harness flow.
+    #   2. Mixed ("multi-harness") mode: the active harness is a plain LLM
+    #      harness (e.g. gemma4-e4b) for the whole sim, but a *subset* of
+    #      personas -- named in the REVERIE_NAMS_PERSONAS env var (a comma-
+    #      separated list of full persona names) -- run on NAMS while the
+    #      rest keep the JSON memory. This is what midnight_test.sh uses to
+    #      put only the gentrification scholar (Klaus) on NAMS and leave
+    #      Isabella and Maria on the legacy JSON memory.
+    #
+    # In both cases the first boot of a NAMS persona against a JSON-forked sim
+    # runs the one-way JSON -> NAMS importer (gated by graph_exists). See
     # harnesses/nams/json_to_nams_import.py.
-    is_nams = "-nams" in (harnesses.get_active_name() or "")
-    if is_nams:
+    active_name = harnesses.get_active_name() or ""
+    dedicated_nams = "-nams" in active_name
+    nams_persona_csv = os.environ.get("REVERIE_NAMS_PERSONAS", "").strip()
+    nams_persona_names = {n.strip() for n in nams_persona_csv.split(",") if n.strip()}
+    if dedicated_nams and not nams_persona_names:
+      # Back-compat: a dedicated *-nams harness with no per-persona override
+      # puts every persona on NAMS.
+      nams_persona_names = set(reverie_meta['persona_names'])
+
+    if nams_persona_names:
       from harnesses.nams import (
-        NamsMemory, NamsPersona, NAMS_EXTRACTION_NO_LLM, NAMS_EXTRACTION_HARNESS_LLM,
+        NamsMemory, NamsPersona, NAMS_EXTRACTION_NO_LLM,
       )
       from harnesses.nams.json_to_nams_import import import_persona_bootstrap
-      extraction_mode = os.environ.get("REVERIE_NAMS_EXTRACTION",
-                                       NAMS_EXTRACTION_NO_LLM)
-      llm_harness = harnesses.get_active()
-      embedder_name = getattr(llm_harness, "embedder_name", "BAAI/bge-small-en-v1.5")
-      self._nams_llm_harness = llm_harness
-      self._nams_embedder_name = embedder_name
-      self._nams_extraction_mode = extraction_mode
+      nams_extraction_mode = os.environ.get(
+        "REVERIE_NAMS_EXTRACTION", NAMS_EXTRACTION_NO_LLM)
+      nams_llm_harness = harnesses.get_active()
+      nams_embedder_name = getattr(
+        nams_llm_harness, "embedder_name", "BAAI/bge-small-en-v1.5")
 
       def _build_nams(persona_name):
         return NamsMemory(
           session_id=persona_name,
-          embedder_name=embedder_name,
-          extraction_mode=extraction_mode,
-          llm_harness=llm_harness,
+          embedder_name=nams_embedder_name,
+          extraction_mode=nams_extraction_mode,
+          llm_harness=nams_llm_harness,
         )
+    else:
+      nams_persona_names = set()
 
     for persona_name in reverie_meta['persona_names']:
       persona_folder = f"{sim_folder}/personas/{persona_name}"
       p_x = init_env[persona_name]["x"]
       p_y = init_env[persona_name]["y"]
-      if is_nams:
+      if persona_name in nams_persona_names:
         nams = _build_nams(persona_name)
         try:
           if not nams.graph_exists():
@@ -211,7 +232,7 @@ class ReverieServer:
                 f"({type(e).__name__}: {e}); continuing with empty graph.")
         curr_persona = NamsPersona(
           persona_name, persona_folder,
-          nams_memory=nams, llm_harness=llm_harness,
+          nams_memory=nams, llm_harness=nams_llm_harness,
         )
       else:
         curr_persona = Persona(persona_name, persona_folder)
@@ -730,16 +751,10 @@ class ReverieServer:
         pass
 
 
-if __name__ == '__main__':
-  # rs = ReverieServer("base_the_ville_isabella_maria_klaus", 
-  #                    "July1_the_ville_isabella_maria_klaus-step-3-1")
-  # rs = ReverieServer("July1_the_ville_isabella_maria_klaus-step-3-20", 
-  #                    "July1_the_ville_isabella_maria_klaus-step-3-21")
-  # rs.open_server()
-
-  # Pick the LLM backend. The harness is selected via the REVERIE_HARNESS env
-  # var, which is read lazily on the first model call -- so setting it here
-  # (before any cognitive code actually runs) is sufficient.
+def _run_interactive():
+  """Interactive prompt: the original reverie.py flow. Used when no CLI args
+  are passed. Picks a harness, optionally a NAMS extraction mode, a fork sim
+  and a new sim name, then drops into the open_server() REPL."""
   available = harnesses.available_names()
   default_name = harnesses.DEFAULT_HARNESS
   print("Available model harnesses:")
@@ -782,6 +797,235 @@ if __name__ == '__main__':
 
   rs = ReverieServer(origin, target)
   rs.open_server()
+
+
+def _run_cli():
+  """CLI / headless mode. Selected by passing any command-line argument.
+
+  This is the entry point for unattended runs (midnight_test.sh, CI, the
+  smoke tests). It supports two shapes:
+
+    1. Full headless sim:
+         reverie.py --harness gemma4-e4b \
+                     --fork <sim> --target <sim> \
+                     --steps 8640 \
+                     [--nams-personas "Klaus Mueller"] \
+                     [--nams-extraction no-llm|harness-llm]
+       Forks <fork> into <target>, runs <steps> steps, saves, exits. No
+       interactive REPL. In mixed mode, --nams-personas lists the persona
+       names that run on NAMS (everyone else stays on the legacy JSON
+       memory); the active --harness is the LLM for *all* personas.
+
+    2. Import-only (translate JSON bootstrap -> Neo4j, no sim run):
+         reverie.py --import-nams-only \
+                     --fork <sim> \
+                     --nams-personas "Klaus Mueller" \
+                     [--embedder BAAI/bge-small-en-v1.5] \
+                     [--force-import]
+       For each named persona, loads its bootstrap_memory/ from the fork sim
+       and writes it into the local Neo4j as POLE+O entities + Facts, then
+       exits. No sim is forked, no steps run, no LLM is loaded (the importer
+       bypasses the NERS pipeline and writes facts directly, so extraction
+       mode is irrelevant here). --force-import wipes the persona's existing
+       session first so re-import is clean.
+
+  Every LLM call (cognitive-module calls AND NAMS extraction-LLM calls in
+  mode C) is logged to $REVERIE_PROMPT_LOG with full request/response
+  context, exactly as in interactive mode.
+  """
+  import argparse
+
+  parser = argparse.ArgumentParser(
+    prog="reverie.py",
+    description=("Headless / CLI mode for reverie. Pass no args for the "
+                 "original interactive prompt."),
+  )
+  parser.add_argument("--harness", help="LLM harness name (see harnesses/__init__.py).")
+  parser.add_argument("--fork", help="Forked simulation code (under frontend storage/).")
+  parser.add_argument("--target", help="New simulation code to create.")
+  parser.add_argument("--steps", type=int,
+                      help="Number of steps to run (headless). Saves + exits after.")
+  parser.add_argument("--nams-personas", default="",
+                      help=("Comma-separated persona names that run on NAMS "
+                            "(mixed mode). Everyone else stays on JSON memory. "
+                            "With a dedicated *-nams harness, leave empty to "
+                            "put all personas on NAMS."))
+  parser.add_argument("--nams-extraction",
+                      choices=["no-llm", "harness-llm"], default="no-llm",
+                      help=("NAMS extraction mode for the NAMS personas. "
+                            "no-llm = spaCy+GLiNER+GLiREL only; "
+                            "harness-llm = + the active harness chat LLM as "
+                            "the NAMS extraction LLM stage."))
+  parser.add_argument("--embedder",
+                      default="BAAI/bge-small-en-v1.5",
+                      help=("Embedder id for --import-nams-only (no harness "
+                            "is loaded, so we pass the string directly to "
+                            "the NAMS SDK). Ignored for the full run, which "
+                            "takes the embedder from the active harness."))
+  parser.add_argument("--import-nams-only", action="store_true",
+                      help=("Just translate the named personas' JSON "
+                            "bootstrap_memory into the local Neo4j and exit; "
+                            "do not fork or run any steps."))
+  parser.add_argument("--force-import", action="store_true",
+                      help=("With --import-nams-only, wipe each persona's "
+                            "existing NAMS session before importing so the "
+                            "import is clean and idempotent."))
+  args = parser.parse_args()
+
+  # --- import-only path ---------------------------------------------------
+  if args.import_nams_only:
+    if not args.fork:
+      parser.error("--import-nams-only requires --fork")
+    if not args.nams_personas:
+      parser.error("--import-nams-only requires --nams-personas")
+    _run_import_nams_only(
+      fork_sim=args.fork,
+      persona_names=[n.strip() for n in args.nams_personas.split(",")
+                     if n.strip()],
+      embedder_name=args.embedder,
+      force=args.force_import,
+    )
+    return
+
+  # --- full headless run --------------------------------------------------
+  if not args.harness:
+    parser.error("--harness is required for a headless run")
+  if not args.fork or not args.target:
+    parser.error("--fork and --target are required for a headless run")
+  if args.steps is None:
+    parser.error("--steps is required for a headless run")
+
+  available = harnesses.available_names()
+  if args.harness not in available:
+    raise SystemExit(
+      f"unknown harness {args.harness!r}; pick one of {sorted(available)}"
+    )
+  os.environ["REVERIE_HARNESS"] = args.harness
+  if args.nams_personas:
+    os.environ["REVERIE_NAMS_PERSONAS"] = args.nams_personas
+  os.environ["REVERIE_NAMS_EXTRACTION"] = args.nams_extraction
+  print(f"[reverie] CLI: harness={args.harness} fork={args.fork} "
+        f"target={args.target} steps={args.steps}")
+  if args.nams_personas:
+    print(f"[reverie] NAMS personas: {args.nams_personas} "
+          f"(extraction={args.nams_extraction})")
+
+  rs = ReverieServer(args.fork, args.target)
+  # Headless mode always saves, no matter how the run ends:
+  #   * clean completion -> save + print "[reverie] COMPLETED:"
+  #   * crash (exception propagates out of start_server) -> save partial +
+  #     print "[reverie] CRASHED:"
+  #   * Ctrl-C (midnight_test.sh budget/stall timeout) -> save partial +
+  #     print "[reverie] INTERRUPTED:" + re-raise
+  # The orchestrator (midnight_test.sh) greps the backend log for the
+  # "COMPLETED" marker to distinguish a clean finish from a crash where the
+  # process also exited (both leave backend_running() false).
+  try:
+    rs.start_server(args.steps)
+  except KeyboardInterrupt:
+    print("[reverie] INTERRUPTED (Ctrl-C); saving partial progress...")
+    try:
+      rs.save()
+    except Exception:
+      traceback.print_exc()
+    raise
+  except Exception:
+    traceback.print_exc()
+    print("[reverie] CRASHED: saving partial progress before exit...")
+    try:
+      rs.save()
+    except Exception:
+      traceback.print_exc()
+    return
+
+  rs.save()
+  print(f"[reverie] COMPLETED: {args.steps} steps, sim {args.target} saved.")
+
+
+def _run_import_nams_only(*, fork_sim: str, persona_names: list,
+                          embedder_name: str, force: bool):
+  """Translate each named persona's JSON bootstrap_memory (under
+  ``<fs_storage>/<fork_sim>/personas/<name>/bootstrap_memory``) into the
+  local Neo4j as POLE+O entities + Facts, then exit. No sim fork, no LLM
+  load, no steps. The importer bypasses the NERS pipeline (it writes facts
+  directly via add_fact/add_entity/cypher_write), so extraction mode is
+  irrelevant and we hard-code no-llm to avoid needing a harness object.
+
+  With ``force=True``, wipe each persona's existing session + facts +
+  entities + reasoning traces first so the import is idempotent.
+  """
+  from harnesses.nams import NamsMemory, NAMS_EXTRACTION_NO_LLM
+  from harnesses.nams.json_to_nams_import import import_persona_bootstrap
+
+  fork_folder = f"{fs_storage}/{fork_sim}"
+  if not os.path.isdir(fork_folder):
+    raise SystemExit(
+      f"fork sim {fork_sim!r} not found at {fork_folder}")
+
+  for name in persona_names:
+    bootstrap_dir = (f"{fork_folder}/personas/{name}/bootstrap_memory")
+    if not os.path.isdir(bootstrap_dir):
+      raise SystemExit(
+        f"persona {name!r} bootstrap not found at {bootstrap_dir}")
+
+    print(f"[import-nams-only] {name!r}: opening NAMS session...")
+    # llm_harness=None is fine: importer bypasses NERS, and we hard-code
+    # no-llm so build_memory_settings never touches the harness.
+    nams = NamsMemory(
+      session_id=name,
+      embedder_name=embedder_name,
+      extraction_mode=NAMS_EXTRACTION_NO_LLM,
+      llm_harness=None,
+    )
+    try:
+      _ = nams.client  # force connect
+      if force:
+        print(f"[import-nams-only] {name!r}: --force-import; wiping existing "
+              f"session...")
+        _wipe_nams_session(nams, name)
+      if (not force) and nams.graph_exists():
+        print(f"[import-nams-only] {name!r}: graph already exists; skipping. "
+              f"(Use --force-import to re-import.)")
+        continue
+      print(f"[import-nams-only] {name!r}: importing JSON bootstrap -> NAMS...")
+      report = import_persona_bootstrap(
+        nams=nams, bootstrap_dir=os.path.abspath(bootstrap_dir),
+      )
+      print(f"[import-nams-only] {name!r}: {report}")
+    finally:
+      nams.close()
+
+
+def _wipe_nams_session(nams, name: str):
+  """Delete every NAMS node tied to this persona name (Conversation + its
+  Messages, Facts naming the persona, the persona's PERSON Entity, and the
+  persona's ReasoningTraces). Used by --import-nams-only --force-import so
+  re-import is clean and idempotent."""
+  try:
+    nams.clear_session()
+  except Exception as e:
+    print(f"[import-nams-only] clear_session for {name!r} failed "
+          f"({type(e).__name__}: {e}); continuing with the node-level wipe.")
+  for q, params in (
+    ("MATCH (f:Fact) WHERE f.subject = $name OR f.object = $name "
+     "DETACH DELETE f", {"name": name}),
+    ("MATCH (e:Entity {name: $name}) DETACH DELETE e", {"name": name}),
+    ("MATCH (t:ReasoningTrace {session_id: $name}) DETACH DELETE t",
+     {"name": name}),
+  ):
+    try:
+      nams.cypher_write(q, params)
+    except Exception as e:
+      print(f"[import-nams-only] wipe query failed for {name!r} "
+            f"({type(e).__name__}: {e}); continuing.")
+
+
+if __name__ == '__main__':
+  import sys as _sys
+  if len(_sys.argv) > 1:
+    _run_cli()
+  else:
+    _run_interactive()
 
 
 

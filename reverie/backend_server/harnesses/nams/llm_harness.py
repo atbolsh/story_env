@@ -107,3 +107,83 @@ class LLMHarness:
       f"{type(self).__name__} does not provide a NAMS LLM provider; "
       "use extraction mode 'no-llm' with this harness."
     )
+
+
+# --------------------------------------------------------------------------- #
+# Generic NAMS LLM provider adapter
+# --------------------------------------------------------------------------- #
+#
+# In the mixed-harness ("multi-harness") mode, the active LLM harness is a
+# plain ``harnesses/gemma4.py`` ``_Gemma4Harness`` (not the NAMS-specific
+# ``Gemma4NamsLLM`` subclass), because most personas in the sim run on the
+# legacy JSON memory and only one (e.g. Klaus) runs on NAMS. The plain
+# harness doesn't override ``as_nams_llm_provider``, so for extraction mode
+# C we adapt it generically: any harness that exposes a
+# ``_generate(messages, *, max_new_tokens, temperature, top_p, top_k, kind)``
+# method (the gemma4 contract) can serve as the NAMS extraction LLM by
+# deferring to that method off the SDK's event-loop thread.
+#
+# Routing through ``_generate`` (instead of calling the model directly) means
+# every NAMS extraction call is logged via ``prompt_log.log_call`` with full
+# request/response context, exactly like the cognitive-module LLM calls --
+# satisfying the "all LLM calls logged with full context" requirement.
+
+
+class NamsLLMProvider:
+  """Minimal async adapter that satisfies the NAMS ``LLMProvider`` protocol
+  by deferring to a harness's ``_generate``.
+
+  Works for any harness whose ``_generate`` matches the gemma4 signature
+  (``messages`` list of ``{"role", "content"}`` dicts, plus the keyword
+  sampling params). The GPT harnesses use their own ``as_nams_llm_provider``
+  and never hit this class.
+  """
+
+  def __init__(self, harness: Any,
+               top_p: float = 0.95, top_k: int = 64):
+    self._harness = harness
+    self._top_p = top_p
+    self._top_k = top_k
+
+  async def complete(self, messages, *, temperature: float = 0.0,
+                     max_tokens: int | None = None, **_: Any):
+    harness = self._harness
+    msgs = [
+      {"role": (m.role if hasattr(m, "role") else m.get("role")),
+       "content": (m.content if hasattr(m, "content") else m.get("content"))}
+      for m in messages
+    ]
+
+    def _call() -> str:
+      return harness._generate(
+        msgs,
+        max_new_tokens=max_tokens or 256,
+        temperature=temperature if temperature and temperature > 0 else 0.0,
+        top_p=self._top_p,
+        top_k=self._top_k,
+        kind="nams_extraction",
+      )
+
+    import asyncio
+    text = await asyncio.to_thread(_call)
+
+    class _Completion:
+      def __init__(self, content: str):
+        self.content = content
+
+    return _Completion(text)
+
+
+def nams_llm_provider_for(harness: Any) -> Any:
+  """Return a NAMS ``LLMProvider`` for ``harness``.
+
+  Uses the harness's own ``as_nams_llm_provider()`` when it has one (the
+  NAMS-specific harnesses), else falls back to the generic
+  :class:`NamsLLMProvider` adapter (the plain gemma4 harness in mixed mode).
+  """
+  if hasattr(harness, "as_nams_llm_provider"):
+    try:
+      return harness.as_nams_llm_provider()
+    except NotImplementedError:
+      pass
+  return NamsLLMProvider(harness)

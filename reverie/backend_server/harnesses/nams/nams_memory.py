@@ -84,7 +84,13 @@ def build_memory_settings(*, embedder_name: str,
 
   llm_provider = None
   if extraction_mode == NAMS_EXTRACTION_HARNESS_LLM:
-    llm_provider = llm_harness.as_nams_llm_provider()
+    # In the dedicated *-nams harnesses, llm_harness is a Gemma4NamsLLM /
+    # LatestGPTNamsLLM with its own as_nams_llm_provider(). In the mixed
+    # ("multi-harness") mode, llm_harness is the plain gemma4 _Gemma4Harness,
+    # which doesn't have one -- nams_llm_provider_for falls back to the
+    # generic NamsLLMProvider adapter that drives _generate off-thread.
+    from .llm_harness import nams_llm_provider_for
+    llm_provider = nams_llm_provider_for(llm_harness)
 
   # When llm is None the SDK runs the spaCy/GLiNER extractor pipeline without
   # the LLM stage (air-gapped / deterministic). That's mode A.

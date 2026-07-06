@@ -1,15 +1,28 @@
 #!/bin/bash
-# midnight_test.sh -- unattended overnight benchmark of all three harnesses.
+# midnight_test.sh -- unattended overnight NAMS mixed-harness benchmark.
 #
 # Runs ONE FULL IN-GAME DAY (sec_per_step=10 -> 86400/10 = 8640 steps) of
-# base_the_ville_isabella_maria_klaus on each harness, sequentially:
+# base_the_ville_isabella_maria_klaus, twice, on the Gemma 4 E4B harness:
 #
-#     gemma4-e2b  ->  gemma4-e4b  ->  legacy-gpt  ->  qwen3-0.6b  ->
-#     gemma4-e2b-thinking  ->  gemma4-e4b-thinking  ->  qwen3-0.6b-thinking
+#     1. gemma4-e4b_klaus-nams-spacy-only
+#        Isabella + Maria run the legacy JSON memory; Klaus (the gentrification
+#        scholar) runs on NAMS with the spaCy + GLiNER + GLiREL-only entity
+#        extraction pipeline (no LLM in the extractor -- deterministic).
 #
-# The trailing *-thinking runs exercise the reasoning-channel harness variants
-# (same code, enable_thinking=True): the reasoning is logged but stripped from
-# memories/conversations/JSON, so they're directly comparable to the runs above.
+#     2. gemma4-e4b_klaus-nams-llm-extraction
+#        Same mixed setup, but Klaus's NAMS extractor additionally pipes raw
+#        short-term messages through the Gemma 4 E4B chat LLM for richer
+#        fact extraction.
+#
+# Both runs share one local Neo4j (docker compose up -d neo4j). Each run
+# starts by *translating* Klaus's JSON bootstrap_memory into the graph
+# (reverie.py --import-nams-only --force-import), so the profile is fresh
+# in Neo4j before the sim steps begin; then it launches the headless sim.
+#
+# Every LLM call -- cognitive-module calls for all three personas AND the
+# NAMS extraction-LLM calls for Klaus in run 2 -- is logged with full
+# request/response context to backend_prompt_pairs.jsonl (+ .txt), exactly
+# as in the interactive midnight runs, via REVERIE_PROMPT_LOG.
 #
 # Usage, on the remote box, from the repo root:
 #
@@ -20,28 +33,36 @@
 #
 #     tail -f logs/midnight_orchestrator_<stamp>.log
 #
-# For each harness it:
-#   1. opens a dedicated tmux session with the usual two windows
-#      (frontend: Django runserver; backend: reverie.py),
-#   2. answers reverie.py's interactive prompts (harness, fork sim, new sim),
-#   3. issues "run 8640" and polls temp_storage/curr_step.json until the day
-#      completes (or MAX_RUN_SECONDS elapses, in which case it Ctrl-C's the
-#      run and saves whatever progress was made),
-#   4. sends "fin" (which saves the sim into storage/<sim_code>), waits for
-#      the backend process to exit, and kills the tmux session,
-#   5. moves on to the next harness.
+# For each run it:
+#   1. ensures the local Neo4j is up (docker compose up -d neo4j) and bolt
+#      answers,
+#   2. translates Klaus's JSON profile into Neo4j
+#      (reverie.py --import-nams-only --force-import) -- fail-fast if the
+#      import barfs, so we don't burn a 9-hour run on a broken graph,
+#   3. opens a tmux session with the frontend (Django, for browser
+#      observation) and backend (headless reverie.py --steps 8640) windows,
+#   4. polls temp_storage/curr_step.json until the day completes, the run
+#      crashes, the backend dies/stalls, or MAX_RUN_SECONDS elapses,
+#   5. on completion/crash/timeout sends Ctrl-C (which the headless
+#      reverie.py turns into a partial save), kills the tmux session, and
+#      moves on.
 #
 # In the morning you should find:
-#   logs/midnight_<harness>_<stamp>/     one per harness, containing
-#       frontend_console.log             Django window transcript
-#       backend_console.log              reverie.py window transcript
-#       backend_prompt_pairs.jsonl       exact prompt/response pairs
-#       backend_prompt_pairs.txt         same, human-readable
-#   logs/midnight_summary_<stamp>.txt    one status line per run
-#   environment/frontend_server/storage/midnight_<harness>_<stamp>/
+#   logs/midnight_<run>_<stamp>/          one per run, containing
+#       frontend_console.log              Django window transcript
+#       backend_console.log               reverie.py window transcript
+#       backend_prompt_pairs.jsonl        exact prompt/response pairs (every
+#                                         LLM call, including NAMS extraction)
+#       backend_prompt_pairs.txt          same, human-readable
+#       import_console.log                the JSON->NAMS translation transcript
+#   logs/midnight_summary_<stamp>.txt     one status line per run
+#   environment/frontend_server/storage/midnight_<run>_<stamp>/
 #                                        the saved sims (forkable/replayable)
 #
 # Secrets: API keys are sourced from ${REPO_ROOT}/.env, never hardcoded here.
+#
+# Shakedown overrides (shorter runs for a smoke test):
+#     MIDNIGHT_STEPS=50 MIDNIGHT_RUNS="gemma4-e4b_klaus-nams-spacy-only" bash midnight_test.sh
 
 set -uo pipefail
 
@@ -52,35 +73,27 @@ STAMP="${MIDNIGHT_STAMP:-$(date +%Y-%m-%d_%H-%M-%S)}"
 export MIDNIGHT_STAMP="$STAMP"
 
 # ----------------------------------------------------------------- settings
-# STEPS and the harness list can be overridden from the environment for
-# shorter shakedown runs, e.g.:
-#     MIDNIGHT_STEPS=50 MIDNIGHT_HARNESSES="gemma4-e2b" bash midnight_test.sh
-FORK_SIM="base_the_ville_isabella_maria_klaus"
-HARNESSES=(${MIDNIGHT_HARNESSES:-gemma4-e2b gemma4-e4b legacy-gpt qwen3-0.6b gemma4-e2b-thinking gemma4-e4b-thinking qwen3-0.6b-thinking})
-STEPS="${MIDNIGHT_STEPS:-8640}" # one in-game day at sec_per_step=10
-MAX_RUN_SECONDS=$((9 * 3600))   # per-run wall-clock budget before we cut it.
-                                # Was 3h, which was ample for the non-thinking
-                                # harnesses (they finish a day in ~1.5h) but cut
-                                # the *-thinking variants off at ~45-50% of the
-                                # day: the reasoning channel makes every LLM call
-                                # ~6x slower, so a full day needs ~6.5-7h. 9h
-                                # gives margin; fast runs still exit early on
-                                # COMPLETED/CRASHED, so the higher ceiling is a
-                                # no-op for them.
-STALL_SECONDS="${MIDNIGHT_STALL_SECONDS:-1200}" # no curr_step progress for this
-                                # long => assume a hung run and stop early (a
-                                # backstop for hangs that never surface a prompt)
-POLL_SECONDS=60                 # how often to check progress
-PROMPT_TIMEOUT=600              # max wait for reverie.py's interactive prompts
-FIN_TIMEOUT=600                 # max wait for save+exit after "fin"
+FORK_SIM="${MIDNIGHT_FORK:-base_the_ville_isabella_maria_klaus}"
+# Each run spec is "<run_label>|<nams-extraction-mode>".
+#   no-llm      -> spaCy + GLiNER + GLiREL only
+#   harness-llm -> + Gemma 4 E4B chat LLM as the NAMS extraction LLM stage
+# The LLM harness for *every* persona (JSON and NAMS alike) is gemma4-e4b;
+# only Klaus runs on NAMS memory, via --nams-personas.
+RUNS=(${MIDNIGHT_RUNS:-gemma4-e4b_klaus-nams-spacy-only|no-llm gemma4-e4b_klaus-nams-llm-extraction|harness-llm})
+NAMS_PERSONAS="${MIDNIGHT_NAMS_PERSONAS:-Klaus Mueller}"
+BASE_HARNESS="${MIDNIGHT_HARNESS:-gemma4-e4b}"
+STEPS="${MIDNIGHT_STEPS:-8640}"        # one in-game day at sec_per_step=10
+MAX_RUN_SECONDS=$((9 * 3600))          # per-run wall-clock budget before we cut it
+STALL_SECONDS="${MIDNIGHT_STALL_SECONDS:-1200}" # no curr_step progress => hung
+POLL_SECONDS=60
+IMPORT_TIMEOUT=900                     # JSON->NAMS translation budget (no LLM)
+FIN_TIMEOUT=600                        # wait after Ctrl-C for the partial save
 
 LOG_ROOT="${REPO_ROOT}/logs"
 TEMP_STORAGE="${REPO_ROOT}/environment/frontend_server/temp_storage"
 SUMMARY="${LOG_ROOT}/midnight_summary_${STAMP}.txt"
 
 # ------------------------------------------------- self-detach under nohup
-# So that the overnight orchestration survives the ssh session that launched
-# it. The detached copy re-runs this script with MIDNIGHT_DETACHED set.
 if [ -z "${MIDNIGHT_DETACHED:-}" ]; then
   mkdir -p "$LOG_ROOT"
   ORCH_LOG="${LOG_ROOT}/midnight_orchestrator_${STAMP}.log"
@@ -102,9 +115,13 @@ if [ ! -d "${REPO_ROOT}/environment/frontend_server/storage/${FORK_SIM}" ]; then
   echo "error: fork sim ${FORK_SIM} not found in storage/." >&2
   exit 1
 fi
+if ! command -v docker >/dev/null 2>&1; then
+  echo "error: docker is not installed / not on PATH." >&2
+  exit 1
+fi
 
-# Sourcing .env here only to *check* key presence for legacy-gpt; the tmux
-# windows source it themselves via ENV_PREFIX.
+# Source .env for OPENAI_API_KEY etc. (the headless backend + the tmux windows
+# all re-source it via ENV_PREFIX).
 ENV_PREFIX=""
 if [ -f "${REPO_ROOT}/.env" ]; then
   ENV_PREFIX="set -a; . ${REPO_ROOT}/.env; set +a; "
@@ -112,7 +129,28 @@ if [ -f "${REPO_ROOT}/.env" ]; then
 fi
 
 mkdir -p "$LOG_ROOT"
-echo "midnight_test ${STAMP}: ${STEPS} steps each on: ${HARNESSES[*]}" > "$SUMMARY"
+echo "midnight_test ${STAMP}: ${STEPS} steps each, harness=${BASE_HARNESS}, "
+echo "  NAMS personas=${NAMS_PERSONAS}, runs: ${RUNS[*]}" > "$SUMMARY"
+
+# Bring up the local Neo4j (idempotent) and wait for bolt to answer. The
+# NAMS SDK connects to bolt://localhost:7687; without this, both the
+# JSON->NAMS translation and the NAMS personas at runtime will fail.
+log "ensuring local Neo4j is up (docker compose up -d neo4j)..."
+docker compose up -d neo4j >/dev/null 2>&1 || true
+bolt_ok=0
+for _ in $(seq 1 60); do
+  if python3 -c "import neo4j,os; d=neo4j.GraphDatabase.driver(os.environ.get('NEO4J_URI','bolt://localhost:7687'),auth=(os.environ.get('NEO4J_USER','neo4j'),os.environ.get('NEO4J_PASSWORD','password'))); s=d.session(); s.run('RETURN 1').consume(); d.close()" 2>/dev/null; then
+    bolt_ok=1; break
+  fi
+  sleep 5
+done
+if [ "$bolt_ok" -ne 1 ]; then
+  log "error: Neo4j bolt never answered on localhost:7687."
+  log "  Check: docker compose ps neo4j ; docker compose logs neo4j"
+  echo "ALL RUNS: FAILED (Neo4j bolt unreachable)" >> "$SUMMARY"
+  exit 1
+fi
+log "Neo4j bolt is up."
 
 # ----------------------------------------------------------------- helpers
 wait_for_pattern() {  # $1=file $2=grep-pattern $3=timeout-seconds
@@ -130,7 +168,7 @@ current_step() {
     2>/dev/null || echo "-1"
 }
 
-backend_running() {  # $1=session  -- is reverie.py still alive in its pane?
+backend_running() {  # $1=session
   local pane_pid
   pane_pid=$(tmux display-message -p -t "$1:backend" '#{pane_pid}' 2>/dev/null) || return 1
   pgrep -P "$pane_pid" -f "reverie.py" >/dev/null 2>&1
@@ -141,28 +179,66 @@ kill_session() {  # $1=session
   sleep 5  # let the Django port and GPU memory free up
 }
 
+# Translate the NAMS personas' JSON bootstrap_memory into the local Neo4j
+# *before* the sim runs. Uses reverie.py --import-nams-only --force-import,
+# which wipes each persona's existing session first so the import is clean
+# and idempotent (the two runs get independent Klaus graphs). Fail-fast: if
+# the import barfs, we abort the run instead of launching a 9-hour sim on a
+# broken graph. No LLM is loaded for the import (the importer bypasses the
+# NERS pipeline and writes facts directly), so this is fast.
+translate_profiles() {  # $1=run_dir
+  local run_dir=$1
+  local import_log="${run_dir}/import_console.log"
+  : > "$import_log"
+  log "  translating ${NAMS_PERSONAS} JSON bootstrap -> Neo4j (--force-import)..."
+  # Run inline (not in tmux) so the orchestrator sees the exit code and can
+  # fail-fast. The import loads the sentence-transformers embedder but no
+  # chat LLM, so it's cheap and synchronous.
+  if ! ${ENV_PREFIX}PYTHONPATH=${REPO_ROOT}/shared:${REPO_ROOT}/reverie/backend_server \
+        python3 "${REPO_ROOT}/reverie/backend_server/reverie.py" \
+          --import-nams-only \
+          --fork "${FORK_SIM}" \
+          --nams-personas "${NAMS_PERSONAS}" \
+          --embedder "BAAI/bge-small-en-v1.5" \
+          --force-import \
+        >>"$import_log" 2>&1; then
+    log "  IMPORT FAILED; see ${import_log}. Aborting run."
+    return 1
+  fi
+  # Sanity-check: the import log should mention at least one persona.
+  if ! grep -q "import-nams-only" "$import_log"; then
+    log "  IMPORT produced no output; see ${import_log}. Aborting run."
+    return 1
+  fi
+  log "  translation done."
+  return 0
+}
+
 # ------------------------------------------------------------------ one run
-run_one() {  # $1=harness
-  local harness=$1
-  local run_name="midnight_${harness}_${STAMP}"
+# $1=run_label  $2=extraction_mode
+run_one() {
+  local run_label=$1 extraction=$2
+  local run_name="midnight_${run_label}_${STAMP}"
   local run_dir="${LOG_ROOT}/${run_name}"
   local sim_code="$run_name"
-  # tmux uses '.' as the window.pane separator and ':' as the session:window
-  # separator in target specs, so a session name containing either is invalid
-  # (this is why the qwen3-0.6b runs failed: "0.6b" has a dot). Sanitize the
-  # session name only -- run_name / sim_code / run_dir keep their real value
-  # (dots are fine in directory names and simulation codes).
-  local session="${run_name//[.:]/-}"
+  local session="${run_name//[.:]/-}"  # tmux session names can't contain . or :
   local fe_log="${run_dir}/frontend_console.log"
   local be_log="${run_dir}/backend_console.log"
   local pair_log="${run_dir}/backend_prompt_pairs.jsonl"
   local t_start t_now step status="FAILED"
 
   mkdir -p "$run_dir"
-  log "=== ${harness}: starting (sim ${sim_code}) ==="
+  log "=== ${run_label} (extraction=${extraction}): starting ==="
 
+  # 1. Translate the NAMS personas' JSON profile into Neo4j first.
+  if ! translate_profiles "$run_dir"; then
+    echo "${run_label}: FAILED (JSON->NAMS import; see ${run_dir}/import_console.log)" >> "$SUMMARY"
+    return 1
+  fi
+
+  # 2. tmux: frontend (Django observer) + backend (headless reverie.py).
   if tmux has-session -t "$session" 2>/dev/null; then
-    log "${harness}: session ${session} already exists?! killing it."
+    log "${run_label}: session ${session} already exists?! killing it."
     kill_session "$session"
   fi
 
@@ -173,88 +249,59 @@ run_one() {  # $1=harness
 
   tmux new-window -t "$session" -n backend
   tmux pipe-pane -t "${session}:backend" -o "cat >> '${be_log}'"
+  # Headless: one command, no interactive prompts to walk. REVERIE_PROMPT_LOG
+  # captures every LLM call (cognitive modules + NAMS extraction LLM) with
+  # full request/response context, exactly as in the interactive midnight runs.
   tmux send-keys -t "${session}:backend" \
-    "${ENV_PREFIX}export REVERIE_PROMPT_LOG=${pair_log}; cd ${REPO_ROOT}/reverie/backend_server && python3 reverie.py" C-m
+    "${ENV_PREFIX}export REVERIE_PROMPT_LOG=${pair_log}; \
+     export REVERIE_HARNESS=${BASE_HARNESS}; \
+     export REVERIE_NAMS_PERSONAS=\"${NAMS_PERSONAS}\"; \
+     export REVERIE_NAMS_EXTRACTION=${extraction}; \
+     cd ${REPO_ROOT}/reverie/backend_server && \
+     PYTHONPATH=${REPO_ROOT}/shared:. python3 reverie.py \
+       --harness ${BASE_HARNESS} \
+       --fork ${FORK_SIM} \
+       --target ${sim_code} \
+       --steps ${STEPS} \
+       --nams-personas \"${NAMS_PERSONAS}\" \
+       --nams-extraction ${extraction}" C-m
+  log "${run_label}: headless sim launched (sim ${sim_code}); polling every ${POLL_SECONDS}s."
 
-  # Walk reverie.py's interactive prompts.
-  if ! wait_for_pattern "$be_log" "Select model harness" "$PROMPT_TIMEOUT"; then
-    log "${harness}: never saw the harness prompt; aborting run."
-    echo "${harness}: FAILED (no harness prompt; see ${be_log})" >> "$SUMMARY"
-    kill_session "$session"; return 1
-  fi
-  tmux send-keys -t "${session}:backend" "$harness" C-m
-
-  if ! wait_for_pattern "$be_log" "Enter the name of the forked simulation" "$PROMPT_TIMEOUT"; then
-    log "${harness}: never saw the fork prompt; aborting run."
-    echo "${harness}: FAILED (no fork prompt; see ${be_log})" >> "$SUMMARY"
-    kill_session "$session"; return 1
-  fi
-  tmux send-keys -t "${session}:backend" "$FORK_SIM" C-m
-
-  if ! wait_for_pattern "$be_log" "Enter the name of the new simulation" "$PROMPT_TIMEOUT"; then
-    log "${harness}: never saw the new-sim prompt; aborting run."
-    echo "${harness}: FAILED (no new-sim prompt; see ${be_log})" >> "$SUMMARY"
-    kill_session "$session"; return 1
-  fi
-  tmux send-keys -t "${session}:backend" "$sim_code" C-m
-
-  if ! wait_for_pattern "$be_log" "Enter option" "$PROMPT_TIMEOUT"; then
-    log "${harness}: fork never finished loading; aborting run."
-    echo "${harness}: FAILED (fork never loaded; see ${be_log})" >> "$SUMMARY"
-    kill_session "$session"; return 1
-  fi
-  tmux send-keys -t "${session}:backend" "run ${STEPS}" C-m
-  log "${harness}: 'run ${STEPS}' issued; polling every ${POLL_SECONDS}s."
-
-  # Poll until the day completes, the run crashes, the backend dies/stalls, or
-  # the wall-clock budget runs out.
-  #
-  # Crash detection matters here: reverie.py's "run" loop is wrapped in a
-  # bare-except that prints a traceback + "Error." and drops back to the
-  # "Enter option:" prompt, leaving the *process alive*. That used to be
-  # mislabeled "TIMED OUT" -- the step counter froze but backend_running()
-  # stayed true, so we'd idle away the entire MAX_RUN_SECONDS budget before
-  # cutting it. We now notice the run returned to the prompt (a new
-  # "Enter option:" appears while step < STEPS) and report it as the crash it
-  # is, immediately. A separate STALL_SECONDS backstop catches genuine hangs
-  # that never surface a new prompt.
+  # 3. Poll until the day completes, the run crashes, the backend dies/stalls,
+  # or the wall-clock budget runs out. The headless reverie.py saves on clean
+  # completion, on crash (try/except in _run_cli), and on Ctrl-C
+  # (KeyboardInterrupt -> partial save), so we don't need to send "fin".
   t_start=$(date +%s)
-  local last_step=-1 last_progress_t=$t_start base_prompts now_prompts
-  # Count of "Enter option:" prompts already emitted before we issued "run".
-  base_prompts=$(grep -o "Enter option:" "$be_log" 2>/dev/null | wc -l | tr -d ' ')
+  local last_step=-1 last_progress_t=$t_start
   while :; do
     sleep "$POLL_SECONDS"
     step=$(current_step)
     t_now=$(( $(date +%s) - t_start ))
-    log "${harness}: step ${step}/${STEPS} (${t_now}s elapsed)"
+    log "${run_label}: step ${step}/${STEPS} (${t_now}s elapsed)"
 
     if [ "$step" -ge "$STEPS" ] 2>/dev/null; then
       status="COMPLETED"
       break
     fi
     if ! backend_running "$session"; then
-      status="CRASHED at step ${step}"
-      log "${harness}: backend process died; see ${be_log}"
+      # Backend exited. The headless reverie.py prints a distinct banner on
+      # clean completion vs crash (both save, both exit the process), so we
+      # grep the log to tell them apart.
+      if grep -q "\[reverie\] COMPLETED:" "$be_log" 2>/dev/null; then
+        status="COMPLETED"
+      else
+        status="CRASHED at step ${step}"
+        log "${run_label}: backend process died; see ${be_log}"
+      fi
       break
     fi
 
-    # A new "Enter option:" prompt while we're short of STEPS means the run
-    # aborted back to the interactive loop -- i.e. reverie's bare-except fired.
-    now_prompts=$(grep -o "Enter option:" "$be_log" 2>/dev/null | wc -l | tr -d ' ')
-    if [ "${now_prompts:-0}" -gt "${base_prompts:-0}" ] 2>/dev/null; then
-      status="CRASHED at step ${step}"
-      log "${harness}: run returned to the prompt early (bare-except); see ${be_log}."
-      break
-    fi
-
-    # Progress / stall tracking. A live-but-not-advancing sim (e.g. a hung
-    # model call that never raises) shouldn't burn the whole budget.
     if [ "$step" -gt "$last_step" ] 2>/dev/null; then
       last_step=$step
       last_progress_t=$(date +%s)
     elif [ "$(( $(date +%s) - last_progress_t ))" -ge "$STALL_SECONDS" ]; then
       status="STALLED at step ${step}"
-      log "${harness}: no curr_step progress for ${STALL_SECONDS}s; stopping. See ${be_log}."
+      log "${run_label}: no curr_step progress for ${STALL_SECONDS}s; stopping. See ${be_log}."
       tmux send-keys -t "${session}:backend" C-c
       sleep 15
       break
@@ -262,44 +309,37 @@ run_one() {  # $1=harness
 
     if [ "$t_now" -ge "$MAX_RUN_SECONDS" ]; then
       status="TIMED OUT at step ${step}"
-      log "${harness}: budget exhausted; interrupting the run."
+      log "${run_label}: budget exhausted; interrupting (Ctrl-C -> partial save)."
       tmux send-keys -t "${session}:backend" C-c
-      sleep 15  # let the bare-except land us back at the "Enter option" prompt
+      sleep 15
       break
     fi
   done
 
-  # Save and shut down (skip "fin" if the process is already gone).
+  # 4. Give the backend a moment to finish its (partial) save after Ctrl-C,
+  # then tear down the tmux session.
   if backend_running "$session"; then
-    log "${harness}: sending 'fin' to save."
-    tmux send-keys -t "${session}:backend" "fin" C-m
     local waited=0
     while backend_running "$session"; do
       sleep 5
       waited=$((waited + 5))
-      if [ "$waited" -ge "$FIN_TIMEOUT" ]; then
-        log "${harness}: backend did not exit after fin (${FIN_TIMEOUT}s); killing anyway."
-        status="${status} (fin hung)"
-        break
-      fi
+      [ "$waited" -ge "$FIN_TIMEOUT" ] && break
     done
   fi
   kill_session "$session"
 
   t_now=$(( $(date +%s) - t_start ))
-  log "=== ${harness}: ${status} (${t_now}s) ==="
-  echo "${harness}: ${status}, ${t_now}s, sim ${sim_code}, logs ${run_dir}" >> "$SUMMARY"
+  log "=== ${run_label}: ${status} (${t_now}s) ==="
+  echo "${run_label}: ${status}, ${t_now}s, sim ${sim_code}, logs ${run_dir}" >> "$SUMMARY"
   [ "$status" = "COMPLETED" ]
 }
 
 # --------------------------------------------------------------------- main
-for harness in "${HARNESSES[@]}"; do
-  if [ "$harness" = "legacy-gpt" ] && [ -z "${OPENAI_API_KEY:-}" ]; then
-    log "legacy-gpt: OPENAI_API_KEY not set (check .env); skipping."
-    echo "legacy-gpt: SKIPPED (no OPENAI_API_KEY)" >> "$SUMMARY"
-    continue
-  fi
-  run_one "$harness" || log "${harness}: run did not complete cleanly; moving on."
+for spec in "${RUNS[@]}"; do
+  run_label="${spec%%|*}"
+  extraction="${spec##*|}"
+  run_one "$run_label" "$extraction" \
+    || log "${run_label}: run did not complete cleanly; moving on."
 done
 
 log "All runs done. Summary:"
