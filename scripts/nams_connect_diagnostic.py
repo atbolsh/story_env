@@ -130,11 +130,39 @@ def probe_bridge_enter():
         "NOT the SDK: probe 2 ran the same __aenter__ in <1s on a fresh loop.")
 
 
+def probe_nams_graph_exists():
+  """The actual sim path: NamsMemory.graph_exists() runs an async _go on the
+  background loop, and _go calls _ensure_client. Before the fix, _ensure_client
+  re-entered async_bridge.run from inside the loop and deadlocked. This probe
+  reproduces that exact path."""
+  log("PROBE 4 (sim path): NamsMemory.graph_exists() via async_bridge...")
+  t0 = time.time()
+  from harnesses.nams.nams_memory import NamsMemory
+  nams = NamsMemory(
+    session_id=PERSONA,
+    embedder_name=EMBEDDER,
+    extraction_mode=NAMS_EXTRACTION_NO_LLM,
+    llm_harness=None,
+  )
+  try:
+    # graph_exists is sync; it uses async_bridge internally (the sim path).
+    exists = nams.graph_exists()
+    log(f"PROBE 4 ok in {time.time() - t0:.1f}s: graph_exists -> {exists}")
+  except Exception as e:
+    log(f"PROBE 4 FAILED in {time.time() - t0:.1f}s: {type(e).__name__}: {e}")
+  finally:
+    try:
+      nams.close()
+    except Exception:
+      pass
+
+
 def main():
   log(f"NAMS connect diagnostic: persona={PERSONA!r} embedder={EMBEDDER!r}")
   bolt_precheck()
   probe_asyncio_run()
   probe_bridge_enter()
+  probe_nams_graph_exists()
   async_bridge.shutdown()
   log("done.")
 

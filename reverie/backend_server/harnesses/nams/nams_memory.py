@@ -212,7 +212,15 @@ class NamsMemory:
 
   # ------------------------------------------------------------------ init
 
-  def _ensure_client(self):
+  async def _ensure_client_async(self):
+    """Async client construction. Safe to await from inside a coroutine that
+    is already running on the NAMS background loop (e.g. the ``_go``
+    coroutines below). This is the path the sim actually uses: ``graph_exists``
+    and every other NAMS method runs its ``_go`` on the background loop via
+    ``async_bridge.run``, and ``_go`` must NOT call the sync
+    ``_ensure_client`` (which itself calls ``async_bridge.run`` -- a re-
+    entrant call that deadlocks the loop). Await this instead.
+    """
     if self._client is not None:
       return self._client
     print(f"[nams] {self.session_id!r}: connecting to Neo4j "
@@ -227,27 +235,32 @@ class NamsMemory:
       persona_name=self.session_id,
     )
     self._settings = settings
-
-    async def _connect():
-      from neo4j_agent_memory import MemoryClient
-      client = MemoryClient(settings)
-      # MemoryClient is an async context manager; for the long-lived
-      # per-persona client we drive __aenter__/__aexit__ manually so it
-      # stays connected for the whole simulation.
-      #
-      # Hard timeout: the SDK's __aenter__ has been observed to hang
-      # indefinitely on Neo4j 2026.05 (no tqdm bars, so not a download --
-      # likely a schema op or async deadlock inside the SDK). Cap it so the
-      # sim fails with a clear message instead of hanging silently. 180s is
-      # ample for a real first-run pipeline init (spaCy/GLiNER/GLiREL load);
-      # if genuine model downloads need more on a slow link, raise via env.
-      timeout = float(os.environ.get("NAMS_CONNECT_TIMEOUT", "180"))
-      await asyncio.wait_for(client.__aenter__(), timeout=timeout)
-      return client
-
-    self._client = async_bridge.run(_connect())
+    from neo4j_agent_memory import MemoryClient
+    client = MemoryClient(settings)
+    # MemoryClient is an async context manager; for the long-lived per-persona
+    # client we drive __aenter__/__aexit__ manually so it stays connected for
+    # the whole simulation. Hard timeout so a stalled __aenter__ surfaces a
+    # clear error instead of hanging silently. 180s is ample for first-run
+    # pipeline init (spaCy/GLiNER/GLiREL load); raise via NAMS_CONNECT_TIMEOUT
+    # on a slow link.
+    timeout = float(os.environ.get("NAMS_CONNECT_TIMEOUT", "180"))
+    await asyncio.wait_for(client.__aenter__(), timeout=timeout)
+    self._client = client
     print(f"[nams] {self.session_id!r}: connected + pipeline ready.", flush=True)
     return self._client
+
+  def _ensure_client(self):
+    """Sync wrapper around :meth:`_ensure_client_async` for sync callers
+    (the ``client`` property, external sync code). Submits the async connect
+    to the background loop via ``async_bridge.run``. MUST NOT be called from
+    inside a coroutine already running on the background loop -- that's a
+    re-entrant deadlock (the loop blocks on ``fut.result`` and never runs the
+    scheduled connect). In-loop coroutines use ``await _ensure_client_async``.
+    """
+    if self._client is not None:
+      return self._client
+    timeout = float(os.environ.get("NAMS_CONNECT_TIMEOUT", "180"))
+    return async_bridge.run(self._ensure_client_async(), timeout=timeout)
 
   @property
   def client(self):
@@ -299,7 +312,7 @@ class NamsMemory:
       md["keywords"] = [k.lower() for k in keywords]
 
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       # Use the batch loader with an explicit ``timestamp`` so the Message
       # node's ``m.timestamp`` reflects *simulation* time (not wall-clock).
       # age_short_term filters on m.timestamp, so events must carry sim time
@@ -342,7 +355,7 @@ class NamsMemory:
     }
 
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       return await client.short_term.add_message(
         session_id=self.session_id,
         role="assistant" if speaker != self.session_id else "user",
@@ -373,7 +386,7 @@ class NamsMemory:
     cutoff_iso = (now - datetime.timedelta(minutes=ttl_minutes)).isoformat()
 
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       rows = await client.query.cypher(
         "MATCH (c:Conversation {session_id: $sid})-[:HAS_MESSAGE]->(m:Message) "
         "WHERE m.timestamp < datetime($cutoff) "
@@ -402,7 +415,7 @@ class NamsMemory:
     before the raw text is dropped.
     """
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       # Re-run extraction across the conversation's messages, then delete
       # them. session_id lives on the Conversation node.
       rows = await client.query.cypher(
@@ -423,7 +436,7 @@ class NamsMemory:
     called by the JSON importer when it has already placed long-term facts
     directly and wants a clean short-term buffer."""
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       await client.short_term.clear_session(self.session_id)
 
     return async_bridge.run(_go())
@@ -449,7 +462,7 @@ class NamsMemory:
     md["salience"] = int(poignancy)
 
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       return await client.long_term.add_fact(
         subject=subject, predicate=predicate, obj=obj,
         confidence=max(0.0, min(1.0, poignancy / 10.0)),
@@ -501,7 +514,7 @@ class NamsMemory:
     """Delete every schedule_entry Fact for ``subject`` on ``day``. Used when
     re-planning a day from scratch (e.g. new-day ``revise_identity``)."""
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       result = await client.graph.execute_write(
         "MATCH (f:Fact) "
         "WHERE f.subject = $subject "
@@ -522,7 +535,7 @@ class NamsMemory:
     by ``valid_from``. Used to rebuild ``scratch.f_daily_schedule`` cache
     from the graph on load."""
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       if day:
         rows = await client.query.cypher(
           "MATCH (f:Fact) "
@@ -572,7 +585,7 @@ class NamsMemory:
     now_iso = now.isoformat()
 
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       rows = await client.query.cypher(
         "MATCH (f:Fact) "
         "WHERE f.metadata CONTAINS '\"kind\": \"plan\"' "
@@ -607,7 +620,7 @@ class NamsMemory:
     relationship graph accrues over time and is traversable from either
     party's memory."""
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       # Ensure both Person entities exist. add_entity returns
       # (Entity, DeduplicationResult); we want the Entity. Disable
       # geocode/enrich -- persona names are not places and we don't want
@@ -637,7 +650,7 @@ class NamsMemory:
     """Link a short-term message to its (s, p, o) entities explicitly, so the
     classic retrieve-by-keyword behavior survives once the raw message is
     aged out and only the extracted entities/facts remain."""
-    client = self._ensure_client()
+    client = await self._ensure_client_async()
     # Subject and object become Entities; predicate is preserved on the
     # relationship edge. The persona's own name is a PERSON; everything else
     # is typed as OBJECT (POLE+O) by default.
@@ -703,7 +716,7 @@ class NamsMemory:
 
     for fp in focal_points:
       async def _go_one(focal=fp):
-        client = self._ensure_client()
+        client = await self._ensure_client_async()
         # The SDK's get_context returns a formatted string; we also pull raw
         # facts so we can re-rank. For simplicity we use the formatted string
         # directly and append the plans block. The re-rank hook below is a
@@ -767,7 +780,7 @@ class NamsMemory:
     debug" gap in the old JSON system).
     """
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       trace = await client.reasoning.start_trace(
         session_id=self.session_id, task=task,
         triggered_by_message_id=triggered_by_message_id,
@@ -792,7 +805,7 @@ class NamsMemory:
     graph. Used by ``reverie.py`` to decide whether to run the JSON->NAMS
     importer on first run of a *-nams harness against a JSON-forked sim."""
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       # session_id lives on the Conversation node; reach messages through it.
       # Also count this persona's PERSON entity and any Fact that names them.
       rows = await client.query.cypher(
@@ -830,7 +843,7 @@ class NamsMemory:
     Neo4j via the SDK's portable ``client.query.cypher`` accessor (which
     validates read-only-ness). Used by retrieval/debugging code paths."""
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       return await client.query.cypher(query, params or {})
 
     return async_bridge.run(_go())
@@ -843,7 +856,7 @@ class NamsMemory:
     JSON importer and by schedule-edit code paths that don't merit a
     dedicated method."""
     async def _go():
-      client = self._ensure_client()
+      client = await self._ensure_client_async()
       return await client.graph.execute_write(query, params or {})
 
     return async_bridge.run(_go())
