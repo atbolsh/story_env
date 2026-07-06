@@ -55,9 +55,24 @@
 #                                         LLM call, including NAMS extraction)
 #       backend_prompt_pairs.txt          same, human-readable
 #       import_console.log                the JSON->NAMS translation transcript
+#       klaus_memories_<run>.dump         Klaus's NAMS memory graph, saved via
+#                                         scripts/nams_baremetal_db.sh save
+#                                         (Neo4j native .dump binary archive;
+#                                         reload with nams_baremetal_db.sh load)
+#       db_save.log                       save/dump transcript
+#   logs/midnight_db_wipe_<stamp>.log     wipe-between-runs transcript
 #   logs/midnight_summary_<stamp>.txt     one status line per run
 #   environment/frontend_server/storage/midnight_<run>_<stamp>/
 #                                        the saved sims (forkable/replayable)
+#
+# Cross-run isolation: the two runs share one local Neo4j instance, but
+# (a) each run starts with --force-import, which wipes Klaus's session and
+# re-imports his JSON bootstrap, and (b) between runs the orchestrator calls
+# scripts/nams_baremetal_db.sh wipe to drop the neo4j db files and recreate
+# an empty db, so run 2 starts on a graph that has zero leftover nodes from
+# run 1. Each run's accumulated Klaus memories are saved to that run's logs
+# dir as klaus_memories_<run>.dump BEFORE the wipe, so both runs' memories
+# survive for offline analysis.
 #
 # Secrets: API keys are sourced from ${REPO_ROOT}/.env, never hardcoded here.
 #
@@ -193,6 +208,38 @@ backend_running() {  # $1=session
 kill_session() {  # $1=session
   tmux kill-session -t "$1" 2>/dev/null
   sleep 5  # let the Django port and GPU memory free up
+}
+
+# Save the NAMS memory graph to the run's logs dir, then (between runs) wipe
+# the DB so the next run starts on a clean graph on top of --force-import.
+# Bare-metal path: uses scripts/nams_baremetal_db.sh against the running
+# local Neo4j. Docker path: not wired here (rely on --force-import for
+# cleanliness; use scripts/nams_db.sh manually to save per-persona containers).
+BAREMETAL_DB_SCRIPT="${REPO_ROOT}/scripts/nams_baremetal_db.sh"
+
+save_memories() {  # $1=run_dir $2=run_label
+  local run_dir=$1 run_label=$2
+  local dump="${run_dir}/klaus_memories_${run_label}.dump"
+  if [ "$HAVE_DOCKER" -eq 0 ] && [ -x "$BAREMETAL_DB_SCRIPT" ]; then
+    log "  saving Klaus's NAMS memories -> ${dump}"
+    if "$BAREMETAL_DB_SCRIPT" save "$dump" >>"${run_dir}/db_save.log" 2>&1; then
+      log "  save ok: $(du -h "$dump" 2>/dev/null | cut -f1)"
+    else
+      log "  WARNING: save failed (see ${run_dir}/db_save.log); continuing."
+    fi
+  else
+    log "  (skip bare-metal save; HAVE_DOCKER=${HAVE_DOCKER})"
+  fi
+}
+
+wipe_db_between_runs() {
+  if [ "$HAVE_DOCKER" -eq 0 ] && [ -x "$BAREMETAL_DB_SCRIPT" ]; then
+    log "  wiping NAMS DB between runs (clean slate for the next run)"
+    "$BAREMETAL_DB_SCRIPT" wipe >>"${LOG_ROOT}/midnight_db_wipe_${STAMP}.log" 2>&1 \
+      || log "  WARNING: wipe failed (see ${LOG_ROOT}/midnight_db_wipe_${STAMP}.log)"
+  else
+    log "  (skip bare-metal wipe; --force-import will clean Klaus's session)"
+  fi
 }
 
 # Translate the NAMS personas' JSON bootstrap_memory into the local Neo4j
@@ -351,11 +398,21 @@ run_one() {
 }
 
 # --------------------------------------------------------------------- main
+run_idx=0
+total_runs=${#RUNS[@]}
 for spec in "${RUNS[@]}"; do
+  run_idx=$((run_idx + 1))
   run_label="${spec%%|*}"
   extraction="${spec##*|}"
   run_one "$run_label" "$extraction" \
     || log "${run_label}: run did not complete cleanly; moving on."
+  # Save Klaus's memories to this run's logs dir (distinct filename per run).
+  save_memories "${LOG_ROOT}/midnight_${run_label}_${STAMP}" "$run_label"
+  # Wipe the DB between runs so the next run starts on a clean graph. The
+  # last run's memories are already saved above; no wipe after the final run.
+  if [ "$run_idx" -lt "$total_runs" ]; then
+    wipe_db_between_runs
+  fi
 done
 
 log "All runs done. Summary:"

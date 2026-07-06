@@ -59,11 +59,19 @@ These harnesses replace the JSON memory stream with a **Neo4j Agent Memory Syste
 
 **One-time local DB setup:**
 
-1. Start a local Neo4j 5.20+ with APOC via the included compose file (bolt on `7687`, HTTP browser on `7474`):
+There are two supported layouts depending on your host:
+
+- **Docker host** (a box with a running Docker daemon): use the included compose file (bolt on `7687`, HTTP browser on `7474`):
 
        docker compose up -d neo4j
 
-   The compose file sets the password from the `NEO4J_PASSWORD` env var (default `password`). Data persists in a named volume, so a sim's memory graph survives `docker compose down` + `up`. Use `docker compose down -v` to wipe the database (e.g. before re-importing a forked JSON bootstrap into a clean graph).
+  The compose file sets the password from the `NEO4J_PASSWORD` env var (default `password`). Data persists in a named volume, so a sim's memory graph survives `docker compose down` + `up`. Use `docker compose down -v` to wipe the database (e.g. before re-importing a forked JSON bootstrap into a clean graph).
+
+- **Bare-metal / no-Docker host** (e.g. a rented GPU container on Vast.ai where the Docker daemon isn't available but Neo4j is installed — or can be apt-installed — directly): use the idempotent launch script:
+
+       bash scripts/vast_neo4j_baremetal_launch.sh
+
+  This installs Neo4j Community + OpenJDK 17 via apt if missing, writes the NAMS config block into `/etc/neo4j/neo4j.conf`, writes `/etc/neo4j/apoc.conf` (v5 requires APOC settings in their own file), downloads the matching APOC core jar, sets the initial password to `password`, starts Neo4j, and verifies bolt + APOC. Safe to re-run on every fresh box. The harness then connects with the same defaults (`bolt://localhost:7687`, user `neo4j`, password `password`) — no `.env` change needed.
 
 2. Tell the harness how to reach the database (defaults shown):
 
@@ -106,7 +114,23 @@ These harnesses replace the JSON memory stream with a **Neo4j Agent Memory Syste
 
 `scripts/nams_db.sh --help` prints the full subcommand reference. The single-instance compose path and the per-persona-container path coexist: the harness falls back to `bolt://localhost:7687` for any persona not in the registry, so a sim mixing one NAMS persona (in the compose instance) with JSON-backed personas just works without touching `nams_db.sh`.
 
-**First run against a JSON-forked sim.** When you fork a sim that was built up under a legacy JSON harness (e.g. `base_the_ville_isabella_maria_klaus`), the first `*-nams` run automatically imports each persona's `bootstrap_memory/` (spatial, identity, schedule, `associative_memory/nodes.json`) into the graph as POLE+O entities + Facts. The import is gated by a `graph_exists` check, so re-runs against an already-imported graph are no-ops. To force a fresh re-import, wipe the database (`docker compose down -v && docker compose up -d neo4j` for the single instance, or `scripts/nams_db.sh down "Klaus Mueller" --purge` for a per-persona container).
+**Bare-metal save / wipe / load (no Docker).** On hosts running Neo4j directly (the `vast_neo4j_baremetal_launch.sh` path above), the equivalent tool is `scripts/nams_baremetal_db.sh`. When only one persona is on NAMS, the entire `neo4j` database IS that persona's memory graph, so "save Klaus's memories" = "dump the neo4j database":
+
+       # Download Klaus's memories for offline analysis (e.g. tomorrow morning)
+       bash scripts/nams_baremetal_db.sh save logs/klaus_run1.dump
+
+       # Wipe the DB clean between runs (in addition to --force-import)
+       bash scripts/nams_baremetal_db.sh wipe
+
+       # Reinstate a previously saved memory graph
+       bash scripts/nams_baremetal_db.sh load logs/klaus_run1.dump
+
+       # Show running state + bolt + node counts by label
+       bash scripts/nams_baremetal_db.sh status
+
+Same `.dump` format as the Docker path (Neo4j native `neo4j-admin database dump` binary archive). `midnight_test.sh` calls `save` after each run and `wipe` between runs automatically on bare-metal hosts, dropping each run's `klaus_memories_<run>.dump` into that run's `logs/midnight_<run>_<stamp>/` dir.
+
+**First run against a JSON-forked sim.** When you fork a sim that was built up under a legacy JSON harness (e.g. `base_the_ville_isabella_maria_klaus`), the first `*-nams` run automatically imports each persona's `bootstrap_memory/` (spatial, identity, schedule, `associative_memory/nodes.json`) into the graph as POLE+O entities + Facts. The import is gated by a `graph_exists` check, so re-runs against an already-imported graph are no-ops. To force a fresh re-import, wipe the database (`docker compose down -v && docker compose up -d neo4j` for the single instance, `scripts/nams_db.sh down "Klaus Mueller" --purge` for a per-persona container, or `scripts/nams_baremetal_db.sh wipe` on a bare-metal host).
 
 **Extraction mode prompt.** After selecting a `*-nams` harness, reverie asks:
 

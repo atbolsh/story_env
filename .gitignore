@@ -118,5 +118,8 @@ ENV/
 # nams_databases.json: registry mapping persona name -> {container, port},
 #   written by scripts/nams_db.sh up, read by the harness at runtime.
 # nams_dumps/: per-persona .dump save files (neo4j-admin database dump output).
+# *.dump anywhere (e.g. logs/midnight_<run>_<stamp>/klaus_memories_<run>.dump
+#   from midnight_test.sh) -- binary, large, run-specific; never commit.
 nams_databases.json
 nams_dumps/
+*.dump
