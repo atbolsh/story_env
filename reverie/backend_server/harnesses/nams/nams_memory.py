@@ -135,11 +135,17 @@ def build_memory_settings(*, embedder_name: str,
   :func:`_persona_bolt_uri`). Empty = use the default single instance.
   """
   from neo4j_agent_memory import MemorySettings
+  from pydantic import SecretStr
 
+  # Neo4jConfig field names (see neo4j_agent_memory.config.settings.Neo4jConfig):
+  #   uri: str, username: str, password: SecretStr, database: str.
+  # The SDK uses pydantic strict validation (extra_forbidden), so the keys must
+  # match exactly -- an earlier version of this code used ``user`` (the env-var
+  # flavor) which the SDK rejects.
   neo4j_cfg = {
     "uri": _persona_bolt_uri(persona_name) if persona_name else _neo4j_uri(),
-    "user": _neo4j_user(),
-    "password": _neo4j_password(),
+    "username": _neo4j_user(),
+    "password": SecretStr(_neo4j_password()),
     # Community Edition: always the single ``neo4j`` database. Kept here so
     # that a future switch to Enterprise (per-persona database names) is a
     # one-line change in _persona_bolt_uri / build_memory_settings.
