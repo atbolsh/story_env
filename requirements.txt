@@ -30,11 +30,12 @@ django-storages>=1.14          # replaces the dead `django-storages-redux` fork
 numpy>=1.26
 
 # --- LLM API ---
-# 0.28 is the last 0.x release; it still exposes the legacy
-# `openai.api_key = ...` / `openai.ChatCompletion.create` / `openai.Embedding.create`
-# surface that this codebase uses. Migration to openai>=1.0 is tracked as
-# a separate task (see KNOWN_TECHNICAL_WEAKNESSES.md sec. 3.9).
-openai>=0.28.0,<1.0
+# openai>=1.0 SDK (modern client API: ``from openai import OpenAI`` +
+# ``client.chat.completions.create``). Both the legacy-gpt and the
+# latest-gpt-nams harnesses use this surface; the NAMS ``[openai]`` extra also
+# requires >=1.0. The historical 0.28 ``openai.ChatCompletion`` module-level
+# API this codebase used was migrated off (KNOWN_TECHNICAL_WEAKNESSES §3.9).
+openai>=1.0
 
 # --- Misc ---
 # Sourced by run_remote_servers.sh; useful once we wire local-model
