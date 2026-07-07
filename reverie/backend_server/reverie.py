@@ -31,6 +31,16 @@ if _os.path.isdir(_shared) and _shared not in _sys.path:
   _sys.path.insert(0, _shared)
 del _os, _sys, _d, _shared
 # ----------------------------------------------------------------------------
+# Vast.ai guard: if /workspace exists but is too small for the model weights,
+# repoint HF_HOME / HF_HUB_CACHE to a larger writable mount BEFORE any
+# huggingface_hub / transformers import reads those env vars. No-op on
+# non-Vast boxes (no /workspace) and when the default volume has room.
+try:
+  from hf_cache import configure_hf_cache_if_vast
+  configure_hf_cache_if_vast()
+except Exception as _e:
+  print(f"[hf_cache] auto-config skipped: {type(_e).__name__}: {_e}", flush=True)
+# ----------------------------------------------------------------------------
 import json
 import numpy
 import datetime
