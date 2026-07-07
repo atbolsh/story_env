@@ -393,16 +393,25 @@ class NamsMemory:
         "RETURN m.id AS id ORDER BY m.timestamp",
         {"sid": self.session_id, "cutoff": cutoff_iso},
       )
-      count = 0
-      for row in rows:
-        msg_id = row["id"] if isinstance(row, dict) else row.get("id")
-        if not msg_id:
-          continue
-        # The extractor already ran at add_message time; we just drop the raw
-        # text now that its facts/entities are in the graph.
-        await client.short_term.delete_message(msg_id)
-        count += 1
-      return count
+      ids = [r["id"] for r in rows if isinstance(r, dict) and r.get("id")]
+      if not ids:
+        return 0
+      # The extractor already ran at add_message time; we just drop the raw
+      # text now that its facts/entities are in the graph. Use DETACH DELETE
+      # (not the SDK's delete_message, which does a plain DELETE) so the
+      # extraction edges (MENTIONS / EXTRACTED_FROM etc.) are dropped alongside
+      # the message node -- otherwise Neo4j rejects the delete with
+      # ConstraintError "edges still exist" and raw messages never age out.
+      # The extracted Entity/Fact nodes are NOT touched (DETACH DELETE only
+      # removes the deleted node's own relationships, not the nodes at the
+      # other end).
+      await client.query.cypher(
+        "UNWIND $ids AS mid "
+        "MATCH (c:Conversation {session_id: $sid})-[:HAS_MESSAGE]->(m:Message {id: mid}) "
+        "DETACH DELETE m",
+        {"sid": self.session_id, "ids": ids},
+      )
+      return len(ids)
 
     return async_bridge.run(_go())
 
@@ -424,10 +433,18 @@ class NamsMemory:
         "RETURN m.id AS id ORDER BY m.timestamp",
         {"sid": self.session_id, "cid": str(conversation_id)},
       )
-      for row in rows:
-        msg_id = row["id"] if isinstance(row, dict) else row.get("id")
-        if msg_id:
-          await client.short_term.delete_message(msg_id)
+      ids = [r["id"] for r in rows if isinstance(r, dict) and r.get("id")]
+      if not ids:
+        return
+      # DETACH DELETE so extraction edges don't block the delete (see
+      # age_short_term for the rationale).
+      await client.query.cypher(
+        "UNWIND $ids AS mid "
+        "MATCH (c:Conversation {session_id: $sid, id: $cid})"
+        "-[:HAS_MESSAGE]->(m:Message {id: mid}) "
+        "DETACH DELETE m",
+        {"sid": self.session_id, "cid": str(conversation_id), "ids": ids},
+      )
 
     return async_bridge.run(_go())
 
