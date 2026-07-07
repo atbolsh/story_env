@@ -30,9 +30,22 @@ import asyncio
 import datetime
 import json
 import os
+import re
 from typing import Any, Iterable, Optional
 
 from . import async_bridge
+
+
+def _rel_type(predicate: str) -> str:
+  """Sanitize a free-form predicate into a valid Neo4j relationship type
+  (upper-case, [A-Z0-9_]). Used when we build the SPO relationship edge via
+  raw ``execute_write`` Cypher -- rel types can't be parameterized, so the
+  value is interpolated into backticks, which makes sanitization mandatory
+  for Cypher-injection safety. Falls back to ``IS`` if empty/unusable."""
+  r = re.sub(r"[^A-Za-z0-9_]", "_", predicate or "IS").upper()
+  r = re.sub(r"_+", "_", r).strip("_")
+  return r or "IS"
+
 
 # --- extraction modes (selected at reverie.py startup) ---------------------
 
@@ -645,24 +658,32 @@ class NamsMemory:
     party's memory."""
     async def _go():
       client = await self._ensure_client_async()
-      # Ensure both Person entities exist. add_entity returns
-      # (Entity, DeduplicationResult); we want the Entity. Disable
-      # geocode/enrich -- persona names are not places and we don't want
-      # the background enrichment service kicking off for them.
-      a = await client.long_term.add_entity(
-        from_name, "PERSON", geocode=False, enrich=False,
-      )
-      b = await client.long_term.add_entity(
-        to_name, "PERSON", geocode=False, enrich=False,
-      )
-      a_ent = a[0] if isinstance(a, tuple) else a
-      b_ent = b[0] if isinstance(b, tuple) else b
-      await client.long_term.add_relationship(
-        a_ent, b_ent, relationship_type,
-        description=description,
-        confidence=max(0.0, min(1.0, poignancy / 10.0)),
-        valid_from=valid_from, valid_until=valid_until,
-        attributes={"salience": int(poignancy)},
+      # Create both Person entities WITH embeddings via the SDK (best-effort;
+      # ignore the return shape -- see _link_spo for why). geocode/enrich off
+      # because persona names aren't places.
+      try:
+        await client.long_term.add_entity(
+          from_name, "PERSON", geocode=False, enrich=False)
+        await client.long_term.add_entity(
+          to_name, "PERSON", geocode=False, enrich=False)
+      except Exception:
+        pass
+      rel = _rel_type(relationship_type)
+      # Write the typed relationship edge via raw execute_write so we don't
+      # depend on add_relationship's expected entity-object shape (which
+      # raised KeyError 'id' in _link_spo). MERGEs on entity name converge
+      # with the entities created above and by the JSON importer.
+      await client.graph.execute_write(
+        "MERGE (a:Entity {name: $a}) SET a.type = coalesce(a.type, 'PERSON') "
+        "MERGE (b:Entity {name: $b}) SET b.type = coalesce(b.type, 'PERSON') "
+        f"MERGE (a)-[r:`{rel}`]->(b) "
+        "SET r.description = $desc, r.confidence = $conf, "
+        "r.salience = $sal, r.valid_from = $vf, r.valid_until = $vtu",
+        {"a": from_name, "b": to_name, "desc": description,
+         "conf": max(0.0, min(1.0, poignancy / 10.0)),
+         "sal": int(poignancy),
+         "vf": valid_from.isoformat() if valid_from else None,
+         "vtu": valid_until.isoformat() if valid_until else None},
       )
 
     return async_bridge.run(_go())
@@ -673,31 +694,45 @@ class NamsMemory:
                       poignancy: int, created: datetime.datetime) -> None:
     """Link a short-term message to its (s, p, o) entities explicitly, so the
     classic retrieve-by-keyword behavior survives once the raw message is
-    aged out and only the extracted entities/facts remain."""
+    aged out and only the extracted entities/facts remain.
+
+    Implementation note: we call ``add_entity`` purely for its embedding
+    side-effect (it MERGEs the Entity and writes its vector) and ignore its
+    return -- the return shape varies across SDK versions and feeding it back
+    into ``add_relationship`` raised ``KeyError: 'id'``. The relationship edge
+    itself is written via a raw ``execute_write`` Cypher MERGE keyed on entity
+    ``name``, which converges with the entities the JSON importer already
+    created (same ``:Entity {name}`` keying) and never touches
+    ``add_relationship``'s expected entity-object shape."""
     client = await self._ensure_client_async()
-    # Subject and object become Entities; predicate is preserved on the
-    # relationship edge. The persona's own name is a PERSON; everything else
-    # is typed as OBJECT (POLE+O) by default.
     sub_type = "PERSON" if " " in s and ":" not in s else "OBJECT"
     obj_type = "PERSON" if " " in o and ":" not in o else "OBJECT"
+    rel = _rel_type(p)
     try:
-      sub = await client.long_term.add_entity(
-        s, sub_type, geocode=False, enrich=False,
-      )
-      obj = await client.long_term.add_entity(
-        o, obj_type, geocode=False, enrich=False,
-      )
-      sub_ent = sub[0] if isinstance(sub, tuple) else sub
-      obj_ent = obj[0] if isinstance(obj, tuple) else obj
-      # add_relationship between the entities carries the predicate + the
-      # source message id + salience.
-      await client.long_term.add_relationship(
-        sub_ent, obj_ent, p.upper().replace(" ", "_"),
-        description=f"{s} {p} {o}",
-        confidence=max(0.0, min(1.0, poignancy / 10.0)),
-        valid_from=created, valid_until=None,
-        attributes={"salience": int(poignancy),
-                    "source_message": str(message_id)},
+      # Best-effort: create the entities WITH embeddings via the SDK. If this
+      # throws for any reason, fall through to the raw MERGE below -- the
+      # entities will still exist (without embeddings) for keyword retrieval.
+      try:
+        await client.long_term.add_entity(
+          s, sub_type, geocode=False, enrich=False)
+        await client.long_term.add_entity(
+          o, obj_type, geocode=False, enrich=False)
+      except Exception:
+        pass
+      await client.graph.execute_write(
+        "MERGE (sub:Entity {name: $s}) "
+        "SET sub.type = coalesce(sub.type, $sub_type) "
+        "MERGE (obj:Entity {name: $o}) "
+        "SET obj.type = coalesce(obj.type, $obj_type) "
+        f"MERGE (sub)-[r:`{rel}`]->(obj) "
+        "SET r.description = $desc, r.confidence = $conf, "
+        "r.salience = $sal, r.source_message = $mid, "
+        "r.valid_from = $vf",
+        {"s": s, "o": o, "sub_type": sub_type, "obj_type": obj_type,
+         "desc": f"{s} {p} {o}",
+         "conf": max(0.0, min(1.0, poignancy / 10.0)),
+         "sal": int(poignancy), "mid": str(message_id),
+         "vf": created.isoformat()},
       )
     except Exception as e:
       # Linkage is best-effort; never let it block perception.
