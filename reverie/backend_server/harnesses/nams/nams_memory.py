@@ -405,7 +405,13 @@ class NamsMemory:
       # The extracted Entity/Fact nodes are NOT touched (DETACH DELETE only
       # removes the deleted node's own relationships, not the nodes at the
       # other end).
-      await client.query.cypher(
+      #
+      # NB: client.query.cypher is READ-ONLY (it rejects DELETE/SET/MERGE);
+      # writes go through client.graph.execute_write. We must call the latter
+      # directly here (awaitable) rather than self.cypher_write (sync wrapper),
+      # because we're already inside an async coroutine on the bridge loop and
+      # the sync wrapper would re-enter async_bridge.run -> deadlock.
+      await client.graph.execute_write(
         "UNWIND $ids AS mid "
         "MATCH (c:Conversation {session_id: $sid})-[:HAS_MESSAGE]->(m:Message {id: mid}) "
         "DETACH DELETE m",
@@ -437,8 +443,9 @@ class NamsMemory:
       if not ids:
         return
       # DETACH DELETE so extraction edges don't block the delete (see
-      # age_short_term for the rationale).
-      await client.query.cypher(
+      # age_short_term for the rationale). Use client.graph.execute_write
+      # (not client.query.cypher, which is read-only and rejects DELETE).
+      await client.graph.execute_write(
         "UNWIND $ids AS mid "
         "MATCH (c:Conversation {session_id: $sid, id: $cid})"
         "-[:HAS_MESSAGE]->(m:Message {id: mid}) "

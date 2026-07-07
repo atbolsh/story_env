@@ -942,6 +942,18 @@ def _run_cli():
         "models; this can take several minutes -- progress will print as each "
         "phase starts)", flush=True)
 
+  # Headless smoke tests re-use the same --target name every run; the fork
+  # step below does shutil.copytree which errors if the target dir exists.
+  # Auto-clobber so re-runs don't require a manual `rm -rf` of the target.
+  # The interactive open_server path is intentionally left untouched (it
+  # still errors on a duplicate target) so you can't accidentally clobber a
+  # sim you meant to keep when running interactively.
+  _target_folder = f"{fs_storage}/{args.target}"
+  if os.path.exists(_target_folder):
+    print(f"[reverie] target {args.target!r} already exists; removing it before "
+          f"forking (headless auto-clobber).", flush=True)
+    shutil.rmtree(_target_folder)
+
   rs = ReverieServer(args.fork, args.target)
   # Headless mode always saves, no matter how the run ends:
   #   * clean completion -> save + print "[reverie] COMPLETED:"
