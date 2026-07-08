@@ -101,12 +101,22 @@ def _import_spatial(nams: NamsMemory, spatial: dict) -> int:
           # We model the leaf objects as LOCATION entities with a CONTAINS
           # edge from arena -> object. Skips the ville/sector nesting edges
           # to keep the graph shallow; the arena string already encodes them.
+          #
+          # Create the entities through the SDK's add_entity so they get the
+          # id UUID + embedding NAMS's readers require (a raw MERGE (:Entity)
+          # here produced id-less nodes that crashed reflection's entity
+          # search with KeyError 'id'). The CONTAINS edge is then written by
+          # name via cypher_write -- it matches the SDK-created nodes.
+          arena_name = f"{sector}:{arena}"
+          obj_name = f"{sector}:{arena}:{obj}"
           try:
+            nams.add_entity(arena_name, "LOCATION")
+            nams.add_entity(obj_name, "LOCATION")
             nams.cypher_write(
-              "MERGE (arena:Entity {name: $arena, type: 'LOCATION'}) "
-              "MERGE (obj:Entity {name: $obj, type: 'LOCATION'}) "
+              "MATCH (arena:Entity {name: $arena}) "
+              "MATCH (obj:Entity {name: $obj}) "
               "MERGE (arena)-[:CONTAINS]->(obj)",
-              {"arena": f"{sector}:{arena}", "obj": f"{sector}:{arena}:{obj}"},
+              {"arena": arena_name, "obj": obj_name},
             )
             count += 1
           except Exception as e:
@@ -118,12 +128,11 @@ def _import_spatial(nams: NamsMemory, spatial: dict) -> int:
 def _import_identity(nams: NamsMemory, scratch: dict) -> int:
   """scratch.json identity fields -> PERSON entity + permanent Facts."""
   name = scratch.get("name") or "Unknown Persona"
-  # PERSON entity for the persona itself.
+  # PERSON entity for the persona itself. Via the SDK's add_entity so it
+  # carries the id UUID + embedding NAMS readers require (not a raw MERGE,
+  # which produced the id-less node that crashed reflection).
   try:
-    nams.cypher_write(
-      "MERGE (p:Entity {name: $name, type: 'PERSON'})",
-      {"name": name},
-    )
+    nams.add_entity(name, "PERSON")
   except Exception as e:
     print(f"[import] PERSON merge failed for {name!r}: {type(e).__name__}: {e}")
 

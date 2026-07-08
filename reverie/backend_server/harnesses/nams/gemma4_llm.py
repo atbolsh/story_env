@@ -17,7 +17,7 @@ import asyncio
 from typing import Any
 
 from harnesses import gemma4 as _gemma4_mod
-from .llm_harness import LLMHarness
+from .llm_harness import LLMHarness, _SDKLLMProvider, make_completion
 
 
 class Gemma4NamsLLM(LLMHarness, _gemma4_mod._Gemma4Harness):
@@ -50,20 +50,25 @@ class Gemma4NamsLLM(LLMHarness, _gemma4_mod._Gemma4Harness):
     return _Gemma4NamsProvider(self)
 
 
-class _Gemma4NamsProvider:
-  """Minimal async adapter that satisfies the NAMS ``LLMProvider`` protocol
-  by deferring to a :class:`Gemma4NamsLLM`'s generator.
+class _Gemma4NamsProvider(_SDKLLMProvider):
+  """Async adapter conforming to NAMS's ``LLMProvider`` Protocol, backed by a
+  :class:`Gemma4NamsLLM`'s generator.
 
-  The NAMS extraction pipeline calls ``provider.complete(messages, ...)``;
-  we turn each ``ChatMessage`` into the dict shape ``_Gemma4Harness._generate``
-  expects and run the (CPU/GPU-bound) generation off the event loop thread.
+  Explicitly subclasses the SDK Protocol, exposes the required ``model``
+  attribute, matches ``complete``'s keyword-only signature, and returns NAMS's
+  real ``Completion`` (via :func:`make_completion`). The NAMS extraction
+  pipeline calls ``provider.complete(messages, ...)``; we turn each
+  ``ChatMessage`` into the dict shape ``_Gemma4Harness._generate`` expects and
+  run the (CPU/GPU-bound) generation off the event loop thread.
   """
 
   def __init__(self, harness: Gemma4NamsLLM):
     self._harness = harness
+    self.model = f"local/{getattr(harness, 'model_id', 'gemma-4-E4B-it')}"
 
   async def complete(self, messages, *, temperature: float = 0.0,
-                     max_tokens: int | None = None, **_: Any):
+                     max_tokens: int | None = None,
+                     stop=None, timeout: float | None = None):
     harness = self._harness
     msgs = [
       {"role": m.role if hasattr(m, "role") else m.get("role"),
@@ -81,12 +86,7 @@ class _Gemma4NamsProvider:
       )
 
     text = await asyncio.to_thread(_call)
-
-    class _Completion:
-      def __init__(self, content: str):
-        self.content = content
-
-    return _Completion(text)
+    return make_completion(text, self.model)
 
 
 def build(use_thinking: bool = False) -> Gemma4NamsLLM:

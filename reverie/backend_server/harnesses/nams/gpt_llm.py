@@ -27,7 +27,7 @@ from typing import Any, Callable, Optional
 from reverie_config import openai_api_key
 
 from harnesses import prompt_log
-from .llm_harness import LLMHarness
+from .llm_harness import LLMHarness, _SDKLLMProvider, make_completion
 
 # --- model selection -------------------------------------------------------
 
@@ -339,15 +339,21 @@ class LatestGPTNamsLLM(LLMHarness):
     return _OpenAINamsProvider(self)
 
 
-class _OpenAINamsProvider:
-  """Async adapter satisfying the NAMS ``LLMProvider`` protocol by deferring
-  to the (sync) OpenAI chat client via ``asyncio.to_thread``."""
+class _OpenAINamsProvider(_SDKLLMProvider):
+  """Async adapter conforming to NAMS's ``LLMProvider`` Protocol by deferring
+  to the (sync) OpenAI chat client via ``asyncio.to_thread``.
+
+  Explicitly subclasses the SDK Protocol, exposes the required ``model``
+  attribute, matches ``complete``'s keyword-only signature, and returns NAMS's
+  real ``Completion`` (via :func:`make_completion`)."""
 
   def __init__(self, harness: LatestGPTNamsLLM):
     self._harness = harness
+    self.model = f"openai/{_chat_model()}"
 
   async def complete(self, messages, *, temperature: float = 0.0,
-                     max_tokens: int | None = None, **_: Any):
+                     max_tokens: int | None = None,
+                     stop=None, timeout: float | None = None):
     harness = self._harness
     msgs = [
       {"role": m.role if hasattr(m, "role") else m.get("role"),
@@ -362,13 +368,9 @@ class _OpenAINamsProvider:
         max_tokens=max_tokens or 256,
       )
 
-    text = await __import__("asyncio").to_thread(_call)
-
-    class _Completion:
-      def __init__(self, content: str):
-        self.content = content
-
-    return _Completion(text)
+    import asyncio
+    text = await asyncio.to_thread(_call)
+    return make_completion(text, self.model)
 
 
 def build() -> LatestGPTNamsLLM:

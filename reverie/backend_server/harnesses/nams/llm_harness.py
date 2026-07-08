@@ -14,7 +14,45 @@ Two concrete implementations live alongside this file:
 """
 from __future__ import annotations
 
-from typing import Any, Callable, Optional
+import asyncio
+from typing import Any, Callable, Optional, Sequence
+
+# NAMS's published provider contract. LLMProvider is a @runtime_checkable
+# Protocol (neo4j_agent_memory.llm.protocol) with a ``model: str`` attribute
+# and ``async def complete(...) -> Completion``; Completion/ChatMessage are the
+# pydantic types NAMS's extractor exchanges. We import them so our adapter
+# *conforms to* (rather than reinvents) that contract. Imported defensively so
+# this module still loads where the SDK isn't installed (e.g. byte-compile on a
+# dev box without neo4j-agent-memory); the real subclassing/return-type only
+# matters at runtime on the box that actually has NAMS.
+try:  # pragma: no cover - depends on SDK presence
+  from neo4j_agent_memory.llm.protocol import LLMProvider as _SDKLLMProvider
+except Exception:  # pragma: no cover
+  _SDKLLMProvider = object  # type: ignore[assignment,misc]
+try:  # pragma: no cover
+  from neo4j_agent_memory.llm.types import Completion as _SDKCompletion
+except Exception:  # pragma: no cover
+  _SDKCompletion = None
+
+
+def make_completion(content: str, model: str) -> Any:
+  """Build a NAMS ``Completion`` for a provider's ``complete()`` return.
+
+  Uses the real ``neo4j_agent_memory.llm.types.Completion`` when the SDK is
+  importable; otherwise returns a minimal shim exposing ``.content``/``.model``
+  so this module still works in a non-NAMS environment (e.g. byte-compile on a
+  dev box). Shared by all three provider adapters (generic + the two
+  dedicated-harness ones) so they stay consistent with the Protocol contract.
+  """
+  if _SDKCompletion is not None:
+    return _SDKCompletion(content=content, model=model)
+
+  class _Completion:
+    def __init__(self, content: str, model: str):
+      self.content = content
+      self.model = model
+
+  return _Completion(content, model)
 
 
 class LLMHarness:
@@ -129,14 +167,32 @@ class LLMHarness:
 # satisfying the "all LLM calls logged with full context" requirement.
 
 
-class NamsLLMProvider:
-  """Minimal async adapter that satisfies the NAMS ``LLMProvider`` protocol
-  by deferring to a harness's ``_generate``.
+class NamsLLMProvider(_SDKLLMProvider):
+  """Async adapter conforming to NAMS's ``LLMProvider`` Protocol, backed by a
+  local harness's ``_generate``.
+
+  Conforms to ``neo4j_agent_memory.llm.protocol.LLMProvider``:
+
+    * exposes a ``model: str`` attribute (required by the Protocol and used
+      by NAMS only for observability/metadata -- we drive ``complete``
+      ourselves, so its value doesn't route anything), and
+    * implements ``async def complete(self, messages, *, temperature=0.0,
+      max_tokens=None, stop=None, timeout=None) -> Completion`` with the
+      exact keyword-only signature the Protocol documents, returning NAMS's
+      real :class:`Completion` pydantic type.
+
+  We explicitly subclass the Protocol so NAMS's settings validator
+  (``_resolve_providers``) accepts the instance unambiguously rather than
+  relying on structural ``isinstance`` alone.
 
   Works for any harness whose ``_generate`` matches the gemma4 signature
   (``messages`` list of ``{"role", "content"}`` dicts, plus the keyword
   sampling params). The GPT harnesses use their own ``as_nams_llm_provider``
   and never hit this class.
+
+  Routing through ``_generate`` (rather than the model directly) means every
+  NAMS extraction call is logged with full request/response context, exactly
+  like the cognitive-module LLM calls.
   """
 
   def __init__(self, harness: Any,
@@ -144,9 +200,23 @@ class NamsLLMProvider:
     self._harness = harness
     self._top_p = top_p
     self._top_k = top_k
+    # Canonical "provider/model" id the Protocol requires. Best-effort; NAMS
+    # uses it only for metadata since we implement complete() locally.
+    hid = (getattr(harness, "model_id", None)
+           or getattr(harness, "engine_label", None) or "gemma")
+    self.model = f"local/{hid}"
 
-  async def complete(self, messages, *, temperature: float = 0.0,
-                     max_tokens: int | None = None, **_: Any):
+  async def complete(self, messages: "Sequence[Any]", *,
+                     temperature: float = 0.0,
+                     max_tokens: int | None = None,
+                     stop: "Sequence[str] | None" = None,
+                     timeout: float | None = None):
+    """Run a chat completion via the harness, returning a NAMS ``Completion``.
+
+    Signature matches ``LLMProvider.complete`` (keyword-only temperature/
+    max_tokens/stop/timeout). ``stop``/``timeout`` are accepted for Protocol
+    conformance; the local harness doesn't use them.
+    """
     harness = self._harness
     msgs = [
       {"role": (m.role if hasattr(m, "role") else m.get("role")),
@@ -164,14 +234,8 @@ class NamsLLMProvider:
         kind="nams_extraction",
       )
 
-    import asyncio
     text = await asyncio.to_thread(_call)
-
-    class _Completion:
-      def __init__(self, content: str):
-        self.content = content
-
-    return _Completion(text)
+    return make_completion(text, self.model)
 
 
 def nams_llm_provider_for(harness: Any) -> Any:

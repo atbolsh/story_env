@@ -770,7 +770,19 @@ class NamsMemory:
               + relevance_w * relevance * 3.0
               + importance_w * importance * 2.0)
 
-    plans = self.get_upcoming_plans(now, lookahead_hours=lookahead_hours)
+    # Guard the whole retrieval so a NAMS hiccup can never hard-crash a long
+    # run. get_context / get_upcoming_plans traverse the graph and parse nodes
+    # through the SDK; a single malformed node (or a transient bolt error)
+    # should degrade this persona's context to empty-for-this-tick + a logged
+    # warning, not abort the simulation. Reflection/planning then proceed with
+    # whatever context is available (possibly none), exactly as they do for a
+    # brand-new persona with a sparse graph.
+    try:
+      plans = self.get_upcoming_plans(now, lookahead_hours=lookahead_hours)
+    except Exception as e:
+      print(f"[nams] get_upcoming_plans failed for {self.session_id!r} "
+            f"({type(e).__name__}: {e}); continuing with no plans.", flush=True)
+      plans = []
     plans_block = self._format_plans(plans, now)
 
     for fp in focal_points:
@@ -787,7 +799,13 @@ class NamsMemory:
         )
         return ctx
 
-      ctx_str = async_bridge.run(_go_one())
+      try:
+        ctx_str = async_bridge.run(_go_one())
+      except Exception as e:
+        print(f"[nams] get_context failed for {self.session_id!r} "
+              f"focal={fp!r} ({type(e).__name__}: {e}); continuing with "
+              f"empty context for this focal point.", flush=True)
+        ctx_str = ""
       parts = []
       if ctx_str:
         parts.append(ctx_str)
@@ -917,5 +935,24 @@ class NamsMemory:
     async def _go():
       client = await self._ensure_client_async()
       return await client.graph.execute_write(query, params or {})
+
+    return async_bridge.run(_go())
+
+  def add_entity(self, name: str, entity_type: str = "OBJECT") -> None:
+    """Create (or dedupe onto) a POLE+O entity via the SDK's own
+    ``long_term.add_entity``, which assigns the ``id`` UUID + embedding that
+    NAMS's readers (e.g. ``search_entities`` -> ``_parse_entity``) require.
+
+    Use this instead of a raw ``MERGE (:Entity {name})`` so the graph never
+    contains hand-made entity nodes that lack the properties NAMS expects
+    (the KeyError 'id' crash during reflection came from exactly that). Entity
+    linkage edges can still be written via ``cypher_write`` keyed on ``name``;
+    they'll match these SDK-created nodes.
+    """
+    async def _go():
+      client = await self._ensure_client_async()
+      await client.long_term.add_entity(
+        name, entity_type, geocode=False, enrich=False,
+      )
 
     return async_bridge.run(_go())
