@@ -1,0 +1,2 @@
+  NAMS personas=Klaus Mueller, runs: gemma4-e4b_klaus-nams-spacy-only|no-llm
+gemma4-e4b_klaus-nams-spacy-only: COMPLETED, 246s, sim midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_16-04-24, logs /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_16-04-24

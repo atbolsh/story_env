@@ -1,0 +1,128 @@
+midnight_test 2026-07-08_17-12-59: 8640 steps each, harness=gemma4-e4b, 
+[17:12:59] no docker daemon detected; assuming bare-metal Neo4j on localhost:7687.
+[17:12:59] Neo4j bolt is up.
+[17:12:59] === gemma4-e4b_klaus-nams-spacy-only (extraction=no-llm): starting ===
+[17:12:59]   translating Klaus Mueller JSON bootstrap -> Neo4j (--force-import)...
+[17:13:11]   translation done.
+[17:13:11] gemma4-e4b_klaus-nams-spacy-only: headless sim launched (sim midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_17-12-59); polling every 60s.
+[17:14:11] gemma4-e4b_klaus-nams-spacy-only: step 0/8640 (60s elapsed)
+[17:15:11] gemma4-e4b_klaus-nams-spacy-only: step 0/8640 (120s elapsed)
+[17:16:11] gemma4-e4b_klaus-nams-spacy-only: step 0/8640 (180s elapsed)
+[17:17:11] gemma4-e4b_klaus-nams-spacy-only: step 2160/8640 (240s elapsed)
+[17:18:11] gemma4-e4b_klaus-nams-spacy-only: step 2520/8640 (300s elapsed)
+[17:19:11] gemma4-e4b_klaus-nams-spacy-only: step 2880/8640 (360s elapsed)
+[17:20:11] gemma4-e4b_klaus-nams-spacy-only: step 2880/8640 (420s elapsed)
+[17:21:11] gemma4-e4b_klaus-nams-spacy-only: step 2880/8640 (480s elapsed)
+[17:22:11] gemma4-e4b_klaus-nams-spacy-only: step 2880/8640 (540s elapsed)
+[17:23:11] gemma4-e4b_klaus-nams-spacy-only: step 3240/8640 (600s elapsed)
+[17:24:11] gemma4-e4b_klaus-nams-spacy-only: step 3240/8640 (660s elapsed)
+[17:25:11] gemma4-e4b_klaus-nams-spacy-only: step 3240/8640 (720s elapsed)
+[17:26:12] gemma4-e4b_klaus-nams-spacy-only: step 3240/8640 (781s elapsed)
+[17:27:12] gemma4-e4b_klaus-nams-spacy-only: step 3240/8640 (841s elapsed)
+[17:28:12] gemma4-e4b_klaus-nams-spacy-only: step 3600/8640 (901s elapsed)
+[17:29:12] gemma4-e4b_klaus-nams-spacy-only: step 3814/8640 (961s elapsed)
+[17:30:12] gemma4-e4b_klaus-nams-spacy-only: step 5040/8640 (1021s elapsed)
+[17:31:12] gemma4-e4b_klaus-nams-spacy-only: step 5340/8640 (1081s elapsed)
+[17:32:12] gemma4-e4b_klaus-nams-spacy-only: step 5400/8640 (1141s elapsed)
+[17:33:12] gemma4-e4b_klaus-nams-spacy-only: step 6030/8640 (1201s elapsed)
+[17:34:12] gemma4-e4b_klaus-nams-spacy-only: step 6115/8640 (1261s elapsed)
+[17:34:12] gemma4-e4b_klaus-nams-spacy-only: backend process died; see /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_17-12-59/backend_console.log
+[17:34:17] === gemma4-e4b_klaus-nams-spacy-only: CRASHED at step 6115 (1266s) ===
+[17:34:17] gemma4-e4b_klaus-nams-spacy-only: run did not complete cleanly; moving on.
+[17:34:17]   saving Klaus's NAMS memories -> /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_17-12-59/klaus_memories_gemma4-e4b_klaus-nams-spacy-only.dump
+[17:34:38]   save ok: 412K
+[17:34:38]   wiping NAMS DB between runs (clean slate for the next run)
+[17:34:57] === gemma4-e4b_klaus-nams-llm-extraction (extraction=harness-llm): starting ===
+[17:34:57]   translating Klaus Mueller JSON bootstrap -> Neo4j (--force-import)...
+[17:35:12]   translation done.
+[17:35:12] gemma4-e4b_klaus-nams-llm-extraction: headless sim launched (sim midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-08_17-12-59); polling every 60s.
+[17:36:12] gemma4-e4b_klaus-nams-llm-extraction: step 0/8640 (60s elapsed)
+[17:37:12] gemma4-e4b_klaus-nams-llm-extraction: step 0/8640 (120s elapsed)
+[17:38:12] gemma4-e4b_klaus-nams-llm-extraction: step 0/8640 (180s elapsed)
+[17:39:12] gemma4-e4b_klaus-nams-llm-extraction: step 2160/8640 (240s elapsed)
+[17:40:12] gemma4-e4b_klaus-nams-llm-extraction: step 2520/8640 (300s elapsed)
+[17:41:12] gemma4-e4b_klaus-nams-llm-extraction: step 2880/8640 (360s elapsed)
+[17:42:12] gemma4-e4b_klaus-nams-llm-extraction: step 2880/8640 (420s elapsed)
+[17:43:12] gemma4-e4b_klaus-nams-llm-extraction: step 2880/8640 (480s elapsed)
+[17:44:12] gemma4-e4b_klaus-nams-llm-extraction: step 2880/8640 (540s elapsed)
+[17:45:12] gemma4-e4b_klaus-nams-llm-extraction: step 2940/8640 (600s elapsed)
+[17:46:12] gemma4-e4b_klaus-nams-llm-extraction: step 2940/8640 (660s elapsed)
+[17:47:12] gemma4-e4b_klaus-nams-llm-extraction: step 2940/8640 (720s elapsed)
+[17:48:12] gemma4-e4b_klaus-nams-llm-extraction: step 3000/8640 (780s elapsed)
+[17:49:12] gemma4-e4b_klaus-nams-llm-extraction: step 3000/8640 (840s elapsed)
+[17:50:12] gemma4-e4b_klaus-nams-llm-extraction: step 3000/8640 (900s elapsed)
+[17:51:12] gemma4-e4b_klaus-nams-llm-extraction: step 3001/8640 (960s elapsed)
+[17:52:12] gemma4-e4b_klaus-nams-llm-extraction: step 3090/8640 (1020s elapsed)
+[17:53:12] gemma4-e4b_klaus-nams-llm-extraction: step 3090/8640 (1080s elapsed)
+[17:54:13] gemma4-e4b_klaus-nams-llm-extraction: step 3090/8640 (1141s elapsed)
+[17:55:13] gemma4-e4b_klaus-nams-llm-extraction: step 3150/8640 (1201s elapsed)
+[17:56:13] gemma4-e4b_klaus-nams-llm-extraction: step 3150/8640 (1261s elapsed)
+[17:57:13] gemma4-e4b_klaus-nams-llm-extraction: step 3150/8640 (1321s elapsed)
+[17:58:13] gemma4-e4b_klaus-nams-llm-extraction: step 3240/8640 (1381s elapsed)
+[17:59:13] gemma4-e4b_klaus-nams-llm-extraction: step 3240/8640 (1441s elapsed)
+[18:00:13] gemma4-e4b_klaus-nams-llm-extraction: step 3240/8640 (1501s elapsed)
+[18:01:13] gemma4-e4b_klaus-nams-llm-extraction: step 3240/8640 (1561s elapsed)
+[18:02:13] gemma4-e4b_klaus-nams-llm-extraction: step 3240/8640 (1621s elapsed)
+[18:03:13] gemma4-e4b_klaus-nams-llm-extraction: step 3240/8640 (1681s elapsed)
+[18:04:13] gemma4-e4b_klaus-nams-llm-extraction: step 3240/8640 (1741s elapsed)
+[18:05:13] gemma4-e4b_klaus-nams-llm-extraction: step 3240/8640 (1801s elapsed)
+[18:06:13] gemma4-e4b_klaus-nams-llm-extraction: step 3600/8640 (1861s elapsed)
+[18:07:13] gemma4-e4b_klaus-nams-llm-extraction: step 3600/8640 (1921s elapsed)
+[18:08:13] gemma4-e4b_klaus-nams-llm-extraction: step 3600/8640 (1981s elapsed)
+[18:09:13] gemma4-e4b_klaus-nams-llm-extraction: step 3600/8640 (2041s elapsed)
+[18:10:13] gemma4-e4b_klaus-nams-llm-extraction: step 3677/8640 (2101s elapsed)
+[18:11:13] gemma4-e4b_klaus-nams-llm-extraction: step 3708/8640 (2161s elapsed)
+[18:12:13] gemma4-e4b_klaus-nams-llm-extraction: step 3708/8640 (2221s elapsed)
+[18:13:13] gemma4-e4b_klaus-nams-llm-extraction: step 3708/8640 (2281s elapsed)
+[18:14:13] gemma4-e4b_klaus-nams-llm-extraction: step 3853/8640 (2341s elapsed)
+[18:15:13] gemma4-e4b_klaus-nams-llm-extraction: step 4041/8640 (2401s elapsed)
+[18:16:13] gemma4-e4b_klaus-nams-llm-extraction: step 4099/8640 (2461s elapsed)
+[18:17:13] gemma4-e4b_klaus-nams-llm-extraction: step 4248/8640 (2521s elapsed)
+[18:18:14] gemma4-e4b_klaus-nams-llm-extraction: step 4248/8640 (2582s elapsed)
+[18:19:14] gemma4-e4b_klaus-nams-llm-extraction: step 4278/8640 (2642s elapsed)
+[18:20:14] gemma4-e4b_klaus-nams-llm-extraction: step 4278/8640 (2702s elapsed)
+[18:21:14] gemma4-e4b_klaus-nams-llm-extraction: step 4308/8640 (2762s elapsed)
+[18:22:14] gemma4-e4b_klaus-nams-llm-extraction: step 4308/8640 (2822s elapsed)
+[18:23:14] gemma4-e4b_klaus-nams-llm-extraction: step 4338/8640 (2882s elapsed)
+[18:24:14] gemma4-e4b_klaus-nams-llm-extraction: step 4343/8640 (2942s elapsed)
+[18:25:14] gemma4-e4b_klaus-nams-llm-extraction: step 4368/8640 (3002s elapsed)
+[18:26:14] gemma4-e4b_klaus-nams-llm-extraction: step 4368/8640 (3062s elapsed)
+[18:27:14] gemma4-e4b_klaus-nams-llm-extraction: step 4398/8640 (3122s elapsed)
+[18:28:14] gemma4-e4b_klaus-nams-llm-extraction: step 4398/8640 (3182s elapsed)
+[18:29:14] gemma4-e4b_klaus-nams-llm-extraction: step 4428/8640 (3242s elapsed)
+[18:30:14] gemma4-e4b_klaus-nams-llm-extraction: step 4428/8640 (3302s elapsed)
+[18:31:14] gemma4-e4b_klaus-nams-llm-extraction: step 4458/8640 (3362s elapsed)
+[18:32:14] gemma4-e4b_klaus-nams-llm-extraction: step 4458/8640 (3422s elapsed)
+[18:33:14] gemma4-e4b_klaus-nams-llm-extraction: step 4488/8640 (3482s elapsed)
+[18:34:14] gemma4-e4b_klaus-nams-llm-extraction: step 4518/8640 (3542s elapsed)
+[18:35:14] gemma4-e4b_klaus-nams-llm-extraction: step 4518/8640 (3602s elapsed)
+[18:36:14] gemma4-e4b_klaus-nams-llm-extraction: step 4548/8640 (3662s elapsed)
+[18:37:14] gemma4-e4b_klaus-nams-llm-extraction: step 4548/8640 (3722s elapsed)
+[18:38:14] gemma4-e4b_klaus-nams-llm-extraction: step 4567/8640 (3782s elapsed)
+[18:39:14] gemma4-e4b_klaus-nams-llm-extraction: step 4614/8640 (3842s elapsed)
+[18:40:14] gemma4-e4b_klaus-nams-llm-extraction: step 4618/8640 (3902s elapsed)
+[18:41:14] gemma4-e4b_klaus-nams-llm-extraction: step 4663/8640 (3962s elapsed)
+[18:42:15] gemma4-e4b_klaus-nams-llm-extraction: step 4697/8640 (4023s elapsed)
+[18:43:15] gemma4-e4b_klaus-nams-llm-extraction: step 4836/8640 (4083s elapsed)
+[18:44:15] gemma4-e4b_klaus-nams-llm-extraction: step 4896/8640 (4143s elapsed)
+[18:45:15] gemma4-e4b_klaus-nams-llm-extraction: step 4925/8640 (4203s elapsed)
+[18:46:15] gemma4-e4b_klaus-nams-llm-extraction: step 4986/8640 (4263s elapsed)
+[18:47:15] gemma4-e4b_klaus-nams-llm-extraction: step 5046/8640 (4323s elapsed)
+[18:48:15] gemma4-e4b_klaus-nams-llm-extraction: step 5677/8640 (4383s elapsed)
+[18:49:15] gemma4-e4b_klaus-nams-llm-extraction: step 6120/8640 (4443s elapsed)
+[18:50:15] gemma4-e4b_klaus-nams-llm-extraction: step 6120/8640 (4503s elapsed)
+[18:51:15] gemma4-e4b_klaus-nams-llm-extraction: step 6180/8640 (4563s elapsed)
+[18:52:15] gemma4-e4b_klaus-nams-llm-extraction: step 6180/8640 (4623s elapsed)
+[18:53:15] gemma4-e4b_klaus-nams-llm-extraction: step 6240/8640 (4683s elapsed)
+[18:54:15] gemma4-e4b_klaus-nams-llm-extraction: step 6240/8640 (4743s elapsed)
+[18:55:15] gemma4-e4b_klaus-nams-llm-extraction: step 6244/8640 (4803s elapsed)
+[18:56:15] gemma4-e4b_klaus-nams-llm-extraction: step 6245/8640 (4863s elapsed)
+[18:56:15] gemma4-e4b_klaus-nams-llm-extraction: backend process died; see /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-08_17-12-59/backend_console.log
+[18:56:20] === gemma4-e4b_klaus-nams-llm-extraction: CRASHED at step 6245 (4868s) ===
+[18:56:20] gemma4-e4b_klaus-nams-llm-extraction: run did not complete cleanly; moving on.
+[18:56:20]   saving Klaus's NAMS memories -> /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-08_17-12-59/klaus_memories_gemma4-e4b_klaus-nams-llm-extraction.dump
+[18:56:42]   save ok: 68K
+[18:56:42] All runs done. Summary:
+  NAMS personas=Klaus Mueller, runs: gemma4-e4b_klaus-nams-spacy-only|no-llm gemma4-e4b_klaus-nams-llm-extraction|harness-llm
+gemma4-e4b_klaus-nams-spacy-only: CRASHED at step 6115, 1266s, sim midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_17-12-59, logs /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_17-12-59
+gemma4-e4b_klaus-nams-llm-extraction: CRASHED at step 6245, 4868s, sim midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-08_17-12-59, logs /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-08_17-12-59

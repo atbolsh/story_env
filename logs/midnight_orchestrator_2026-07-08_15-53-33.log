@@ -1,0 +1,4 @@
+midnight_test 2026-07-08_15-53-33: 50 steps each, harness=gemma4-e4b, 
+[15:53:33] no docker daemon detected; assuming bare-metal Neo4j on localhost:7687.
+[15:59:03] error: Neo4j bolt never answered on localhost:7687.
+[15:59:03]   Check: neo4j status ; tail /var/log/neo4j/neo4j.log

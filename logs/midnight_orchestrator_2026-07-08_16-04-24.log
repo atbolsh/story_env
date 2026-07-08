@@ -1,0 +1,17 @@
+midnight_test 2026-07-08_16-04-24: 50 steps each, harness=gemma4-e4b, 
+[16:04:24] no docker daemon detected; assuming bare-metal Neo4j on localhost:7687.
+[16:04:25] Neo4j bolt is up.
+[16:04:25] === gemma4-e4b_klaus-nams-spacy-only (extraction=no-llm): starting ===
+[16:04:25]   translating Klaus Mueller JSON bootstrap -> Neo4j (--force-import)...
+[16:04:35]   translation done.
+[16:04:35] gemma4-e4b_klaus-nams-spacy-only: headless sim launched (sim midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_16-04-24); polling every 60s.
+[16:05:36] gemma4-e4b_klaus-nams-spacy-only: step 0/50 (61s elapsed)
+[16:06:36] gemma4-e4b_klaus-nams-spacy-only: step 0/50 (121s elapsed)
+[16:07:36] gemma4-e4b_klaus-nams-spacy-only: step 0/50 (181s elapsed)
+[16:08:36] gemma4-e4b_klaus-nams-spacy-only: step 50/50 (241s elapsed)
+[16:08:41] === gemma4-e4b_klaus-nams-spacy-only: COMPLETED (246s) ===
+[16:08:41]   saving Klaus's NAMS memories -> /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_16-04-24/klaus_memories_gemma4-e4b_klaus-nams-spacy-only.dump
+[16:09:02]   save ok: 172K
+[16:09:02] All runs done. Summary:
+  NAMS personas=Klaus Mueller, runs: gemma4-e4b_klaus-nams-spacy-only|no-llm
+gemma4-e4b_klaus-nams-spacy-only: COMPLETED, 246s, sim midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_16-04-24, logs /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_16-04-24

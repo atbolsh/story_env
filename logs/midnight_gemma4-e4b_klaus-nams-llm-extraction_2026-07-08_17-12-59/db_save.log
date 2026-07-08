@@ -1,0 +1,219 @@
+[nams-baremetal] stopping neo4j
+[nams-baremetal] dumping neo4j -> /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-08_17-12-59/klaus_memories_gemma4-e4b_klaus-nams-llm-extraction.dump
+2026-07-08 18:56:34.483+0000 INFO  [o.n.c.d.DumpCommand] Starting dump of database 'neo4j'
+
+Files: 1/96, data:  0.0%
+Files: 1/96, data:  0.0%
+Files: 2/96, data:  0.0%
+Files: 3/96, data:  0.0%
+Files: 4/96, data:  0.0%
+Files: 5/96, data:  0.1%
+Files: 6/96, data:  0.1%
+Files: 7/96, data:  0.1%
+Files: 8/96, data:  0.1%
+Files: 9/96, data:  0.1%
+Files: 10/96, data:  0.1%
+Files: 11/96, data:  0.1%
+Files: 12/96, data:  0.1%
+Files: 13/96, data:  0.1%
+Files: 14/96, data:  0.1%
+Files: 15/96, data:  0.2%
+Files: 16/96, data:  0.2%
+Files: 17/96, data:  0.2%
+Files: 18/96, data:  0.2%
+Files: 19/96, data:  0.2%
+Files: 20/96, data:  0.2%
+Files: 21/96, data:  0.2%
+Files: 22/96, data:  0.2%
+Files: 23/96, data:  0.2%
+Files: 24/96, data:  0.2%
+Files: 25/96, data:  0.2%
+Files: 26/96, data:  0.2%
+Files: 27/96, data:  0.3%
+Files: 28/96, data:  0.3%
+Files: 29/96, data:  0.3%
+Files: 30/96, data:  0.3%
+Files: 31/96, data:  0.3%
+Files: 32/96, data:  0.4%
+Files: 33/96, data:  0.4%
+Files: 34/96, data:  0.4%
+Files: 35/96, data:  0.4%
+Files: 36/96, data:  0.4%
+Files: 37/96, data:  0.4%
+Files: 38/96, data:  0.5%
+Files: 39/96, data:  0.5%
+Files: 40/96, data:  0.5%
+Files: 41/96, data:  0.5%
+Files: 42/96, data:  0.5%
+Files: 43/96, data:  0.5%
+Files: 44/96, data:  0.5%
+Files: 45/96, data:  0.6%
+Files: 46/96, data:  0.6%
+Files: 47/96, data:  0.6%
+Files: 48/96, data:  0.6%
+Files: 49/96, data:  0.6%
+Files: 50/96, data:  0.6%
+Files: 51/96, data:  0.7%
+Files: 52/96, data:  0.7%
+Files: 53/96, data:  0.7%
+Files: 54/96, data:  0.7%
+Files: 55/96, data:  0.7%
+Files: 56/96, data:  0.7%
+Files: 57/96, data:  0.7%
+Files: 58/96, data:  0.8%
+Files: 59/96, data:  0.8%
+Files: 60/96, data:  0.8%
+Files: 61/96, data:  0.8%
+Files: 62/96, data:  0.8%
+Files: 63/96, data:  0.8%
+Files: 64/96, data:  0.8%
+Files: 65/96, data:  0.8%
+Files: 66/96, data:  0.8%
+Files: 67/96, data:  0.8%
+Files: 68/96, data:  0.8%
+Files: 69/96, data:  0.8%
+Files: 70/96, data:  0.8%
+Files: 71/96, data:  0.8%
+Files: 72/96, data:  0.8%
+Files: 73/96, data:  0.8%
+Files: 74/96, data:  0.8%
+Files: 75/96, data:  0.8%
+Files: 76/96, data:  0.8%
+Files: 77/96, data:  0.8%
+Files: 78/96, data:  0.8%
+Files: 79/96, data:  0.8%
+Files: 80/96, data:  0.8%
+Files: 81/96, data:  0.8%
+Files: 82/96, data:  0.8%
+Files: 83/96, data:  0.8%
+Files: 84/96, data:  0.8%
+Files: 85/96, data:  0.8%
+Files: 86/96, data:  0.8%
+Files: 87/96, data:  0.8%
+Files: 88/96, data:  0.8%
+Files: 89/96, data:  0.8%
+Files: 90/96, data:  0.8%
+Files: 91/96, data:  0.8%
+Files: 92/96, data:  0.8%
+Files: 93/96, data:  0.8%
+Files: 94/96, data:  0.9%
+Files: 95/96, data:  1.0%
+Files: 95/96, data:  2.0%
+Files: 95/96, data:  3.0%
+Files: 95/96, data:  4.0%
+Files: 95/96, data:  5.0%
+Files: 95/96, data:  6.0%
+Files: 95/96, data:  7.0%
+Files: 95/96, data:  8.0%
+Files: 95/96, data:  9.0%
+Files: 95/96, data: 10.0%
+Files: 95/96, data: 11.0%
+Files: 95/96, data: 12.0%
+Files: 95/96, data: 13.0%
+Files: 95/96, data: 14.0%
+Files: 95/96, data: 15.0%
+Files: 95/96, data: 16.0%
+Files: 95/96, data: 17.0%
+Files: 95/96, data: 18.0%
+Files: 95/96, data: 19.0%
+Files: 95/96, data: 20.0%
+Files: 95/96, data: 21.0%
+Files: 95/96, data: 22.0%
+Files: 95/96, data: 23.0%
+Files: 95/96, data: 24.0%
+Files: 95/96, data: 25.0%
+Files: 95/96, data: 26.0%
+Files: 95/96, data: 27.0%
+Files: 95/96, data: 28.0%
+Files: 95/96, data: 29.0%
+Files: 95/96, data: 30.0%
+Files: 95/96, data: 31.0%
+Files: 95/96, data: 32.0%
+Files: 95/96, data: 33.0%
+Files: 95/96, data: 34.0%
+Files: 95/96, data: 35.0%
+Files: 95/96, data: 36.0%
+Files: 95/96, data: 37.0%
+Files: 95/96, data: 38.0%
+Files: 95/96, data: 39.0%
+Files: 95/96, data: 40.0%
+Files: 95/96, data: 41.0%
+Files: 95/96, data: 42.0%
+Files: 95/96, data: 43.0%
+Files: 95/96, data: 44.0%
+Files: 95/96, data: 45.0%
+Files: 95/96, data: 46.0%
+Files: 95/96, data: 47.0%
+Files: 95/96, data: 48.0%
+Files: 95/96, data: 49.0%
+Files: 95/96, data: 50.0%
+Files: 95/96, data: 51.0%
+Files: 95/96, data: 52.0%
+Files: 95/96, data: 53.0%
+Files: 95/96, data: 54.0%
+Files: 95/96, data: 55.0%
+Files: 95/96, data: 56.0%
+Files: 95/96, data: 57.0%
+Files: 95/96, data: 58.0%
+Files: 95/96, data: 59.0%
+Files: 95/96, data: 60.0%
+Files: 95/96, data: 61.0%
+Files: 95/96, data: 62.0%
+Files: 95/96, data: 63.0%
+Files: 95/96, data: 64.0%
+Files: 95/96, data: 65.0%
+Files: 95/96, data: 66.0%
+Files: 95/96, data: 67.0%
+Files: 95/96, data: 68.0%
+Files: 95/96, data: 69.0%
+Files: 95/96, data: 70.0%
+Files: 95/96, data: 71.0%
+Files: 95/96, data: 72.0%
+Files: 95/96, data: 73.0%
+Files: 95/96, data: 74.0%
+Files: 95/96, data: 75.0%
+Files: 95/96, data: 76.0%
+Files: 95/96, data: 77.0%
+Files: 95/96, data: 78.0%
+Files: 95/96, data: 79.0%
+Files: 95/96, data: 80.0%
+Files: 95/96, data: 81.0%
+Files: 95/96, data: 82.0%
+Files: 95/96, data: 83.0%
+Files: 95/96, data: 84.0%
+Files: 95/96, data: 85.0%
+Files: 95/96, data: 86.0%
+Files: 95/96, data: 87.0%
+Files: 95/96, data: 88.0%
+Files: 95/96, data: 89.0%
+Files: 95/96, data: 90.0%
+Files: 95/96, data: 91.0%
+Files: 95/96, data: 92.0%
+Files: 95/96, data: 93.0%
+Files: 95/96, data: 94.0%
+Files: 95/96, data: 95.0%
+Files: 95/96, data: 96.0%
+Files: 95/96, data: 97.0%
+Files: 95/96, data: 98.0%
+Files: 95/96, data: 99.0%
+Files: 95/96, data: 99.6%
+Files: 96/96, data: 100.0%
+Files: 96/96, data: 100.0%
+Done: 96 files, 259.2MiB processed in 0.327 seconds.
+2026-07-08 18:56:35.207+0000 INFO  [o.n.c.d.DumpCommand] Dump completed successfully
+[nams-baremetal] dump ok: /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-08_17-12-59/klaus_memories_gemma4-e4b_klaus-nams-llm-extraction.dump (68K)
+[nams-baremetal] starting neo4j
+Directories in use:
+home:         /var/lib/neo4j
+config:       /etc/neo4j
+logs:         /var/log/neo4j
+plugins:      /var/lib/neo4j/plugins
+import:       /var/lib/neo4j/import
+data:         /var/lib/neo4j/data
+certificates: /var/lib/neo4j/certificates
+licenses:     /var/lib/neo4j/licenses
+run:          /var/lib/neo4j/run
+Starting Neo4j.
+Started neo4j (pid:312104). It is available at http://127.0.0.1:7474
+There may be a short delay until the server is ready.
+[nams-baremetal] bolt ready on :7687 after 0s

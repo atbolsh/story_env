@@ -1,0 +1,2 @@
+  NAMS personas=Klaus Mueller, runs: gemma4-e4b_klaus-nams-spacy-only|no-llm
+ALL RUNS: FAILED (Neo4j bolt unreachable)

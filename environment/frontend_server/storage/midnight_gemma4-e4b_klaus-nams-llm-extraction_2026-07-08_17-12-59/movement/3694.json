@@ -1,0 +1,84 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Maria Lopez and Isabella Rodriguez discuss Isabella's Valentine's Day party preparations at Hobbs Cafe on February 14th, with Maria expressing interest in attending despite her ongoing physics studies. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Hi Isabella! You seem really busy with all the Valentine's Day prep. How's it going?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's keeping me on my toes, but it's going well! I'm so excited for the party. I'm trying to make Hobbs Cafe extra special for all our customers on February 14th. How about you? Still deep in physics?"
+        ],
+        [
+          "Maria Lopez",
+          "Yeah, still grinding through some physics problems! It's intense, but I love diving into new ideas. How are you managing all the decorating and planning? Anything exciting planned for the party?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Well, I'm planning a little Valentine's Day celebration from 5 to 7 PM on the 14th! I'm decorating, making sure the atmosphere is cozy, and planning some special touches to make everyone feel extra loved. It's going to be fun! Do you think you'll be stopping by?"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds lovely! I might swing by to check out the atmosphere before or after class. I'm so excited for a cozy, special vibe at Hobbs Cafe! I'm sure it'll be a huge hit."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I really hope so! It would be great to see you there and share the festive spirit. Let me know if you decide to come! In the meantime, keep up the great work with your physics!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Maria Lopez and Isabella Rodriguez discuss Isabella's Valentine's Day party preparations at Hobbs Cafe on February 14th, with Maria expressing interest in attending despite her ongoing physics studies. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Hi Isabella! You seem really busy with all the Valentine's Day prep. How's it going?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's keeping me on my toes, but it's going well! I'm so excited for the party. I'm trying to make Hobbs Cafe extra special for all our customers on February 14th. How about you? Still deep in physics?"
+        ],
+        [
+          "Maria Lopez",
+          "Yeah, still grinding through some physics problems! It's intense, but I love diving into new ideas. How are you managing all the decorating and planning? Anything exciting planned for the party?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Well, I'm planning a little Valentine's Day celebration from 5 to 7 PM on the 14th! I'm decorating, making sure the atmosphere is cozy, and planning some special touches to make everyone feel extra loved. It's going to be fun! Do you think you'll be stopping by?"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds lovely! I might swing by to check out the atmosphere before or after class. I'm so excited for a cozy, special vibe at Hobbs Cafe! I'm sure it'll be a huge hit."
+        ],
+        [
+          "Isabella Rodriguez",
+          "I really hope so! It would be great to see you there and share the festive spirit. Let me know if you decide to come! In the meantime, keep up the great work with your physics!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        122,
+        24
+      ],
+      "pronunciatio": "\ud83d\udcda\u270d\ufe0f",
+      "description": "writing his research paper at the Oak Hill College library @ the Ville:Oak Hill College:library:library table",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 10:15:40"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        22
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Maria Lopez and Isabella Rodriguez discussing Isabella's preparations for a Valentine's Day party at Hobbs Cafe on the 14th, with Maria expressing interest in attending and potentially visiting the cafe beforehand. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Isabella, everything looks so busy! Are you getting all set for the Valentine's Day party? It looks like you have a lot going on!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It is! We are putting so much love into it. I'm just making sure everything is perfect for our guests on the 14th. You know how much I love making Hobbs Cafe a welcoming place for everyone!"
+        ],
+        [
+          "Maria Lopez",
+          "It really shows! I've been thinking about it, and I'd really love to come to the party on the 14th, even with my physics studying right now. It sounds like it's going to be so special!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That would make me so happy, Maria! We'd love to have you. Don't worry about your studies; take a break and come relax with us! We've got some lovely things planned for the evening."
+        ],
+        [
+          "Maria Lopez",
+          "That's so sweet of you to say! I'm really looking forward to it. I'll make sure my studying doesn't get in the way!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That's all wonderful to hear! It means a lot to me. Maybe we can catch up properly on the day, and you can see all the festive touches we've put together!"
+        ],
+        [
+          "Maria Lopez",
+          "I really hope I can manage my schedule to make it! I'm excited to see what you have planned for the 14th!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll be putting the finishing touches on some special touches around the cafe today. When you're free, maybe swing by later this afternoon? Even a quick peek at the preparations might make your day a little brighter! \ud83d\ude0a"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds lovely! I might swing by later this afternoon if I get a break from physics. Thanks for the invite, Isabella! Looking forward to the 14th!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        76,
+        23
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Maria Lopez and Isabella Rodriguez discussing Isabella's preparations for a Valentine's Day party at Hobbs Cafe on the 14th, with Maria expressing interest in attending and potentially visiting the cafe beforehand. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Isabella, everything looks so busy! Are you getting all set for the Valentine's Day party? It looks like you have a lot going on!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It is! We are putting so much love into it. I'm just making sure everything is perfect for our guests on the 14th. You know how much I love making Hobbs Cafe a welcoming place for everyone!"
+        ],
+        [
+          "Maria Lopez",
+          "It really shows! I've been thinking about it, and I'd really love to come to the party on the 14th, even with my physics studying right now. It sounds like it's going to be so special!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That would make me so happy, Maria! We'd love to have you. Don't worry about your studies; take a break and come relax with us! We've got some lovely things planned for the evening."
+        ],
+        [
+          "Maria Lopez",
+          "That's so sweet of you to say! I'm really looking forward to it. I'll make sure my studying doesn't get in the way!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "That's all wonderful to hear! It means a lot to me. Maybe we can catch up properly on the day, and you can see all the festive touches we've put together!"
+        ],
+        [
+          "Maria Lopez",
+          "I really hope I can manage my schedule to make it! I'm excited to see what you have planned for the 14th!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "I'll be putting the finishing touches on some special touches around the cafe today. When you're free, maybe swing by later this afternoon? Even a quick peek at the preparations might make your day a little brighter! \ud83d\ude0a"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds lovely! I might swing by later this afternoon if I get a break from physics. Thanks for the invite, Isabella! Looking forward to the 14th!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        122,
+        24
+      ],
+      "pronunciatio": "\ud83d\udcda\u270d\ufe0f",
+      "description": "writing his research paper at the Oak Hill College library @ the Ville:Oak Hill College:library:library table",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 12:46:10"
+  }
+}

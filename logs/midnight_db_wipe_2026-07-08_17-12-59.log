@@ -1,0 +1,18 @@
+[nams-baremetal] stopping neo4j
+[nams-baremetal] wiping neo4j database files (auth in /var/lib/neo4j/data/dbms preserved)
+[nams-baremetal] starting neo4j
+Directories in use:
+home:         /var/lib/neo4j
+config:       /etc/neo4j
+logs:         /var/log/neo4j
+plugins:      /var/lib/neo4j/plugins
+import:       /var/lib/neo4j/import
+data:         /var/lib/neo4j/data
+certificates: /var/lib/neo4j/certificates
+licenses:     /var/lib/neo4j/licenses
+run:          /var/lib/neo4j/run
+Starting Neo4j.
+Started neo4j (pid:291227). It is available at http://127.0.0.1:7474
+There may be a short delay until the server is ready.
+[nams-baremetal] bolt ready on :7687 after 0s
+[nams-baremetal] wiped; neo4j recreated empty on start

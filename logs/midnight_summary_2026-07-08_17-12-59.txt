@@ -1,0 +1,3 @@
+  NAMS personas=Klaus Mueller, runs: gemma4-e4b_klaus-nams-spacy-only|no-llm gemma4-e4b_klaus-nams-llm-extraction|harness-llm
+gemma4-e4b_klaus-nams-spacy-only: CRASHED at step 6115, 1266s, sim midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_17-12-59, logs /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-08_17-12-59
+gemma4-e4b_klaus-nams-llm-extraction: CRASHED at step 6245, 4868s, sim midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-08_17-12-59, logs /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-08_17-12-59
