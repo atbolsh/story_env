@@ -1,0 +1,20 @@
+midnight_test 2026-07-07_21-43-40: 8640 steps each, harness=gemma4-e4b, 
+[21:43:40] no docker daemon detected; assuming bare-metal Neo4j on localhost:7687.
+[21:43:40] Neo4j bolt is up.
+[21:43:40] === gemma4-e4b_klaus-nams-spacy-only (extraction=no-llm): starting ===
+[21:43:40]   translating Klaus Mueller JSON bootstrap -> Neo4j (--force-import)...
+[21:43:40]   IMPORT FAILED; see /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-07_21-43-40/import_console.log. Aborting run.
+[21:43:40] gemma4-e4b_klaus-nams-spacy-only: run did not complete cleanly; moving on.
+[21:43:40]   saving Klaus's NAMS memories -> /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-07_21-43-40/klaus_memories_gemma4-e4b_klaus-nams-spacy-only.dump
+[21:43:53]   WARNING: save failed (see /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-07_21-43-40/db_save.log); continuing.
+[21:43:54]   wiping NAMS DB between runs (clean slate for the next run)
+[21:44:01] === gemma4-e4b_klaus-nams-llm-extraction (extraction=harness-llm): starting ===
+[21:44:01]   translating Klaus Mueller JSON bootstrap -> Neo4j (--force-import)...
+[21:44:01]   IMPORT FAILED; see /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-07_21-43-40/import_console.log. Aborting run.
+[21:44:01] gemma4-e4b_klaus-nams-llm-extraction: run did not complete cleanly; moving on.
+[21:44:01]   saving Klaus's NAMS memories -> /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-07_21-43-40/klaus_memories_gemma4-e4b_klaus-nams-llm-extraction.dump
+[21:44:14]   WARNING: save failed (see /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-07_21-43-40/db_save.log); continuing.
+[21:44:14] All runs done. Summary:
+  NAMS personas=Klaus Mueller, runs: gemma4-e4b_klaus-nams-spacy-only|no-llm gemma4-e4b_klaus-nams-llm-extraction|harness-llm
+gemma4-e4b_klaus-nams-spacy-only: FAILED (JSON->NAMS import; see /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-spacy-only_2026-07-07_21-43-40/import_console.log)
+gemma4-e4b_klaus-nams-llm-extraction: FAILED (JSON->NAMS import; see /workspace/story_env/logs/midnight_gemma4-e4b_klaus-nams-llm-extraction_2026-07-07_21-43-40/import_console.log)

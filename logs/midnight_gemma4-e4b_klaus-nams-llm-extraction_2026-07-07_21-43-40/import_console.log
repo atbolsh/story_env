@@ -1,0 +1,2 @@
+midnight_test.sh: line 261: set: -;: invalid option
+set: usage: set [-abefhkmnptuvxBCEHPT] [-o option-name] [--] [-] [arg ...]
