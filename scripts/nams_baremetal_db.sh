@@ -97,9 +97,19 @@ cmd_save() {
   mkdir -p "$(dirname "$dump_file")"
   stop_neo4j
   log "dumping ${NEO4J_DB} -> ${dump_file}"
-  neo4j-admin database dump --database="${NEO4J_DB}" \
-    --to="${dump_file}" --overwrite-destination
-  [[ -s "$dump_file" ]] || die "dump produced empty file ${dump_file}"
+  # Neo4j 5+/2026.x CLI: the database is a POSITIONAL arg and the destination
+  # is a DIRECTORY (--to-path), inside which it writes "<db>.dump". (The old
+  # --database=/--to=<file> form errors with "Missing required parameter
+  # <database>".) Dump into a temp dir, then move the produced file to the
+  # caller's requested path so callers keep control of the filename.
+  local tmp_dir
+  tmp_dir="$(mktemp -d)"
+  neo4j-admin database dump "${NEO4J_DB}" \
+    --to-path="${tmp_dir}" --overwrite-destination
+  local produced="${tmp_dir}/${NEO4J_DB}.dump"
+  [[ -s "$produced" ]] || { rm -rf "$tmp_dir"; die "dump produced empty/no file (${produced})"; }
+  mv -f "$produced" "$dump_file"
+  rm -rf "$tmp_dir"
   log "dump ok: ${dump_file} ($(du -h "$dump_file" | cut -f1))"
   start_neo4j
 }
@@ -118,8 +128,15 @@ cmd_load() {
   [[ -f "$dump_file" ]] || die "dump file not found: ${dump_file}"
   stop_neo4j
   log "loading ${dump_file} -> ${NEO4J_DB}"
-  neo4j-admin database load --database="${NEO4J_DB}" \
-    --from="${dump_file}" --overwrite-destination
+  # Mirror cmd_save: load takes a POSITIONAL database and a --from-path
+  # DIRECTORY that must contain "<db>.dump". Stage the caller's file into a
+  # temp dir under that name, then load.
+  local tmp_dir
+  tmp_dir="$(mktemp -d)"
+  cp -f "$dump_file" "${tmp_dir}/${NEO4J_DB}.dump"
+  neo4j-admin database load "${NEO4J_DB}" \
+    --from-path="${tmp_dir}" --overwrite-destination
+  rm -rf "$tmp_dir"
   start_neo4j
   log "load complete"
 }

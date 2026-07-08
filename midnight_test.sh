@@ -109,13 +109,86 @@ TEMP_STORAGE="${REPO_ROOT}/environment/frontend_server/temp_storage"
 SUMMARY="${LOG_ROOT}/midnight_summary_${STAMP}.txt"
 
 # ------------------------------------------------- self-detach under nohup
+# EARLY_WATCH_SECONDS: after detaching, the launcher follows the orchestrator
+# log in the FOREGROUND for this long so early failures (bad import, env, bolt)
+# surface in your terminal immediately instead of being discovered the next
+# morning. Set to 0 to skip watching and return the shell instantly.
+EARLY_WATCH_SECONDS="${MIDNIGHT_EARLY_WATCH_SECONDS:-240}"
 if [ -z "${MIDNIGHT_DETACHED:-}" ]; then
   mkdir -p "$LOG_ROOT"
   ORCH_LOG="${LOG_ROOT}/midnight_orchestrator_${STAMP}.log"
-  MIDNIGHT_DETACHED=1 nohup bash "$0" "$@" >"$ORCH_LOG" 2>&1 &
-  echo "Detached orchestrator (pid $!). Safe to disconnect."
+  # setsid (when available) puts the orchestrator in its own session so a
+  # Ctrl-C on the foreground watcher below can't reach it -- the run keeps
+  # going in the background no matter how you stop watching. stdin from
+  # /dev/null so it never blocks on a read.
+  if command -v setsid >/dev/null 2>&1; then
+    MIDNIGHT_DETACHED=1 setsid bash "$0" "$@" >"$ORCH_LOG" 2>&1 </dev/null &
+  else
+    MIDNIGHT_DETACHED=1 nohup bash "$0" "$@" >"$ORCH_LOG" 2>&1 </dev/null &
+  fi
+  orch_pid=$!
+  echo "Detached orchestrator (pid ${orch_pid}). Safe to disconnect."
   echo "Follow along:  tail -f ${ORCH_LOG}"
   echo "Summary file:  ${SUMMARY}"
+
+  if [ "$EARLY_WATCH_SECONDS" -le 0 ] 2>/dev/null; then
+    exit 0
+  fi
+
+  echo
+  echo "Watching early startup (up to ${EARLY_WATCH_SECONDS}s) so import/env/bolt"
+  echo "failures show up here right away. Ctrl-C stops watching only -- the run"
+  echo "continues in the background."
+  echo "----------------------------------------------------------------------"
+  trap 'echo; echo ">>> Stopped watching; run continues (pid '"${orch_pid}"'). Follow: tail -f '"${ORCH_LOG}"'"; exit 0' INT
+
+  early_deadline=$(( $(date +%s) + EARLY_WATCH_SECONDS ))
+  last_size=0
+  early_done=0
+  while [ "$(date +%s)" -lt "$early_deadline" ]; do
+    if [ -f "$ORCH_LOG" ]; then
+      cur_size=$(wc -c < "$ORCH_LOG" 2>/dev/null || echo 0)
+      if [ "$cur_size" -gt "$last_size" ]; then
+        tail -c +"$((last_size + 1))" "$ORCH_LOG"
+        last_size=$cur_size
+      fi
+      # Decisive FAILURE markers -> surface loudly and stop watching.
+      if grep -qE "IMPORT FAILED|: FAILED \(|bolt never answered|Traceback \(most recent|^error:|invalid option" "$ORCH_LOG" 2>/dev/null; then
+        echo "----------------------------------------------------------------------"
+        echo ">>> EARLY FAILURE detected (see above). This stage aborted."
+        echo ">>> Full log: ${ORCH_LOG}"
+        echo ">>> Summary:  ${SUMMARY}"
+        early_done=1
+        break
+      fi
+      # Decisive SUCCESS markers -> the sim is actually stepping; safe to leave.
+      if grep -qE "headless sim launched|step [0-9]+/" "$ORCH_LOG" 2>/dev/null; then
+        echo "----------------------------------------------------------------------"
+        echo ">>> Startup healthy: import passed and the sim is stepping."
+        echo ">>> Detaching watcher; run continues. Follow: tail -f ${ORCH_LOG}"
+        early_done=1
+        break
+      fi
+    fi
+    # Orchestrator already gone (finished or died)?
+    if ! kill -0 "$orch_pid" 2>/dev/null; then
+      if [ -f "$ORCH_LOG" ]; then
+        cur_size=$(wc -c < "$ORCH_LOG" 2>/dev/null || echo 0)
+        [ "$cur_size" -gt "$last_size" ] && tail -c +"$((last_size + 1))" "$ORCH_LOG"
+      fi
+      echo "----------------------------------------------------------------------"
+      echo ">>> Orchestrator exited early. See ${ORCH_LOG} and ${SUMMARY}."
+      early_done=1
+      break
+    fi
+    sleep 2
+  done
+  if [ "$early_done" -eq 0 ]; then
+    echo "----------------------------------------------------------------------"
+    echo ">>> Still starting after ${EARLY_WATCH_SECONDS}s (likely a first-run"
+    echo ">>> model download). Detaching watcher; run continues in background."
+    echo ">>> Follow: tail -f ${ORCH_LOG}"
+  fi
   exit 0
 fi
 
@@ -257,7 +330,15 @@ translate_profiles() {  # $1=run_dir
   # Run inline (not in tmux) so the orchestrator sees the exit code and can
   # fail-fast. The import loads the sentence-transformers embedder but no
   # chat LLM, so it's cheap and synchronous.
-  if ! ${ENV_PREFIX}PYTHONPATH=${REPO_ROOT}/shared:${REPO_ROOT}/reverie/backend_server \
+  #
+  # NB: do NOT prepend ${ENV_PREFIX} here. ENV_PREFIX embeds ';'-separated
+  # commands ("set -a; . .env; set +a; ") which only work when *typed* into an
+  # interactive shell (the tmux send-keys path). Expanded inline as a command
+  # prefix, bash word-splits it but does not honor the ';' separators, so it
+  # runs `set` with a literal `-a;` arg and dies ("set: -;: invalid option").
+  # The orchestrator already sourced .env into its own environment above, so
+  # this python3 subprocess inherits those vars without ENV_PREFIX.
+  if ! PYTHONPATH=${REPO_ROOT}/shared:${REPO_ROOT}/reverie/backend_server \
         python3 "${REPO_ROOT}/reverie/backend_server/reverie.py" \
           --import-nams-only \
           --fork "${FORK_SIM}" \
