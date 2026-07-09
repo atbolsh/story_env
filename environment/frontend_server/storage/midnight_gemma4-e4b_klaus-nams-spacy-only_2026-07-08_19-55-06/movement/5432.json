@@ -1,0 +1,92 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Maria Lopez and Isabella Rodriguez discuss Maria's physics studies at Hobbs Cafe, Isabella's Valentine's Day preparations, and Maria's potential visit to the cafe later in the week. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Hi Isabella! I hope the Valentine's Day preparations aren't too crazy! It sounds like you're really busy back there!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Oh, it's certainly busy! But it's all for such a sweet occasion. I'm so excited to celebrate with all my customers next week! Are you enjoying your study session today?"
+        ],
+        [
+          "Maria Lopez",
+          "Yeah, it's good! I'm trying to buckle down on some physics stuff. It's a lot to take in sometimes! But honestly, I love coming to Hobbs Cafe\u2014it's such a nice atmosphere for studying."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That makes me so happy to hear! I try my best to make it feel like a cozy retreat for everyone, whether they're studying hard or just relaxing. Say, since you're here, are you looking for anything specific today? Maybe a special coffee to keep those physics brain cells firing?"
+        ],
+        [
+          "Maria Lopez",
+          "Hmm, I think I'm good for now, I just have a few more chapters to power through! But a coffee might be a nice little reward later. How's the mood for the Valentine's Day party going? Are you guys planning anything fun?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "We're keeping it warm and lovely! We'll have some special treats and a cozy atmosphere for everyone on February 14th. I really hope you can stop by, Maria! It would be wonderful to have our favorite regulars join in the fun. Keep up the great work with your physics, and feel free to let me know if you need a caffeine boost!"
+        ],
+        [
+          "Maria Lopez",
+          "Thanks so much for the invitation, Isabella! I'll definitely keep it in mind! Good luck with all the final prep! Maybe I'll swing by later this week!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Maria Lopez and Isabella Rodriguez discuss Maria's physics studies at Hobbs Cafe, Isabella's Valentine's Day preparations, and Maria's potential visit to the cafe later in the week. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Maria Lopez",
+          "Hi Isabella! I hope the Valentine's Day preparations aren't too crazy! It sounds like you're really busy back there!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Oh, it's certainly busy! But it's all for such a sweet occasion. I'm so excited to celebrate with all my customers next week! Are you enjoying your study session today?"
+        ],
+        [
+          "Maria Lopez",
+          "Yeah, it's good! I'm trying to buckle down on some physics stuff. It's a lot to take in sometimes! But honestly, I love coming to Hobbs Cafe\u2014it's such a nice atmosphere for studying."
+        ],
+        [
+          "Isabella Rodriguez",
+          "That makes me so happy to hear! I try my best to make it feel like a cozy retreat for everyone, whether they're studying hard or just relaxing. Say, since you're here, are you looking for anything specific today? Maybe a special coffee to keep those physics brain cells firing?"
+        ],
+        [
+          "Maria Lopez",
+          "Hmm, I think I'm good for now, I just have a few more chapters to power through! But a coffee might be a nice little reward later. How's the mood for the Valentine's Day party going? Are you guys planning anything fun?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "We're keeping it warm and lovely! We'll have some special treats and a cozy atmosphere for everyone on February 14th. I really hope you can stop by, Maria! It would be wonderful to have our favorite regulars join in the fun. Keep up the great work with your physics, and feel free to let me know if you need a caffeine boost!"
+        ],
+        [
+          "Maria Lopez",
+          "Thanks so much for the invitation, Isabella! I'll definitely keep it in mind! Good luck with all the final prep! Maybe I'll swing by later this week!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        122,
+        24
+      ],
+      "pronunciatio": "\ud83e\uddd0\ud83d\udcc4",
+      "description": "writing research paper at the Oak Hill College library (reviewing the paper's overall argument strength) @ the Ville:Oak Hill College:library:library table",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 15:05:20"
+  }
+}

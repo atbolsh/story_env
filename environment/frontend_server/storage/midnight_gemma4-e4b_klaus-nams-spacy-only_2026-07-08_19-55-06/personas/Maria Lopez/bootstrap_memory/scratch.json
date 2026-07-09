@@ -1,0 +1,560 @@
+{
+  "vision_r": 8,
+  "att_bandwidth": 8,
+  "retention": 8,
+  "curr_time": "February 13, 2023, 23:59:50",
+  "curr_tile": [
+    122,
+    20
+  ],
+  "daily_plan_req": "Maria Lopez spends at least 3 hours a day Twitch streaming or gaming.",
+  "name": "Maria Lopez",
+  "first_name": "Maria",
+  "last_name": "Lopez",
+  "age": 21,
+  "innate": "energetic, enthusiastic, inquisitive",
+  "learned": "Maria Lopez is a student at Oak Hill College studying physics and a part time Twitch game streamer who loves to connect with people and explore new ideas.",
+  "currently": "Maria Lopez is working on her physics degree and streaming games on Twitch to make some extra money. She visits Hobbs Cafe for studying and eating just about everyday.",
+  "lifestyle": "Maria Lopez goes to bed around 2am, awakes up around 9am, eats dinner around 6pm. She likes to hang out at Hobbs Cafe if it's before 6pm.",
+  "living_area": "the Ville:Dorm for Oak Hill College:Maria Lopez's room",
+  "concept_forget": 100,
+  "daily_reflection_time": 180,
+  "daily_reflection_size": 5,
+  "overlap_reflect_th": 4,
+  "kw_strg_event_reflect_th": 10,
+  "kw_strg_thought_reflect_th": 9,
+  "recency_w": 1,
+  "relevance_w": 1,
+  "importance_w": 1,
+  "recency_decay": 0.99,
+  "importance_trigger_max": 150,
+  "importance_trigger_curr": 23,
+  "importance_ele_n": 69,
+  "thought_count": 5,
+  "daily_req": [
+    "wake up and complete the morning routine at 9:00 am",
+    "",
+    "",
+    "return home or stay near Hobbs Cafe for physics review/light activities until 6:00 pm",
+    "have dinner around 6:00 pm",
+    ""
+  ],
+  "f_daily_schedule": [
+    [
+      "sleeping",
+      540
+    ],
+    [
+      "waking up and completing morning routine",
+      60
+    ],
+    [
+      "studying physics at Hobbs Cafe (reviewing lecture notes from the morning)",
+      15
+    ],
+    [
+      "studying physics at Hobbs Cafe (on the way to reading a chapter from her physics textbook)",
+      0
+    ],
+    [
+      "studying physics at Hobbs Cafe (waiting to start reviewing lecture notes from the morning)",
+      1
+    ],
+    [
+      "studying physics at Hobbs Cafe (reading a chapter from her physics textbook)",
+      19
+    ],
+    [
+      "studying physics at Hobbs Cafe (working through practice problems)",
+      25
+    ],
+    [
+      "studying physics at Hobbs Cafe (taking short breaks to stretch)",
+      10
+    ],
+    [
+      "studying physics at Hobbs Cafe (re-reading complex concepts)",
+      20
+    ],
+    [
+      "studying physics at Hobbs Cafe (summarizing key theories in her notebook)",
+      25
+    ],
+    [
+      "studying physics at Hobbs Cafe (looking up related scientific articles online)",
+      15
+    ],
+    [
+      "studying physics at Hobbs Cafe (solving another set of problems)",
+      25
+    ],
+    [
+      "studying physics at Hobbs Cafe (organizing her study materials)",
+      10
+    ],
+    [
+      "studying physics at Hobbs Cafe (reviewing formulas for the next topic)",
+      20
+    ],
+    [
+      "studying physics at Hobbs Cafe (taking a short mental break)",
+      10
+    ],
+    [
+      "studying physics at Hobbs Cafe (working on a challenging problem set)",
+      30
+    ],
+    [
+      "studying physics at Hobbs Cafe (highlighting important sections in her book)",
+      15
+    ],
+    [
+      "studying physics at Hobbs Cafe (reviewing solved examples)",
+      20
+    ],
+    [
+      "studying physics at Hobbs Cafe (making flashcards for definitions)",
+      25
+    ],
+    [
+      "studying physics at Hobbs Cafe (taking a quick walk around the cafe area)",
+      10
+    ],
+    [
+      "studying physics at Hobbs Cafe (reviewing notes from a previous lecture)",
+      20
+    ],
+    [
+      "studying physics at Hobbs Cafe (on the way to attempting a new type of problem)",
+      0
+    ],
+    [
+      "studying physics at Hobbs Cafe (conversing about Maria Lopez and Isabella Rodriguez discuss Maria's physics studies at Hobbs Cafe, Isabella's Valentine's Day preparations, and Maria's potential visit to the cafe later in the week.)",
+      7
+    ],
+    [
+      "studying physics at Hobbs Cafe (attempting a new type of problem)",
+      23
+    ],
+    [
+      "studying physics at Hobbs Cafe (taking a longer stretch break)",
+      15
+    ],
+    [
+      "studying physics at Hobbs Cafe (consolidating her understanding of a topic)",
+      25
+    ],
+    [
+      "studying physics at Hobbs Cafe (checking online resources for clarification)",
+      15
+    ],
+    [
+      "studying physics at Hobbs Cafe (working on a cumulative review problem)",
+      30
+    ],
+    [
+      "studying physics at Hobbs Cafe (on the way to tidying her workspace at the cafe)",
+      0
+    ],
+    [
+      "studying physics at Hobbs Cafe (waiting to start checking online resources for clarification)",
+      2
+    ],
+    [
+      "studying physics at Hobbs Cafe (tidying her workspace at the cafe)",
+      8
+    ],
+    [
+      "studying physics at Hobbs Cafe (reviewing the day's progress)",
+      15
+    ],
+    [
+      "studying physics at Hobbs Cafe (preparing for the next study session)",
+      10
+    ],
+    [
+      "studying physics at Hobbs Cafe (on the way to doing a final quick review of the most difficult concept)",
+      0
+    ],
+    [
+      "studying physics at Hobbs Cafe (conversing about Klaus Mueller and Maria Lopez discuss how Klaus can bridge the gap between quantitative sociological research on gentrification and the qualitative, lived experiences of affected communities, with Maria suggesting framing personal narratives as critical empirical case studies to illustrate social...)",
+      15
+    ],
+    [
+      "End of scheduled time",
+      0
+    ],
+    [
+      "relaxing/light activity near Hobbs Cafe",
+      60
+    ],
+    [
+      "Twitch streaming/gaming (on the way to setting up her streaming software)",
+      0
+    ],
+    [
+      "Twitch streaming/gaming (conversing about Maria Lopez and Isabella Rodriguez discuss their busy schedules\u2014Isabella's Valentine's Day preparations and Maria's physics studies\u2014while exploring the fascinating parallels between complex physical systems and the dynamics of social issues like gentrification, using the concept of 'human data' to...",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (continuing discussion on complex systems and social issues)",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (transitioning into a lighter segment/gameplay introduction)",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (greeting chat and setting stream goals)",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (actively playing the game/engaging with early chat)",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (focusing on in-game objectives/responding to viewer questions)",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (engaging in banter/reacting to in-game events)",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (maintaining stream flow/interacting with community members)",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (executing a complex game maneuver/narrating gameplay actions)",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (reading longer chat messages/acknowledging donations/subs)",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (actively playing the game/cheering on teammates (if applicable))",
+      15
+    ],
+    [
+      "Twitch streaming/gaming (winding down the segment/giving a final shout-out to viewers)",
+      15
+    ],
+    [
+      "studying physics or preparing for stream (setting up her streaming equipment)",
+      5
+    ],
+    [
+      "studying physics or preparing for stream (checking her stream schedule)",
+      5
+    ],
+    [
+      "studying physics or preparing for stream (reviewing physics notes for the evening)",
+      10
+    ],
+    [
+      "studying physics or preparing for stream (organizing her study materials)",
+      5
+    ],
+    [
+      "studying physics or preparing for stream (testing her microphone)",
+      5
+    ],
+    [
+      "studying physics or preparing for stream (reviewing physics concepts for 15 minutes)",
+      15
+    ],
+    [
+      "studying physics or preparing for stream (taking a short stretch break)",
+      5
+    ],
+    [
+      "studying physics or preparing for stream (researching a new game for streaming)",
+      10
+    ],
+    [
+      "studying physics or preparing for stream (reviewing physics problems)",
+      15
+    ],
+    [
+      "studying physics or preparing for stream (taking a quick water break)",
+      5
+    ],
+    [
+      "studying physics or preparing for stream (setting up her game environment)",
+      10
+    ],
+    [
+      "studying physics or preparing for stream (doing a final physics concept review)",
+      15
+    ],
+    [
+      "studying physics or preparing for stream (logging into the streaming platform)",
+      5
+    ],
+    [
+      "studying physics or preparing for stream (checking chat settings)",
+      10
+    ],
+    [
+      "studying physics or preparing for stream (conversing about Klaus Mueller and Maria Lopez discussing how to integrate personal narratives into sociological research on gentrification, framing them as critical empirical case studies that illustrate localized phenomena contributing to larger systemic strain rather than merely being anecdotes.)",
+      7
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      -7
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ]
+  ],
+  "f_daily_schedule_hourly_org": [
+    [
+      "sleeping",
+      540
+    ],
+    [
+      "waking up and completing morning routine",
+      60
+    ],
+    [
+      "studying physics at Hobbs Cafe",
+      480
+    ],
+    [
+      "relaxing/light activity near Hobbs Cafe",
+      60
+    ],
+    [
+      "Twitch streaming/gaming",
+      180
+    ],
+    [
+      "studying physics or preparing for stream",
+      120
+    ]
+  ],
+  "act_address": "the Ville:Oak Hill College:library:bookshelf",
+  "act_start_time": "February 13, 2023, 23:53:00",
+  "act_duration": 10,
+  "act_description": "studying physics or preparing for stream (checking chat settings)",
+  "act_pronunciatio": "\u2699\ufe0f\ud83d\udcac",
+  "act_event": [
+    "Maria Lopez",
+    "check",
+    "chat settings"
+  ],
+  "act_obj_description": "unused",
+  "act_obj_pronunciatio": "\u2753",
+  "act_obj_event": [
+    "bookshelf",
+    "is",
+    "unused"
+  ],
+  "chatting_with": null,
+  "chat": null,
+  "chatting_with_buffer": {
+    "Isabella Rodriguez": -1204,
+    "Klaus Mueller": 308
+  },
+  "chatting_end_time": null,
+  "act_path_set": true,
+  "planned_path": []
+}

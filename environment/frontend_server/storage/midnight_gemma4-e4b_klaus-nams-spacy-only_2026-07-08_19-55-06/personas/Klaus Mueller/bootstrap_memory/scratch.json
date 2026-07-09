@@ -1,0 +1,639 @@
+{
+  "vision_r": 8,
+  "att_bandwidth": 8,
+  "retention": 8,
+  "curr_time": "February 13, 2023, 23:59:50",
+  "curr_tile": [
+    127,
+    46
+  ],
+  "daily_plan_req": "Klaus Mueller goes to the library at Oak Hill College early in the morning, spends his days writing, and eats at Hobbs Cafe.",
+  "name": "Klaus Mueller",
+  "first_name": "Klaus",
+  "last_name": "Mueller",
+  "age": 20,
+  "innate": "kind, inquisitive, passionate",
+  "learned": "Klaus Mueller is a student at Oak Hill College studying sociology. He is passionate about social justice and loves to explore different perspectives.",
+  "currently": "Klaus Mueller is writing a research paper on the effects of gentrification in low-income communities.",
+  "lifestyle": "Klaus Mueller goes to bed around 11pm, awakes up around 7am, eats dinner around 5pm.",
+  "living_area": "the Ville:Dorm for Oak Hill College:Klaus Mueller's room",
+  "concept_forget": 100,
+  "daily_reflection_time": 180,
+  "daily_reflection_size": 5,
+  "overlap_reflect_th": 4,
+  "kw_strg_event_reflect_th": 10,
+  "kw_strg_thought_reflect_th": 9,
+  "recency_w": 1,
+  "relevance_w": 1,
+  "importance_w": 1,
+  "recency_decay": 0.99,
+  "importance_trigger_max": 150,
+  "importance_trigger_curr": 6,
+  "importance_ele_n": 73,
+  "thought_count": 5,
+  "daily_req": [
+    "wake up and complete the morning routine at 7:00 am",
+    "go to the library at Oak Hill College",
+    "spend the day writing",
+    "eat dinner at 5:00 pm",
+    "eat at Hobbs Cafe"
+  ],
+  "f_daily_schedule": [
+    [
+      "sleeping",
+      420
+    ],
+    [
+      "waking up and completing his morning routine",
+      60
+    ],
+    [
+      "traveling to the Oak Hill College library",
+      60
+    ],
+    [
+      "studying and writing at the Oak Hill College library",
+      60
+    ],
+    [
+      "writing research paper at the Oak Hill College library (organizing his research notes)",
+      10
+    ],
+    [
+      "writing research paper at the Oak Hill College library (outlining the next section of the paper)",
+      15
+    ],
+    [
+      "writing research paper at the Oak Hill College library (drafting the introduction to the next argument)",
+      20
+    ],
+    [
+      "writing research paper at the Oak Hill College library (citing sources for a specific claim)",
+      10
+    ],
+    [
+      "writing research paper at the Oak Hill College library (reviewing his previous paragraphs for flow)",
+      15
+    ],
+    [
+      "writing research paper at the Oak Hill College library (researching supporting data on gentrification)",
+      25
+    ],
+    [
+      "writing research paper at the Oak Hill College library (writing the body paragraphs for the current topic)",
+      30
+    ],
+    [
+      "writing research paper at the Oak Hill College library (taking a short stretch break)",
+      5
+    ],
+    [
+      "writing research paper at the Oak Hill College library (proofreading the last written section)",
+      15
+    ],
+    [
+      "writing research paper at the Oak Hill College library (expanding on a key sociological concept)",
+      20
+    ],
+    [
+      "writing research paper at the Oak Hill College library (structuring the transition between two main points)",
+      10
+    ],
+    [
+      "writing research paper at the Oak Hill College library (fact-checking statistics used in the paper)",
+      25
+    ],
+    [
+      "writing research paper at the Oak Hill College library (drafting a counter-argument section)",
+      30
+    ],
+    [
+      "writing research paper at the Oak Hill College library (taking a short mental break)",
+      5
+    ],
+    [
+      "writing research paper at the Oak Hill College library (refining the thesis statement's focus)",
+      15
+    ],
+    [
+      "writing research paper at the Oak Hill College library (writing the conclusion's preliminary points)",
+      20
+    ],
+    [
+      "writing research paper at the Oak Hill College library (cross-referencing his bibliography entries)",
+      10
+    ],
+    [
+      "writing research paper at the Oak Hill College library (rewriting a complex sentence for clarity)",
+      25
+    ],
+    [
+      "writing research paper at the Oak Hill College library (reviewing the paper's overall argument strength)",
+      30
+    ],
+    [
+      "writing research paper at the Oak Hill College library (taking a longer break to refocus)",
+      10
+    ],
+    [
+      "writing research paper at the Oak Hill College library (drafting the final section headings)",
+      15
+    ],
+    [
+      "writing research paper at the Oak Hill College library (summarizing the main findings of his research)",
+      20
+    ],
+    [
+      "writing research paper at the Oak Hill College library (editing for academic tone)",
+      10
+    ],
+    [
+      "writing research paper at the Oak Hill College library (reviewing the introduction one last time)",
+      15
+    ],
+    [
+      "writing research paper at the Oak Hill College library (saving and backing up the document)",
+      5
+    ],
+    [
+      "writing research paper at the Oak Hill College library (planning the next day's writing focus)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (walking from the library to Hobbs Cafe)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (ordering his meal at Hobbs Cafe)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (waiting for his food to be prepared)",
+      15
+    ],
+    [
+      "eating dinner at Hobbs Cafe (on the way to eating the first course of his meal)",
+      0
+    ],
+    [
+      "eating dinner at Hobbs Cafe (conversing about Klaus Mueller and Isabella Rodriguez discuss their respective activities\u2014Isabella's Valentine's Day preparations at Hobbs Cafe and Klaus's sociology research on gentrification\u2014and agree that Klaus might share real-life community stories with her cafe in the future.)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (on the way to eating the first course of his meal)",
+      0
+    ],
+    [
+      "eating dinner at Hobbs Cafe (conversing about Klaus Mueller and Maria Lopez discuss how Klaus can bridge the gap between quantitative sociological research on gentrification and the qualitative, lived experiences of affected communities, with Maria suggesting framing personal narratives as critical empirical case studies to illustrate social...)",
+      15
+    ],
+    [
+      "eating dinner at Hobbs Cafe (conversing about Klaus Mueller and Maria Lopez discuss how Klaus can bridge the gap between quantitative sociological research on gentrification and the qualitative, lived experiences of affected communities, with Maria suggesting framing personal narratives as critical empirical case studies to illustrate social...)",
+      15
+    ],
+    [
+      "eating dinner at Hobbs Cafe (eating the first course of his meal)",
+      10
+    ],
+    [
+      "eating dinner at Hobbs Cafe (finishing his main course)",
+      10
+    ],
+    [
+      "studying and writing at the Oak Hill College library (organizing his research notes)",
+      15
+    ],
+    [
+      "studying and writing at the Oak Hill College library (reviewing the latest academic articles)",
+      10
+    ],
+    [
+      "studying and writing at the Oak Hill College library (outlining the next section of his paper)",
+      15
+    ],
+    [
+      "studying and writing at the Oak Hill College library (drafting the introduction to a new argument)",
+      15
+    ],
+    [
+      "studying and writing at the Oak Hill College library (taking a short stretch break)",
+      15
+    ],
+    [
+      "studying and writing at the Oak Hill College library (fact-checking a key statistic)",
+      10
+    ],
+    [
+      "studying and writing at the Oak Hill College library (tidying his workspace at the library)",
+      5
+    ],
+    [
+      "continuing to study and write at the Oak Hill College library (reading a primary source document related to gentrification)",
+      10
+    ],
+    [
+      "continuing to study and write at the Oak Hill College library (outlining the next section of his paper)",
+      15
+    ],
+    [
+      "continuing to study and write at the Oak Hill College library (drafting a paragraph analyzing a specific case study)",
+      20
+    ],
+    [
+      "continuing to study and write at the Oak Hill College library (proofreading the previously written section for clarity)",
+      5
+    ],
+    [
+      "continuing to study and write at the Oak Hill College library (researching supporting statistics for his argument)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (organizing his research materials)",
+      5
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (reading a primary source document)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (highlighting key concepts in his textbook)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (taking brief notes on a specific theory)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (cross-referencing data points from two sources)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (summarizing a section of his notes)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (reviewing his outline structure)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (rereading a challenging paragraph)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (making annotations in the margins of a printout)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (pausing to stretch briefly)",
+      5
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (reviewing his bibliography entries)",
+      10
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (on the way to mentally mapping out the next section of his paper)",
+      0
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (conversing about Klaus Mueller and Maria Lopez discussing how to integrate personal narratives into sociological research on gentrification, framing them as critical empirical case studies that illustrate localized phenomena contributing to larger systemic strain rather...",
+      7
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (tidying his immediate workspace)",
+      8
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library (reviewing the main thesis statement one last time)",
+      5
+    ],
+    [
+      "winding down for the night",
+      60
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ]
+  ],
+  "f_daily_schedule_hourly_org": [
+    [
+      "sleeping",
+      420
+    ],
+    [
+      "waking up and completing his morning routine",
+      60
+    ],
+    [
+      "traveling to the Oak Hill College library",
+      60
+    ],
+    [
+      "studying and writing at the Oak Hill College library",
+      60
+    ],
+    [
+      "writing research paper at the Oak Hill College library",
+      420
+    ],
+    [
+      "eating dinner at Hobbs Cafe",
+      60
+    ],
+    [
+      "studying and writing at the Oak Hill College library",
+      120
+    ],
+    [
+      "continuing to study and write at the Oak Hill College library",
+      60
+    ],
+    [
+      "reviewing notes for his research paper at the Oak Hill College library",
+      120
+    ],
+    [
+      "winding down for the night",
+      60
+    ]
+  ],
+  "act_address": "the Ville:Dorm for Oak Hill College:Klaus Mueller's room:bed",
+  "act_start_time": "February 13, 2023, 23:01:00",
+  "act_duration": 60,
+  "act_description": "winding down for the night",
+  "act_pronunciatio": "\ud83c\udf19\ud83d\ude34",
+  "act_event": [
+    "Klaus Mueller",
+    "wind down",
+    "night"
+  ],
+  "act_obj_description": "being used",
+  "act_obj_pronunciatio": "\ud83d\udee0\ufe0f",
+  "act_obj_event": [
+    "bed",
+    "be used",
+    ""
+  ],
+  "chatting_with": null,
+  "chat": null,
+  "chatting_with_buffer": {
+    "Isabella Rodriguez": -1510,
+    "Maria Lopez": 308
+  },
+  "chatting_end_time": null,
+  "act_path_set": true,
+  "planned_path": []
+}

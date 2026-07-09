@@ -1,0 +1,84 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        77,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez are discussing Isabella's preparations for a cozy Valentine's Day event at Hobbs Cafe, including special pastries and a chocolate fondue station, with Maria expressing interest in attending on the 14th between 5 pm and 7 pm. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! How are you doing today? Are you getting settled in for your stream?"
+        ],
+        [
+          "Maria Lopez",
+          "I'm doing great, thanks! Yeah, just getting started. This game is pretty intense right now! I saw you busy prepping for Valentine's Day\u2014how is all that going? It looks like quite the event!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's going wonderfully! We're putting so much love into making Hobbs Cafe the coziest spot for Valentine's Day. We're planning special pastries and a chocolate fondue station. I really hope you can make it on the 14th, between 5 pm and 7 pm!"
+        ],
+        [
+          "Maria Lopez",
+          "Oh, that sounds absolutely dreamy! The chocolate fondue and the special pastries sound incredible. I'm so interested in going! I just need to check my schedule to be sure I can make it on the 14th between 5 and 7, but I'll let you know as soon as I can!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Take your time, Maria! No pressure at all. Just let me know when you figure it out. I'm really looking forward to sharing the special evening with our customers, and I'd love to have you there!"
+        ],
+        [
+          "Maria Lopez",
+          "Thanks so much for the invite, Isabella! It sounds like it's going to be such a lovely evening. I'll definitely check my schedule and get back to you about the 14th soon!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        25
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez are discussing Isabella's preparations for a cozy Valentine's Day event at Hobbs Cafe, including special pastries and a chocolate fondue station, with Maria expressing interest in attending on the 14th between 5 pm and 7 pm. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! How are you doing today? Are you getting settled in for your stream?"
+        ],
+        [
+          "Maria Lopez",
+          "I'm doing great, thanks! Yeah, just getting started. This game is pretty intense right now! I saw you busy prepping for Valentine's Day\u2014how is all that going? It looks like quite the event!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It's going wonderfully! We're putting so much love into making Hobbs Cafe the coziest spot for Valentine's Day. We're planning special pastries and a chocolate fondue station. I really hope you can make it on the 14th, between 5 pm and 7 pm!"
+        ],
+        [
+          "Maria Lopez",
+          "Oh, that sounds absolutely dreamy! The chocolate fondue and the special pastries sound incredible. I'm so interested in going! I just need to check my schedule to be sure I can make it on the 14th between 5 and 7, but I'll let you know as soon as I can!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Take your time, Maria! No pressure at all. Just let me know when you figure it out. I'm really looking forward to sharing the special evening with our customers, and I'd love to have you there!"
+        ],
+        [
+          "Maria Lopez",
+          "Thanks so much for the invite, Isabella! It sounds like it's going to be such a lovely evening. I'll definitely check my schedule and get back to you about the 14th soon!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        131,
+        45
+      ],
+      "pronunciatio": "\ud83c\udf19\ud83d\ude34",
+      "description": "preparing for bed @ the Ville:Dorm for Oak Hill College:Klaus Mueller's room:closet",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 23:00:10"
+  }
+}

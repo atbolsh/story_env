@@ -1,0 +1,34 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        75,
+        19
+      ],
+      "pronunciatio": "\u231b",
+      "description": "waiting to start on the way to on the way to working at the counter, serving customers, and continuing preparations for the Valentine's Day part @ <waiting> 75 19",
+      "chat": null
+    },
+    "Maria Lopez": {
+      "movement": [
+        79,
+        19
+      ],
+      "pronunciatio": "\u2705\ud83d\udcca",
+      "description": "studying physics at Hobbs Cafe (reviewing the day's progress) @ the Ville:Hobbs Cafe:cafe:behind the cafe counter",
+      "chat": null
+    },
+    "Klaus Mueller": {
+      "movement": [
+        74,
+        25
+      ],
+      "pronunciatio": "\u2615\ud83d\udde3\ufe0f",
+      "description": "eating dinner at Hobbs Cafe (conversing about Klaus Mueller and Isabella Rodriguez discuss their respective activities\u2014Isabella's Valentine's Day preparations at Hobbs Cafe and Klaus's sociology research on gentrification\u2014and agree that Klaus might share real-life community stories with her cafe in the future.) @ the Ville:Hobbs Cafe:cafe:cafe customer seating",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 17:38:20"
+  }
+}

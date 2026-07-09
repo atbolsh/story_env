@@ -1,0 +1,293 @@
+{
+  "vision_r": 8,
+  "att_bandwidth": 8,
+  "retention": 8,
+  "curr_time": "February 13, 2023, 23:59:50",
+  "curr_tile": [
+    78,
+    19
+  ],
+  "daily_plan_req": "Isabella Rodriguez opens Hobbs Cafe at 8am everyday, and works at the counter until 8pm, at which point she closes the cafe.",
+  "name": "Isabella Rodriguez",
+  "first_name": "Isabella",
+  "last_name": "Rodriguez",
+  "age": 34,
+  "innate": "friendly, outgoing, hospitable",
+  "learned": "Isabella Rodriguez is a cafe owner of Hobbs Cafe who loves to make people feel welcome. She is always looking for ways to make the cafe a place where people can come to relax and enjoy themselves.",
+  "currently": "Isabella Rodriguez is planning on having a Valentine's Day party at Hobbs Cafe with her customers on February 14th, 2023 at 5pm. She is gathering party material, and is telling everyone to join the party at Hobbs Cafe on February 14th, 2023, from 5pm to 7pm.",
+  "lifestyle": "Isabella Rodriguez goes to bed around 11pm, awakes up around 6am.",
+  "living_area": "the Ville:Isabella Rodriguez's apartment:main room",
+  "concept_forget": 100,
+  "daily_reflection_time": 180,
+  "daily_reflection_size": 5,
+  "overlap_reflect_th": 4,
+  "kw_strg_event_reflect_th": 10,
+  "kw_strg_thought_reflect_th": 9,
+  "recency_w": 1,
+  "relevance_w": 1,
+  "importance_w": 1,
+  "recency_decay": 0.995,
+  "importance_trigger_max": 150,
+  "importance_trigger_curr": 77,
+  "importance_ele_n": 43,
+  "thought_count": 5,
+  "daily_req": [
+    "wake up and complete the morning routine at 6:00 am",
+    "prepare for the day before opening the cafe",
+    "open Hobbs Cafe at 8:00 am",
+    "work at the counter and manage the cafe, focusing on preparations for the Valentine's Day party",
+    "spend the afternoon serving customers",
+    "stay at the cafe until closing time at 8:00 pm",
+    "wind down after work"
+  ],
+  "f_daily_schedule": [
+    [
+      "sleeping",
+      360
+    ],
+    [
+      "waking up and completing her morning routine (stretching in her living area)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (making her bed)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (heading to the bathroom)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (washing her face)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (brushing her teeth)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (showering)",
+      10
+    ],
+    [
+      "waking up and completing her morning routine (drying her hair)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (selecting her outfit for the day)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (getting dressed)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (making a cup of coffee)",
+      5
+    ],
+    [
+      "waking up and completing her morning routine (eating a small snack)",
+      5
+    ],
+    [
+      "preparing for the day at Hobbs Cafe",
+      60
+    ],
+    [
+      "opening Hobbs Cafe",
+      60
+    ],
+    [
+      "working at the counter and managing the cafe, focusing on preparations for the Valentine's Day party",
+      60
+    ],
+    [
+      "working at the counter, serving customers, and preparing for the Valentine's Day party",
+      60
+    ],
+    [
+      "working at the counter, serving customers, and continuing preparations for the Valentine's Day party (on the way to on the way to on the way to on the way to working at the counter, serving customers, and continuing preparations for the Valentine's Day part)",
+      540
+    ],
+    [
+      "working at the counter, serving customers, and continuing preparations for the Valentine's Day party (conversing about Maria Lopez and Isabella Rodriguez discuss their busy schedules\u2014Isabella's Valentine's Day preparations and Maria's physics studies\u2014while exploring the fascinating parallels between complex physical systems and the dynamics of...",
+      15
+    ],
+    [
+      "working at the counter, serving customers, and continuing preparations for the Valentine's Day party (waiting to start on the way to on the way to working at the counter, serving customers, and continuing preparations for the Valentine's Day part)",
+      4
+    ],
+    [
+      "working at the counter, serving customers, and continuing preparations for the Valentine's Day party (conversing about Klaus Mueller and Isabella Rodriguez discuss their respective activities\u2014Isabella's Valentine's Day preparations at Hobbs Cafe and Klaus's sociology research on gentrification\u2014and agree that Klaus might share real-life community...",
+      10
+    ],
+    [
+      "working at the counter, serving customers, and continuing preparations for the Valentine's Day party (conversing about Maria Lopez and Isabella Rodriguez discuss Maria's physics studies at Hobbs Cafe, Isabella's Valentine's Day preparations, and Maria's potential visit to the cafe later in the week.)",
+      7
+    ],
+    [
+      "working at the counter and completing final preparations for the Valentine's Day party",
+      60
+    ],
+    [
+      "working at the counter, serving customers, and continuing preparations for the Valentine's Day party",
+      120
+    ],
+    [
+      "winding down after work and preparing for bed",
+      60
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      0
+    ],
+    [
+      "sleeping",
+      -7
+    ],
+    [
+      "sleeping",
+      -10
+    ],
+    [
+      "sleeping",
+      -4
+    ],
+    [
+      "sleeping",
+      -15
+    ]
+  ],
+  "f_daily_schedule_hourly_org": [
+    [
+      "sleeping",
+      360
+    ],
+    [
+      "waking up and completing her morning routine",
+      60
+    ],
+    [
+      "preparing for the day at Hobbs Cafe",
+      60
+    ],
+    [
+      "opening Hobbs Cafe",
+      60
+    ],
+    [
+      "working at the counter and managing the cafe, focusing on preparations for the Valentine's Day party",
+      60
+    ],
+    [
+      "working at the counter, serving customers, and preparing for the Valentine's Day party",
+      60
+    ],
+    [
+      "working at the counter, serving customers, and continuing preparations for the Valentine's Day party",
+      540
+    ],
+    [
+      "working at the counter and completing final preparations for the Valentine's Day party",
+      60
+    ],
+    [
+      "working at the counter, serving customers, and continuing preparations for the Valentine's Day party",
+      120
+    ],
+    [
+      "winding down after work and preparing for bed",
+      60
+    ]
+  ],
+  "act_address": "the Ville:Hobbs Cafe:cafe:behind the cafe counter",
+  "act_start_time": "February 13, 2023, 18:26:00",
+  "act_duration": 540,
+  "act_description": "working at the counter, serving customers, and continuing preparations for the Valentine's Day party (on the way to on the way to on the way to on the way to working at the counter, serving customers, and continuing preparations for the Valentine's Day part)",
+  "act_pronunciatio": "\ud83d\udeb6\u200d\u2640",
+  "act_event": [
+    "Isabella Rodriguez",
+    "be",
+    "working"
+  ],
+  "act_obj_description": "Isabella Rodriguez is working at the counter, serving customers, and continuing preparations for the Valentine's Day party",
+  "act_obj_pronunciatio": "\ud83d\udc69\u200d\ud83c\udf73",
+  "act_obj_event": [
+    "behind the cafe counter",
+    "work",
+    "customers"
+  ],
+  "chatting_with": null,
+  "chat": null,
+  "chatting_with_buffer": {
+    "Maria Lopez": -1204,
+    "Klaus Mueller": -1510
+  },
+  "chatting_end_time": null,
+  "act_path_set": true,
+  "planned_path": []
+}

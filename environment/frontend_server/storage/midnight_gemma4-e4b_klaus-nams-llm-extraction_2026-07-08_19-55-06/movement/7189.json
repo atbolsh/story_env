@@ -1,0 +1,84 @@
+{
+  "persona": {
+    "Isabella Rodriguez": {
+      "movement": [
+        76,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez discussed Isabella's upcoming cozy Valentine's Day party at Hobbs Cafe on February 14th, which will feature special pastries and a chocolate fondue station, and Maria expressed interest in attending between 5 pm and 7 pm. @ <persona> Maria Lopez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! Hope your stream is going well. Are you finding the cozy atmosphere here at Hobbs Cafe helpful for balancing all that physics studying and Twitch streaming?"
+        ],
+        [
+          "Maria Lopez",
+          "It really is! The vibe here is perfect for focusing on physics while keeping the energy up for the stream. Speaking of the atmosphere, I heard you're prepping for something special next week? Valentine's Day, right?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It is! I'm so excited! We're hosting a cozy and romantic Valentine's Day party on February 14th. We'll have special pastries and a chocolate fondue station. I was just starting to think of ways to make the whole atmosphere extra perfect for everyone who comes!"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds absolutely dreamy! The chocolate fondue station sounds especially decadent. I've heard wonderful things about your cafe! For planning, I need to check my schedule to see if I can make it on the 14th\u2014I've got a pretty busy week with classes and streaming, but I'd love to see it if I can swing it!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Please do try to make it if you can! We're aiming for a relaxed and fun evening from 5 pm to 7 pm, just a small celebration for our wonderful customers. Knowing you might swing by would make the preparations even more exciting!"
+        ],
+        [
+          "Maria Lopez",
+          "5 to 7 pm on the 14th... I'll definitely put a big block in my calendar for that! I'll let you know as soon as I confirm my schedule for that day. Thanks again for telling me about it, Isabella; it sounds like it's going to be so fun!"
+        ]
+      ]
+    },
+    "Maria Lopez": {
+      "movement": [
+        75,
+        21
+      ],
+      "pronunciatio": "\ud83d\udcac",
+      "description": "conversing about Isabella Rodriguez and Maria Lopez discussed Isabella's upcoming cozy Valentine's Day party at Hobbs Cafe on February 14th, which will feature special pastries and a chocolate fondue station, and Maria expressed interest in attending between 5 pm and 7 pm. @ <persona> Isabella Rodriguez",
+      "chat": [
+        [
+          "Isabella Rodriguez",
+          "Hi Maria! Hope your stream is going well. Are you finding the cozy atmosphere here at Hobbs Cafe helpful for balancing all that physics studying and Twitch streaming?"
+        ],
+        [
+          "Maria Lopez",
+          "It really is! The vibe here is perfect for focusing on physics while keeping the energy up for the stream. Speaking of the atmosphere, I heard you're prepping for something special next week? Valentine's Day, right?"
+        ],
+        [
+          "Isabella Rodriguez",
+          "It is! I'm so excited! We're hosting a cozy and romantic Valentine's Day party on February 14th. We'll have special pastries and a chocolate fondue station. I was just starting to think of ways to make the whole atmosphere extra perfect for everyone who comes!"
+        ],
+        [
+          "Maria Lopez",
+          "That sounds absolutely dreamy! The chocolate fondue station sounds especially decadent. I've heard wonderful things about your cafe! For planning, I need to check my schedule to see if I can make it on the 14th\u2014I've got a pretty busy week with classes and streaming, but I'd love to see it if I can swing it!"
+        ],
+        [
+          "Isabella Rodriguez",
+          "Please do try to make it if you can! We're aiming for a relaxed and fun evening from 5 pm to 7 pm, just a small celebration for our wonderful customers. Knowing you might swing by would make the preparations even more exciting!"
+        ],
+        [
+          "Maria Lopez",
+          "5 to 7 pm on the 14th... I'll definitely put a big block in my calendar for that! I'll let you know as soon as I confirm my schedule for that day. Thanks again for telling me about it, Isabella; it sounds like it's going to be so fun!"
+        ]
+      ]
+    },
+    "Klaus Mueller": {
+      "movement": [
+        108,
+        33
+      ],
+      "pronunciatio": "\ud83e\uddf9\u2728",
+      "description": "studying or relaxing at the library/dorm (tidying his immediate workspace) @ the Ville:Dorm for Oak Hill College:Klaus Mueller's room:desk",
+      "chat": null
+    }
+  },
+  "meta": {
+    "curr_time": "February 13, 2023, 19:58:10"
+  }
+}
